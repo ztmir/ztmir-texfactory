@@ -51,4 +51,10 @@ __pycache__
 # Tools and other scons stuff should be downloaded by scripts
 site_scons/
 
+# Garbage accidentally imported from Windowsers
+Thumbs.db
+Desktop.ini
+thumbs.db
+desktop.ini
+
 # vim: set syntax=conf tabstop=2 expandtab nospell:
