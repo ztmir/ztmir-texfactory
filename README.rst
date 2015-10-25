@@ -23,8 +23,8 @@ Repository of TeX documents developed in ztmir_
 PREREQUISITES
 -------------
 
-The following software packages are required (or helpful) to build documents
-found in this repository.
+The following software packages are required (or helpful) to work with the
+project.
 
 INSTALLABLE PACKAGES
 ^^^^^^^^^^^^^^^^^^^^
@@ -44,13 +44,15 @@ is present in software repositories for easy/quick installation:
 
 OTHER DEPENDENCIES
 ^^^^^^^^^^^^^^^^^^
-Required sources which are not available in the form of installable packages
-may be downloaded with ``bin/download-deps.sh`` script::
+
+Few small modules are required locally by the project. These sources are
+usually not available in the form of installable packages but may be easily
+downloaded with ``bin/downloads.py`` python script::
 
     python bin/downloads.py
 
 The script downloads files to local project tree, it doesn't clutter any
-folders outside of this projects.
+folders outside of this project's tree.
 
 The downloaded files may be further deleted with::
 
@@ -62,8 +64,7 @@ from source repositories (git/hg).
 PER-TASK LIST OF REQUIRED PACKAGES
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following particular tasks depend on the following particular packages.
-Plain users only needs *TO BUILD DOCUMENTS*.
+This is a list of prerequisites for particular tasks. 
 
 TO BUILD DOCUMENTS
 ``````````````````
@@ -104,7 +105,7 @@ GENERATING DOCUMENTATION
 ------------------------
 
 Texfactory framework has an API documentation and user manual. The documentation
-may be generated as follows (see also `REQUIREMENTS`_).
+may be generated as follows (see also `PREREQUISITES`_).
 
 API DOCUMENTATION
 ^^^^^^^^^^^^^^^^^
@@ -209,33 +210,33 @@ part of the name may be absent, if version in not specified in SConscript file.
 DIRECTORIES
 -----------
 
-  ======================  =======================================================
-  Directory               Description
-  ======================  =======================================================
-  ``bin/``                several tools and scripts for writers/developers,
-  ----------------------  -------------------------------------------------------
-  ``build/``              where the writings are compiled, the tree structure
-                          resembles that of ``src/``,
-  ----------------------  -------------------------------------------------------
-  ``share/``              files shared between local **TeX** projects, for
-                          example custom **TeX** styles or **BibTeX** databases,
-  ----------------------  -------------------------------------------------------
-  ``site_scons/``         local extensions for scons_,
-  ----------------------  -------------------------------------------------------
-  ``src/``                main source tree with source files to be compiled,
-  ----------------------  -------------------------------------------------------
-  ``template/``           templates for certain types of source files,
-  ----------------------  -------------------------------------------------------
-  ``test/``               end-to-end tests
-  ======================  =======================================================
+======================  =======================================================
+Directory               Description
+======================  =======================================================
+``bin/``                several tools and scripts for writers/developers,
+----------------------  -------------------------------------------------------
+``build/``              where the writings are compiled, the tree structure
+                        resembles that of ``src/``,
+----------------------  -------------------------------------------------------
+``share/``              files shared between local **TeX** projects, for
+                        example custom **TeX** styles or **BibTeX** databases,
+----------------------  -------------------------------------------------------
+``site_scons/``         local extensions for scons_,
+----------------------  -------------------------------------------------------
+``src/``                main source tree with source files to be compiled,
+----------------------  -------------------------------------------------------
+``template/``           templates for certain types of source files,
+----------------------  -------------------------------------------------------
+``test/``               end-to-end tests
+======================  =======================================================
 
 LICENSE
 =======
 
 **NOTE:** Sources of ``TeX`` sub-projects found under the ``src/`` directory
-and it subdirectories may be subject to their own licenses. Please refer to
-their individual LICENSE files. For those parts which are not covered by the
-individual licenses, the following default license applies.
+and it subdirectories may be subject to their own licenses. For those parts
+which are not covered by the individual licenses, the following Default License
+below applies.
 
 Default License
 ---------------
