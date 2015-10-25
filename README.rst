@@ -1,12 +1,12 @@
 ZTMiR-TeXFactory
 ================
 
-.. |travis| image:: https://travis-ci.org/ptomulik/ztmir-texfactory.svg?branch=devel
-   :target: https://travis-ci.org/ptomulik/ztmir-texfactory
+.. |travis| image:: https://travis-ci.org/ztmir/ztmir-texfactory.svg?branch=devel
+   :target: https://travis-ci.org/ztmir/ztmir-texfactory
    :alt: Travis CI
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/vmu22j1584ojt7c2/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/ptomulik/ztmir-texfactory/branch/master
+   :target: https://ci.appveyor.com/project/ztmir/ztmir-texfactory/branch/master
    :alt: Appveyor CI
 
 +---------------+--------------+
