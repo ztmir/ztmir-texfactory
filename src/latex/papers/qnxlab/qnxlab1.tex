@@ -2,7 +2,7 @@
 
 \subsection{Powłoka}
 
-Powłoka: 
+Powłoka:
 
 \begin{myitemize}
 \item Interpreter poleceń użytkownika
@@ -12,7 +12,7 @@ Powłoka:
 \end{myitemize}
 
 
-\begin{example}[Przykład prostej komendy] \label{ex:prostakomenda} 
+\begin{example}[Przykład prostej komendy] \label{ex:prostakomenda}
 
 Polecenia można wydawać powłoce z wiersza poleceń (terminala, konsoli) wpisując ich nazwy.
 
@@ -20,16 +20,16 @@ Polecenia można wydawać powłoce z wiersza poleceń (terminala, konsoli) wpisu
 # ls
 \end{lstlisting}
 
-Komenda wyświetla zawartość bieżącego katalogu.  
+Komenda wyświetla zawartość bieżącego katalogu.
 \end{example}
 
-\begin{example}[Przykład komendy z~argumentami]\label{ex:prostakomenda2} 
+\begin{example}[Przykład komendy z~argumentami]\label{ex:prostakomenda2}
 %\addcontentsline{toc}{subsubsection}{Przykład \ref{ex:prostakomenda2}}
 
 Komenda wyświetla zawartość bieżącego katalogu wraz ze szczegółowymi informacjami nt. obiektów. Argumenty (\lstinline[style=MyBashStyle]{-l}) zmieniają zachowanie komendy prostej.
 
 \begin{lstlisting}[style=MyBashStyle]
-# ls -l 
+# ls -l
 \end{lstlisting}
 
 
@@ -40,23 +40,23 @@ Formalna składnia komendy z argumentami:
 \end{lstlisting}
 \end{example}
 
-\begin{example}[Przykład złożonej komendy]\label{ex:prostakomenda3} 
+\begin{example}[Przykład złożonej komendy]\label{ex:prostakomenda3}
 
-Komendy proste i~komendy proste z~argumentami możemy łączyć. Separatorem poleceń jest średnik (\lstinline[style=MyBashStyle]{;}). 
+Komendy proste i~komendy proste z~argumentami możemy łączyć. Separatorem poleceń jest średnik (\lstinline[style=MyBashStyle]{;}).
 
 
 \begin{lstlisting}[style=MyBashStyle]
 # date ; ls
 \end{lstlisting}
 
-Formalna składnia złożonej komendy: 
+Formalna składnia złożonej komendy:
 
 \begin{lstlisting}[style=MyBashStyle]
 # command1; command2; command3; ... argumentN
 \end{lstlisting}
 \end{example}
 
-%\begin{example}[Logowanie do systemu z wiersza poleceń]\label{ex:prostakomenda4} 
+%\begin{example}[Logowanie do systemu z wiersza poleceń]\label{ex:prostakomenda4}
 %
 %
 %Aby zalogować się do systemu z wiersza poleceń używamy polecenia \lstinline[style=MyBashStyle]{login}.
@@ -66,24 +66,24 @@ Formalna składnia złożonej komendy:
 %# login: root
 %\end{lstlisting}
 %
-%Polecenie uzyskuje od użytkownika jego nazwę oraz hasło, które następnie weryfikuje z danymi zawartymi w pliku \lstinline[style=MyBashStyle]{/etc/passwd}, który możemy podejrzeć poleceniem \lstinline[style=MyBashStyle]{cat}. 
+%Polecenie uzyskuje od użytkownika jego nazwę oraz hasło, które następnie weryfikuje z danymi zawartymi w pliku \lstinline[style=MyBashStyle]{/etc/passwd}, który możemy podejrzeć poleceniem \lstinline[style=MyBashStyle]{cat}.
 %\end{example}
 %
 %
-%\begin{example}[Plik definiujący użytkowników systemu]\label{ex:prostakomenda5} 
+%\begin{example}[Plik definiujący użytkowników systemu]\label{ex:prostakomenda5}
 %
 %
-%Po zalogowaniu przez polecenie \lstinline[style=MyBashStyle]{login} wywoływana jest powłoka (\lstinline[style=MyBashStyle]{/bin/sh}). Następnie w fazie inicjalizacji, ustawiane są parametry pracy powłoki. Na ogół jest to proces dwuetapowy, w~którym interpretowane są pliki \lstinline[style=MyBashStyle]{/etc/passwd} oraz \lstinline[style=MyBashStyle]{.profile} z domowego katalogu. Obejrzeć zawrtość pliku \lstinline[style=MyBashStyle]{/etc/passwd}. 
+%Po zalogowaniu przez polecenie \lstinline[style=MyBashStyle]{login} wywoływana jest powłoka (\lstinline[style=MyBashStyle]{/bin/sh}). Następnie w fazie inicjalizacji, ustawiane są parametry pracy powłoki. Na ogół jest to proces dwuetapowy, w~którym interpretowane są pliki \lstinline[style=MyBashStyle]{/etc/passwd} oraz \lstinline[style=MyBashStyle]{.profile} z domowego katalogu. Obejrzeć zawrtość pliku \lstinline[style=MyBashStyle]{/etc/passwd}.
 %
 %\begin{lstlisting}[style=MyBashStyle]
 %# cat /etc/passwd
 %\end{lstlisting}
 %\end{example}
 
-\begin{example}[Wejście i wyjście z powłoki]\label{ex:prostakomenda6} 
+\begin{example}[Wejście i wyjście z powłoki]\label{ex:prostakomenda6}
 
 
-Powłoka wykonuje polecenia użytkownika. Kiedy powłoka wyświetla znak zachęty, który w domyślnym shell-u (Bourne shell) w systemie QNX jest znak \lstinline[style=MyBashStyle]{#} dla użytkownika \lstinline[style=MyBashStyle]{root}, to czeka na polecenia użytkownika. Możemy uruchomić powłokę w takim trybie. Sytuację tę ilustruje poniższy przykład.  
+Powłoka wykonuje polecenia użytkownika. Kiedy powłoka wyświetla znak zachęty, który w domyślnym shell-u (Bourne shell) w systemie QNX jest znak \lstinline[style=MyBashStyle]{#} dla użytkownika \lstinline[style=MyBashStyle]{root}, to czeka na polecenia użytkownika. Możemy uruchomić powłokę w takim trybie. Sytuację tę ilustruje poniższy przykład.
 
 
 \begin{lstlisting}[style=MyBashStyle]
@@ -92,35 +92,35 @@ Powłoka wykonuje polecenia użytkownika. Kiedy powłoka wyświetla znak zachęt
 # exit
 \end{lstlisting}
 
-Aby wyjść z powłoki należy użyć polecenia \lstinline[style=MyBashStyle]{# exit}. 
+Aby wyjść z powłoki należy użyć polecenia \lstinline[style=MyBashStyle]{# exit}.
 \end{example}
 
-\begin{example}[Obsługa edytora tekstu vi]\label{ex:vi} 
+\begin{example}[Obsługa edytora tekstu vi]\label{ex:vi}
 
 
-Edytor \lstinline[style=MyBashStyle]{vi} jest zaawansowanym edytorem tekstowym często występującym w~systemach Unix. Aby uruchomić edytor należy wpisać komendę: 
+Edytor \lstinline[style=MyBashStyle]{vi} jest zaawansowanym edytorem tekstowym często występującym w~systemach Unix. Aby uruchomić edytor należy wpisać komendę:
 
 \begin{lstlisting}[style=MyBashStyle]
 # vi
 \end{lstlisting}
 
- Edytor \lstinline[style=MyBashStyle]{vi} jest edytorem modalnym. Oznacza to, że może znajdować się w~dwóch stanach: \textbf{trybie edycji} lub \textbf{trybie poleceń}. 
- 
+ Edytor \lstinline[style=MyBashStyle]{vi} jest edytorem modalnym. Oznacza to, że może znajdować się w~dwóch stanach: \textbf{trybie edycji} lub \textbf{trybie poleceń}.
+
 \begin{myitemize}
 \item Przejście do trybu edycji poprzez wydanie polecenia \lstinline[style=MyBashStyle]{i} (insert) lub \lstinline[style=MyBashStyle]{a} (append).
-\item Przejcie z~trybu edycji do trybu poleceń odbywa się poprzez naciśnięcie klawicza \lstinline[style=MyBashStyle]{Esc}. 
+\item Przejcie z~trybu edycji do trybu poleceń odbywa się poprzez naciśnięcie klawicza \lstinline[style=MyBashStyle]{Esc}.
 \end{myitemize}
 
 Polecenia edytora \lstinline[style=MyBashStyle]{vi} składają się z~kilku grup. Przedstawiono je zbiorczo w~postaci krótkiej instrukcji na stronie~\pageref{viRef}.
 
-W~trybie edycji, tj. po wciśnięciu klawisza \lstinline[style=MyBashStyle]{i} wpiszmy do pliku następujące linie tekstu postaci, np.: 
+W~trybie edycji, tj. po wciśnięciu klawisza \lstinline[style=MyBashStyle]{i} wpiszmy do pliku następujące linie tekstu postaci, np.:
 
 
 \begin{lstlisting}[style=MyBashStyle]
 Jak dobrze wstac
 Skoro swit
 Jutrzenki blask
-Duszkiem pic 
+Duszkiem pic
 Tytul:
 Radosc o poranku
 Nim w gorze tam
@@ -129,31 +129,31 @@ Jak dobrze wczesnie wstac
 Dla tych chwil
 \end{lstlisting}
 
-W~następnej kolejności przejść do trybu poleceń, poprzez wciśnięcie klawisza \lstinline[style=MyBashStyle]{Esc} oraz zapisać plik wydając polecenie: 
+W~następnej kolejności przejść do trybu poleceń, poprzez wciśnięcie klawisza \lstinline[style=MyBashStyle]{Esc} oraz zapisać plik wydając polecenie:
 
 \begin{lstlisting}[style=MyBashStyle]
 :w plikPoranny
 \end{lstlisting}
 
-Kolejno, zamknąć zapisany plik komendą: 
+Kolejno, zamknąć zapisany plik komendą:
 
 \begin{lstlisting}[style=MyBashStyle]
 :q
 \end{lstlisting}
 
-Otworzyć ponownie plik: 
+Otworzyć ponownie plik:
 
 \begin{lstlisting}[style=MyBashStyle]
 vi plikPoranny
 \end{lstlisting}
 
-Wykonać następujące eksperymenty: 
+Wykonać następujące eksperymenty:
 
 \begin{myitemize}
 \item Wykasować tekst \lstinline[style=MyBashStyle]{Tytul:} litera po literze poleceniem \lstinline[style=MyBashStyle]{x}.
-\item Klawiszami \lstinline[style=MyBashStyle]{h}, \lstinline[style=MyBashStyle]{j}, \lstinline[style=MyBashStyle]{k}, \lstinline[style=MyBashStyle]{l} przejść do linii z tekstem \lstinline[style=MyBashStyle]{Radosc o poranku}.  
-\item Wykasować bieżącą linię za pomocą komendy \lstinline[style=MyBashStyle]{dd}. Wykasować także pustą linię, powstałą po tekście \lstinline[style=MyBashStyle]{Tytul:}. 
-\item Przejść do pierwszej linii pliku (\lstinline[style=MyBashStyle]{h}, \lstinline[style=MyBashStyle]{j}, \lstinline[style=MyBashStyle]{k}, \lstinline[style=MyBashStyle]{l}) i~wkleić usunięty tekst kombinacją klawiszy \lstinline[style=MyBashStyle]{Shift + P}, tak, aby cały tekst wyglądał następująco: 
+\item Klawiszami \lstinline[style=MyBashStyle]{h}, \lstinline[style=MyBashStyle]{j}, \lstinline[style=MyBashStyle]{k}, \lstinline[style=MyBashStyle]{l} przejść do linii z tekstem \lstinline[style=MyBashStyle]{Radosc o poranku}.
+\item Wykasować bieżącą linię za pomocą komendy \lstinline[style=MyBashStyle]{dd}. Wykasować także pustą linię, powstałą po tekście \lstinline[style=MyBashStyle]{Tytul:}.
+\item Przejść do pierwszej linii pliku (\lstinline[style=MyBashStyle]{h}, \lstinline[style=MyBashStyle]{j}, \lstinline[style=MyBashStyle]{k}, \lstinline[style=MyBashStyle]{l}) i~wkleić usunięty tekst kombinacją klawiszy \lstinline[style=MyBashStyle]{Shift + P}, tak, aby cały tekst wyglądał następująco:
 \end{myitemize}
 
 \begin{lstlisting}[style=MyBashStyle]
@@ -168,10 +168,10 @@ Jak dobrze wczesnie wstac
 Dla tych chwil
 \end{lstlisting}
 
-Przeprowadzić kolejne eksperymenty: 
+Przeprowadzić kolejne eksperymenty:
 
 \begin{myitemize}
-\item W~trybie poleceń, znaleźć wszystkie wystąpienia słowa \lstinline[style=MyBashStyle]{dobrze} wpisując: 
+\item W~trybie poleceń, znaleźć wszystkie wystąpienia słowa \lstinline[style=MyBashStyle]{dobrze} wpisując:
 \end{myitemize}
 
 \begin{lstlisting}[style=MyBashStyle]
@@ -180,7 +180,7 @@ Przeprowadzić kolejne eksperymenty:
 \begin{myitemize}
 \item Przeszukać tekst w~przód poprzez naciśnięcie klawisza \lstinline[style=MyBashStyle]{N}. Przeszukiwanie w~tył nastąpi poprzez wciśnięcie klawisza \lstinline[style=MyBashStyle]{Shift + N}.
 \item Przejść do pierwszej linii poleceniem \lstinline[style=MyBashStyle]{:1} oraz zamienić tekst \lstinline[style=MyBashStyle]
-{Radosc} na \lstinline[style=MyBashStyle]{Tytul: Radosc} poprzez sekwencję: 
+{Radosc} na \lstinline[style=MyBashStyle]{Tytul: Radosc} poprzez sekwencję:
 \end{myitemize}
 
 \begin{lstlisting}[style=MyBashStyle]
@@ -195,14 +195,14 @@ Przeprowadzić kolejne eksperymenty:
 :.,$s/dobrze/DOBRZE
 \end{lstlisting}
 
-Zapisać i~zamknąć plik poleceniem: 
+Zapisać i~zamknąć plik poleceniem:
 
 \begin{lstlisting}[style=MyBashStyle]{h}
 :wq!
 \end{lstlisting}
-\end{example} 
+\end{example}
 
-\clearpage  
+\clearpage
 \phantomsection
 {\label{viRef}
 \includepdf[scale=0.95,pages={1},pagecommand={\thispagestyle{fancy}},pagecommand={\thispagestyle{fancy}{\label{subsec:vi}}},lastpage=1,angle=90]{img/viRef.pdf}
@@ -210,7 +210,7 @@ Zapisać i~zamknąć plik poleceniem:
 
 
 
-\begin{example}[Utworzenie i~uruchomienie skryptu] \label{ex:prostakomenda7} 
+\begin{example}[Utworzenie i~uruchomienie skryptu] \label{ex:prostakomenda7}
 
 
 Powłoka, jako interpreter, wykonuje pewien program.  Kolejne komendy programu mogą być wpisywane na bieżąco w~terminalu lub cały program może być dostarczony do powłoki w~postaci skryptu. Należy utworzyć plik o~nazwie \lstinline[style=MyBashStyle]{skrypt} edytorem tekstu \lstinline[style=MyBashStyle]{vi} o~treści:
@@ -219,7 +219,7 @@ Powłoka, jako interpreter, wykonuje pewien program.  Kolejne komendy programu m
 date ; ls
 \end{lstlisting}
 
-W~następnej kolejności uruchomić skrypt powłoki wydając polecenie: 
+W~następnej kolejności uruchomić skrypt powłoki wydając polecenie:
 
 \begin{lstlisting}[style=MyBashStyle]
 # /bin/sh skrypt
@@ -238,11 +238,11 @@ W tej sytuacji należy zapewnić, aby skrypt miał odpowiednie atrybuty oraz upe
 # chmod a+x ./skrypt
 \end{lstlisting}
 
-Uruchomić \lstinline[style=MyBashStyle]{skrypt} w~linii poleceń. 
+Uruchomić \lstinline[style=MyBashStyle]{skrypt} w~linii poleceń.
 \end{example}
 
 
-\begin{example}[Prosty skrypt powłoki]\label{ex:prostakomenda8} 
+\begin{example}[Prosty skrypt powłoki]\label{ex:prostakomenda8}
 
 
 Należy także uzupełnić plik \lstinline[style=MyBashStyle]{skrypt}, tak, żeby miał postać:
@@ -253,11 +253,11 @@ Należy także uzupełnić plik \lstinline[style=MyBashStyle]{skrypt}, tak, żeb
 date ; ls
 \end{lstlisting}
 
-Znak \lstinline[style=MyBashStyle]{#} stanowi znak komentarza w~skrypcie. Wiersze zaczynające się od tego znaku są ignorowane przez interpreter poleceń i~traktowane jako komentarz, oprócz pierwszej linii z~komendą \lstinline[style=MyBashStyle]{#!/bin/sh}. Pierwsza linia kodu przekazuje informacje o~rodzaju powłoki, która powinna wykonać skrypt. 
+Znak \lstinline[style=MyBashStyle]{#} stanowi znak komentarza w~skrypcie. Wiersze zaczynające się od tego znaku są ignorowane przez interpreter poleceń i~traktowane jako komentarz, oprócz pierwszej linii z~komendą \lstinline[style=MyBashStyle]{#!/bin/sh}. Pierwsza linia kodu przekazuje informacje o~rodzaju powłoki, która powinna wykonać skrypt.
 \end{example}
 
 
-\begin{example}[Prosty skrypt powłoki]\label{ex:prostakomenda9} 
+\begin{example}[Prosty skrypt powłoki]\label{ex:prostakomenda9}
 
 Dokumentacja systemu jest dostępna w formie elektronicznej na stronach \href{www.qnx.com}{www.qnx.com}. Skrócony opis interesującego nas polecenia systemowego uzyskujemy poprzez wpisanie w okno terminala polecenia \lstinline[style=MyBashStyle]{use polecenie}, np.:
 
@@ -266,9 +266,9 @@ Dokumentacja systemu jest dostępna w formie elektronicznej na stronach \href{ww
 \end{lstlisting}
 \end{example}
 
-\subsection{System plików} 
+\subsection{System plików}
 
-W systemie QNX Neutrino prawie wszystkie zasoby są plikami. Dane, urządzenia, bloki pamięci, a nawet pewne usługi są reprezentowane przez abstrakcję plików. Mechanizm plików pozwala na jednolity dostęp do zasobów zarówno lokalnych, jak i~zdalnych, za pomocą poleceń i programów usługowych wydawanych z okienka poleceń. Typowe drzewo plików w~systemie QNX przedstawiono na rysunku~\ref{fig:drzewo}. 
+W systemie QNX Neutrino prawie wszystkie zasoby są plikami. Dane, urządzenia, bloki pamięci, a nawet pewne usługi są reprezentowane przez abstrakcję plików. Mechanizm plików pozwala na jednolity dostęp do zasobów zarówno lokalnych, jak i~zdalnych, za pomocą poleceń i programów usługowych wydawanych z okienka poleceń. Typowe drzewo plików w~systemie QNX przedstawiono na rysunku~\ref{fig:drzewo}.
 
 \begin{figure}[!h]
 \centering
@@ -278,23 +278,23 @@ W systemie QNX Neutrino prawie wszystkie zasoby są plikami. Dane, urządzenia, 
 \end{figure}
 
 \begin{myitemize}
-\item Katalog główny \lstinline[style=MyBashStyle]{/} jest miejscem montowania twardego dysku lub pamięci flash.  
-\item \lstinline[style=MyBashStyle]{/bin} - zawiera podstawowe komendy systemowe (np. \lstinline[style=MyBashStyle]{ls}, \lstinline[style=MyBashStyle]{chmod}). 
+\item Katalog główny \lstinline[style=MyBashStyle]{/} jest miejscem montowania twardego dysku lub pamięci flash.
+\item \lstinline[style=MyBashStyle]{/bin} - zawiera podstawowe komendy systemowe (np. \lstinline[style=MyBashStyle]{ls}, \lstinline[style=MyBashStyle]{chmod}).
 \item \lstinline[style=MyBashStyle]{/boot} - zawiera pliki i katalogi związane z obrazami systemu operacyjnego.
-\item \lstinline[style=MyBashStyle]{/dev} - katalog przynależy do menadżera zasobów, w którym przechowywane są informacje o urządzeniach dostępnych w systemie. 
+\item \lstinline[style=MyBashStyle]{/dev} - katalog przynależy do menadżera zasobów, w którym przechowywane są informacje o urządzeniach dostępnych w systemie.
 \item \lstinline[style=MyBashStyle]{/etc} - zawiera pliki i programy używane do administracji i konfiguracji systemu.
 \item \lstinline[style=MyBashStyle]{/fs} - w katalogu są montowane dodatkowe systemy plików.
 \item \lstinline[style=MyBashStyle]{/home} - katalogi domowe użytkowników.
-\item \lstinline[style=MyBashStyle]{/lib} - zawiera współdzielone biblioteki używane przez inne programy, procesy. 
-\item \lstinline[style=MyBashStyle]{/proc} - katalog, w którym są zawarte informacje o procesach i przestrzeni nazw. 
+\item \lstinline[style=MyBashStyle]{/lib} - zawiera współdzielone biblioteki używane przez inne programy, procesy.
+\item \lstinline[style=MyBashStyle]{/proc} - katalog, w którym są zawarte informacje o procesach i przestrzeni nazw.
 \item \lstinline[style=MyBashStyle]{/root} - katalog domowy dla użytkownika root.
 \item \lstinline[style=MyBashStyle]{/sbin} - zawiera niezbędne pliki wykonywalne (np. sterowniki, programy inicjujące, konfiguracyjne, menadżery).
 \item \lstinline[style=MyBashStyle]{/tmp} - zawiera pliki tymczasowe.
 \item \lstinline[style=MyBashStyle]{/usr} - zawiera współdzielone dane, tylko do odczytu.
-\item \lstinline[style=MyBashStyle]{/var} - zawiera zmienne dane (np. cache, logi). 
+\item \lstinline[style=MyBashStyle]{/var} - zawiera zmienne dane (np. cache, logi).
 \end{myitemize}
 
-Bardziej obszerny opis struktury i~hierarchii katalogów w~systemach klasy Unix, do których należy QNX, można znaleźć pod adresem \href{https://en.wikipedia.org/wiki/Unix\_filesystem}{https://en.wikipedia.org/wiki/Unix\_filesystem}. W~systemie QNX występują różne typy plików. Ich zestawienie przedstawiono w~tabeli \ref{tab:typyplikow}. 
+Bardziej obszerny opis struktury i~hierarchii katalogów w~systemach klasy Unix, do których należy QNX, można znaleźć pod adresem \href{https://en.wikipedia.org/wiki/Unix\_filesystem}{https://en.wikipedia.org/wiki/Unix\_filesystem}. W~systemie QNX występują różne typy plików. Ich zestawienie przedstawiono w~tabeli \ref{tab:typyplikow}.
 
 
 \begin{table}[h!]
@@ -321,12 +321,12 @@ Bardziej obszerny opis struktury i~hierarchii katalogów w~systemach klasy Unix,
 Pliki są zorganizowane w katalogi. Katalogi mają strukturę drzewa z korzeniem \lstinline[style=MyBashStyle]{/} (\lstinline[style=MyBashStyle]{root}). Aby wskazać na konkretny obiekt w systemie plików, należy podać jego ścieżkę. Rozróżniamy ścieżki absolutne i~względne. Ścieżka absolutna zaczyna się od znaku \lstinline[style=MyBashStyle]{/} , np. \lstinline[style=MyBashStyle]{/etc/passwd}. Ścieżka relatywna zaczyna się od znaku innego niż \lstinline[style=MyBashStyle]{/} , np. \lstinline[style=MyBashStyle]{etc/passwd} .
 
 
-\begin{example}[Wylistowanie zawartości katalogu]\label{ex:wylistowanie} 
+\begin{example}[Wylistowanie zawartości katalogu]\label{ex:wylistowanie}
 
-Pokazać zawartość bieżącego katalogu: 
+Pokazać zawartość bieżącego katalogu:
 
 \begin{lstlisting}[style=MyBashStyle]
-# ls -l 
+# ls -l
 total 419571
 drwxr-xr-x   2 root      root           3072 Feb 23  2014 bin
 drwxr-xr-x   4 root      root           1024 Feb 23  2014 boot
@@ -344,20 +344,20 @@ drwxr-xr-x   7 root      root           1024 Feb 23  2014 usr
 drwxr-xr-x   4 root      root           1024 Feb 23  2014 var
 \end{lstlisting}
 
-Pokazać zawartość innego katalogu: 
+Pokazać zawartość innego katalogu:
 
 \begin{lstlisting}[style=MyBashStyle]
 # ls -la /usr/
 \end{lstlisting}
 
-Argument \lstinline[style=MyBashStyle]{-l} służy do listowania w formacie tzw. długim, natomiast argument \lstinline[style=MyBashStyle]{-a} do listowania ukrytych plików. Sprawdzić inne parametry polecenia ls następująco:  
+Argument \lstinline[style=MyBashStyle]{-l} służy do listowania w formacie tzw. długim, natomiast argument \lstinline[style=MyBashStyle]{-a} do listowania ukrytych plików. Sprawdzić inne parametry polecenia ls następująco:
 
 \begin{lstlisting}[style=MyBashStyle]
 # use ls
 \end{lstlisting}
 \end{example}
 
-\begin{example}[Obejrzenie zawartości pliku]\label{ex:obejrzenie} 
+\begin{example}[Obejrzenie zawartości pliku]\label{ex:obejrzenie}
 
 Oprócz listowania zawartości katalogów, istotna jest możliwość oglądania zawartości plików (np. skryptowych):
 
@@ -369,15 +369,15 @@ Oprócz listowania zawartości katalogów, istotna jest możliwość oglądania 
 \end{example}
 
 
-\begin{example}[Wyświetlanie liczby wierszy, słów i~bajtów zawartych w pliku]\label{ex:wys} 
+\begin{example}[Wyświetlanie liczby wierszy, słów i~bajtów zawartych w pliku]\label{ex:wys}
 
-Aby uzyskać informację o całkowitej liczbie linii, słów i~znaków, zawartych w pliku można użyć polecenie \lstinline[style=MyBashStyle]{wc} (ang. word count): 
+Aby uzyskać informację o całkowitej liczbie linii, słów i~znaków, zawartych w pliku można użyć polecenie \lstinline[style=MyBashStyle]{wc} (ang. word count):
 
 \begin{lstlisting}[style=MyBashStyle]
 # wc /skrypt
 \end{lstlisting}
 
-Dostępne argumenty polecenia przedstawiono w~tabeli \ref{tab:opcjeWC}. 
+Dostępne argumenty polecenia przedstawiono w~tabeli \ref{tab:opcjeWC}.
 
 
 \begin{table}[h!]
@@ -390,7 +390,7 @@ Dostępne argumenty polecenia przedstawiono w~tabeli \ref{tab:opcjeWC}.
 \hline \rowcolor{gray}
 \textbf{Argumenty} & \textbf{Opis} \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{-l}} & Oblicza liczbę linii \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{-w}} & Oblicza liczbę słów \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{-w}} & Oblicza liczbę słów \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{-m}} & Oblicza liczbę znaków \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{-c}} & Oblicza liczbę znaków  \\ \hline
 \end{tabular}
@@ -410,11 +410,11 @@ System operacyjny jest wyposażony w zestaw instrukcji, które umożliwiają por
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{pwd}} & Wyświetlenie nazwy katalogu bieżącego (ang. print working directory) \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{pwd}} & Wyświetlenie nazwy katalogu bieżącego (ang. print working directory) \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{cd}}  & Zmiana katalogu bieżącego (ang. change directory) \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{cd..}} & Przejście do katalogu nadrzędnego \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{cd /}} & Przejście do katalogu głównego \\ \hline 
-%\mbox{\lstinline[style=MyBashStyle]{cd ~}} &	Przejście do katalogu domowego \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{cd..}} & Przejście do katalogu nadrzędnego \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{cd /}} & Przejście do katalogu głównego \\ \hline
+%\mbox{\lstinline[style=MyBashStyle]{cd ~}} &	Przejście do katalogu domowego \\ \hline
 \end{tabular}
 \label{tab:poruszanie}
 \end{table}
@@ -422,18 +422,18 @@ System operacyjny jest wyposażony w zestaw instrukcji, które umożliwiają por
 
 
 
-Wprowadzić następujące komendy w~wierszu poleceń. 
+Wprowadzić następujące komendy w~wierszu poleceń.
 
 \begin{lstlisting}[style=MyBashStyle]
-# pwd			# Nazwa katalogu biezacego (dla naszego przypadku) 
-/ 
+# pwd			# Nazwa katalogu biezacego (dla naszego przypadku)
+/
 # cd /usr			# Przejscie do katalogu uzytkownika
-# pwd 
-/usr 
-# cd ..			# Przejscie do katalogu nadrzednego 
+# pwd
+/usr
+# cd ..			# Przejscie do katalogu nadrzednego
 # pwd
 /
-# ls .			# Wylistowanie nazw plikow w biezacym katalogu 
+# ls .			# Wylistowanie nazw plikow w biezacym katalogu
 ...
 # ls -l 			# Wylistowanie ze szczegolami
 \end{lstlisting}
@@ -452,19 +452,19 @@ Pliki w systemie plików można tworzyć i usuwać. Katalogi można również mo
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{touch plik}} & Utworzenie pustego pliku lub zmiana daty modyfikacji istniejącego \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{touch plik}} & Utworzenie pustego pliku lub zmiana daty modyfikacji istniejącego \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{cd}}  & Zmiana katalogu bieżącego (ang. change directory) \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{rm [-Rfi] plik}} & Usunięcie pliku: \mbox{\lstinline[style=MyBashStyle]{-i}} - żądanie potwierdzenie; \mbox{\lstinline[style=MyBashStyle]{-f}} - bezwarunkowe kasowanie pliku; \mbox{\lstinline[style=MyBashStyle]{-R}} - kasowanie zawartości katalogu z~podkatalogami  \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{mkdir katalog}} & Utworzenie katalogu o nazwie \mbox{\lstinline[style=MyBashStyle]{katalog}} \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{rmdir katalog}} &	Usunięcie katalogu o nazwie \mbox{\lstinline[style=MyBashStyle]{katalog}}  \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{rm [-Rfi] plik}} & Usunięcie pliku: \mbox{\lstinline[style=MyBashStyle]{-i}} - żądanie potwierdzenie; \mbox{\lstinline[style=MyBashStyle]{-f}} - bezwarunkowe kasowanie pliku; \mbox{\lstinline[style=MyBashStyle]{-R}} - kasowanie zawartości katalogu z~podkatalogami  \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{mkdir katalog}} & Utworzenie katalogu o nazwie \mbox{\lstinline[style=MyBashStyle]{katalog}} \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{rmdir katalog}} &	Usunięcie katalogu o nazwie \mbox{\lstinline[style=MyBashStyle]{katalog}}  \\ \hline
 \end{tabular}
 \label{tab:tworziusun}
 \end{table}
 
-Sprawdzić działanie następujących komend: 
+Sprawdzić działanie następujących komend:
 
 \begin{lstlisting}[style=MyBashStyle]
-# pwd			# Nazwa katalogu biezacego 
+# pwd			# Nazwa katalogu biezacego
 /
 # cd /home			# Przejdz do katalogu home
 # mkdir katalog			# Utworzenie katalogu
@@ -474,9 +474,9 @@ Sprawdzić działanie następujących komend:
 # touch plik2			# Utworzenie pustego pliku
 # rm plik2			# Usuniecie pustego pliku
 # rmdir podkatalog			# Usuniecie podkatalogu
-# cd .. 			# Wyjscie do katalogu nadrzednego 
+# cd .. 			# Wyjscie do katalogu nadrzednego
 # rmdir katalog 			# Proba usuniecia podkatalogu
-katalog/: Directory not empty 
+katalog/: Directory not empty
 # rm -Ri katalog			# Usuniecie rekursywne z potwierdzeniem
 rm: remove katalog/plik? (y/N) y
 rm: remove directory katalog? (y/N) y
@@ -487,7 +487,7 @@ rm: remove directory katalog? (y/N) y
 
 \begin{example}[Przenoszenie i~kopiowanie katalogów i~plików]
 
-Pliki i~katalogi można kopiować i~przenosić. Zestawienie najważniejszych komend przedstawiono w~tabeli~\ref{tab:przenos}. 
+Pliki i~katalogi można kopiować i~przenosić. Zestawienie najważniejszych komend przedstawiono w~tabeli~\ref{tab:przenos}.
 
 \begin{table}[h!]
 \centering
@@ -498,19 +498,19 @@ Pliki i~katalogi można kopiować i~przenosić. Zestawienie najważniejszych kom
 \begin{tabular}{ |p{0.23\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[deletekeywords={if}]{mv [-if] zrodlo cel}} & Przenoszenie lub zmiana nazwy plików: \mbox{\lstinline[style=MyBashStyle]{-i}} - żądanie potwierdzenia, gdy plik docelowy może być nadpisany; \mbox{\lstinline[style=MyBashStyle]{-f}} - bezwarunkowe skopiowanie pliku \\ \hline 
+\mbox{\lstinline[deletekeywords={if}]{mv [-if] zrodlo cel}} & Przenoszenie lub zmiana nazwy plików: \mbox{\lstinline[style=MyBashStyle]{-i}} - żądanie potwierdzenia, gdy plik docelowy może być nadpisany; \mbox{\lstinline[style=MyBashStyle]{-f}} - bezwarunkowe skopiowanie pliku \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{cp [-ifR] zrodlo cel}}  & Kopiowanie plików: \mbox{\lstinline[style=MyBashStyle]{-i}} - żądanie potwierdzenia, gdy plik docelowy może być nadpisany; \mbox{\lstinline[style=MyBashStyle]{-f}} - bezwarunkowe skopiowanie pliku; \mbox{\lstinline[style=MyBashStyle]{-R}} - kopiowanie zawartości katalogu z podkatalogami \\ \hline
 \end{tabular}
 \label{tab:przenos}
 \end{table}
 
-Sprawdzić działanie następujących komend: 
+Sprawdzić działanie następujących komend:
 
 \begin{lstlisting}[style=MyBashStyle]
 # pwd
-/home 
+/home
 # mkdir katalog
-# cd katalog 
+# cd katalog
 # touch pliczek
 # cd ..
 # mv ./katalog/pliczek .			# Przeniesienie do katalogu biezacego
@@ -546,10 +546,10 @@ Aby obejrzeć właściciela pliku oraz atrybuty wykonajmy następujące poleceni
 -rw-rw-rw- 1 root root 0 Oct 22 11:41 /home/plik.dat
 \end{lstlisting}
 
-W~terminalu wyświetlone zostały w~kolejności atrybuty dla właściciela (\lstinline[style=MyBashStyle]{rw-}), grupy (\lstinline[style=MyBashStyle]{rw-}) oraz innych użytkowników (\lstinline[style=MyBashStyle]{rw-}); wskazano także liczbę dowiązań \lstinline[style=MyBashStyle]{1}, nazwę właściciela pliku \lstinline[style=MyBashStyle]{root}, nazwę grupy \lstinline[style=MyBashStyle]{root}, rozmiar pliku \lstinline[style=MyBashStyle]{0}, datę utworzenia \lstinline[style=MyBashStyle]{Oct 22 11:41} oraz nazwę pliku \lstinline[style=MyBashStyle]{home/plik.dat}. 
+W~terminalu wyświetlone zostały w~kolejności atrybuty dla właściciela (\lstinline[style=MyBashStyle]{rw-}), grupy (\lstinline[style=MyBashStyle]{rw-}) oraz innych użytkowników (\lstinline[style=MyBashStyle]{rw-}); wskazano także liczbę dowiązań \lstinline[style=MyBashStyle]{1}, nazwę właściciela pliku \lstinline[style=MyBashStyle]{root}, nazwę grupy \lstinline[style=MyBashStyle]{root}, rozmiar pliku \lstinline[style=MyBashStyle]{0}, datę utworzenia \lstinline[style=MyBashStyle]{Oct 22 11:41} oraz nazwę pliku \lstinline[style=MyBashStyle]{home/plik.dat}.
 
 
-Atrybuty plików oraz ich właścicieli można zmieniać - zobacz tabela \ref{tab:zmien}. 
+Atrybuty plików oraz ich właścicieli można zmieniać - zobacz tabela \ref{tab:zmien}.
 
 \begin{table}[h!]
 \centering
@@ -560,8 +560,8 @@ Atrybuty plików oraz ich właścicieli można zmieniać - zobacz tabela \ref{ta
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{chmod}} & Zmiana atrybutów dla pliku, bądź katalogu \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{chown}} & Zmiana właściciela (lub opcjonalnie grupy) dla pliku, bądź katalogu \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{chmod}} & Zmiana atrybutów dla pliku, bądź katalogu \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{chown}} & Zmiana właściciela (lub opcjonalnie grupy) dla pliku, bądź katalogu \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{chgrp}}  & Zmiana grupy dla pliku, bądź katalogu \\ \hline
 \end{tabular}
 \label{tab:zmien}
@@ -584,14 +584,14 @@ gdzie \lstinline[style=MyBashStyle]{wlasciciel} jest jednym ze skrótów literow
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{+}} & Dodanie praw dostępu \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{-}} & Usunięcie praw dostępu \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{+}} & Dodanie praw dostępu \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{-}} & Usunięcie praw dostępu \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{=}}  & Jawne ustawienie praw dostępu \\ \hline
 \end{tabular}
 \label{tab:zarzadzanie}
 \end{table}
 
-Wykonać następującą serię poleceń: 
+Wykonać następującą serię poleceń:
 
 \begin{lstlisting}[style=MyBashStyle]
 # pwd
@@ -602,10 +602,10 @@ drwxrwxrwx   2 root      root           1024 Oct 22 11:43 katalog
 drwxrwxrwx   2 root      root           1024 Oct 22 11:43 katalog2
 -rw-rw-rw-   1 root      root              0 Oct 22 11:41 plik.dat
 # chmod a+rwx plik.dat			# Dodanie praw dostepu dla wszystkich
-# ls -l plik.dat 
+# ls -l plik.dat
 -rwxrwxrwx   1 root      root              0 Oct 22 11:41 plik.dat
 # chmod go-wx plik.dat			# Odebranie praw dostepu
-# ls -l plik.dat 
+# ls -l plik.dat
 -rwxr--rw--   1 root      root              0 Oct 22 11:41 plik.dat
 \end{lstlisting}
 
@@ -638,7 +638,7 @@ Procesy tła możemy uruchamiać poprzez dodanie znaku (\lstinline[style=MyBashS
 [1] + Done	ls
 \end{lstlisting}
 
-Po uruchomieniu programu, na ekranie pojawia się nr zadania \lstinline[style=MyBashStyle]{[1]} oraz numer identyfikujący proces PID (ang. process identification number). Po wciśnięciu klawisza Enter, program kończy zadanie, a~powłoka wyświetla znak zachęty. 
+Po uruchomieniu programu, na ekranie pojawia się nr zadania \lstinline[style=MyBashStyle]{[1]} oraz numer identyfikujący proces PID (ang. process identification number). Po wciśnięciu klawisza Enter, program kończy zadanie, a~powłoka wyświetla znak zachęty.
 Proces uruchomiony w pierwszym planie można przesunąć do tła (bez podłączenia do klawiatury) i na odwrót. Podstawowe komendy, służące kontrolowaniu zadań zestawiono w~tabeli \ref{tab:kontrola2}.
 
 \begin{table}[h!]
@@ -650,8 +650,8 @@ Proces uruchomiony w pierwszym planie można przesunąć do tła (bez podłącze
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{polecenie &}} & Uruchomienie zadania w tle \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{jobs [-l]}} & Listowanie zadań pracujących w tle \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{polecenie &}} & Uruchomienie zadania w tle \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{jobs [-l]}} & Listowanie zadań pracujących w tle \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{Ctrl+Z}}  & Wstrzymanie bieżącego zadania \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{Ctrl+C}}  & Zakończenie bieżącego zadania \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{fg [PID]}}  & Przeniesienie procesu działającego w tle na pierwszy plan na podstawie numeru procesu\\ \hline
@@ -683,11 +683,11 @@ Memory: 0 total, 204M avail, page size 4K
         1     9  10 Rcv       0:00:00   0.00% kernel
 ...
 
-             Min        Max       Average 
-CPU idle:     99%        99%        99% 
-Mem Avail:   204MB      204MB      204MB  
-Processes:    22         22         22    
-Threads:      64         64         64    
+             Min        Max       Average
+CPU idle:     99%        99%        99%
+Mem Avail:   204MB      204MB      204MB
+Processes:    22         22         22
+Threads:      64         64         64
 
 [1] + Stopped top 			# Po wcisnieciu Ctrl+Z
 # jobs -l
@@ -700,22 +700,22 @@ Memory: 0 total, 204M avail, page size 4K
       PID   TID PRI STATE    HH:MM:SS    CPU  COMMAND
   1040402     1  10 Rply      0:00:00   0.01% top
      4110     2  21 Rcv       0:00:01   0.00% io-pkt-v4-hc
- ...    
+ ...
 
 [1] + Stopped top 			# Po wcisnieciu Ctrl+Z
-# bg %1 			# Przeniesienie do tla     
-# jobs -l 
+# bg %1 			# Przeniesienie do tla
+# jobs -l
 [1] + 1040402 Running top
 # fg %1 			# Przeniesienie do pierwszego planu
 # 			# Po wcisnieciu Ctrl+C
 \end{lstlisting}
 
-\end{example} 
+\end{example}
 
 
 \begin{example}[Procesy tła i~procesy pierwszoplanowe]
 
-Uruchamiając i testując programy często zachodzi potrzeba zbierania informacji o stanie systemu. Statystyki dostarczają specjalizowane programy, których przegląd umieszczono w tabeli~\ref{tab:statystyki}. 
+Uruchamiając i testując programy często zachodzi potrzeba zbierania informacji o stanie systemu. Statystyki dostarczają specjalizowane programy, których przegląd umieszczono w tabeli~\ref{tab:statystyki}.
 
 \begin{table}[h!]
 \centering
@@ -726,8 +726,8 @@ Uruchamiając i testując programy często zachodzi potrzeba zbierania informacj
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{ps [-f]}} & Wyświetla listę procesów i ich status \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{top}} & Wyświetla statystyki wydajnościowe sytemu \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{ps [-f]}} & Wyświetla listę procesów i ich status \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{top}} & Wyświetla statystyki wydajnościowe sytemu \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{pidin}}  & Wyświetla statystyki systemowe \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{hogs}}  & Wyświetla listę procesów, wg użycia procesora \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{shomem [-S]}}  & Wyświetla informacje nt. użytej pamięci \\ \hline
@@ -735,8 +735,8 @@ Uruchamiając i testując programy często zachodzi potrzeba zbierania informacj
 \label{tab:statystyki}
 \end{table}
 
-Obejrzeć tablicę procesów wywołując następujące polecenie: 
-\begin{lstlisting}[style=MyBashStyle,deletekeywords={ps}] 
+Obejrzeć tablicę procesów wywołując następujące polecenie:
+\begin{lstlisting}[style=MyBashStyle,deletekeywords={ps}]
 # ps -f
   UID        PID       PPID  C STIME TTY          TIME CMD
     0      45068          1  - Oct22 ?        00:00:00 inetd
@@ -758,8 +758,8 @@ Znaczenie kolumn po wydaniu polecenie \lstinline[style=MyBashStyle]{ps -f} opisa
 \begin{tabular}{ |p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Oznaczenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{UID}} & Numer identyfikacyjny użytkownika, który uruchomił proces \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{PID}} & Numer identyfikacyjny procesu (potomnego) \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{UID}} & Numer identyfikacyjny użytkownika, który uruchomił proces \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{PID}} & Numer identyfikacyjny procesu (potomnego) \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{PPID}}  & Numer identyfikacyjny procesu nadrzędnego (macierzystego) \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{C}}  & Wykorzystanie procesora \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{STIME}}  & Czas uruchomienia procesu \\ \hline
@@ -770,22 +770,22 @@ Znaczenie kolumn po wydaniu polecenie \lstinline[style=MyBashStyle]{ps -f} opisa
 \label{tab:opispol}
 \end{table}
 
-Wylistować zawartość statystyk systemowych za pomocą polecenia \lstinline[style=MyBashStyle]{pidin}, \lstinline[style=MyBashStyle]{hogs} oraz \lstinline[style=MyBashStyle]{showmem}. 
+Wylistować zawartość statystyk systemowych za pomocą polecenia \lstinline[style=MyBashStyle]{pidin}, \lstinline[style=MyBashStyle]{hogs} oraz \lstinline[style=MyBashStyle]{showmem}.
 
-\begin{lstlisting}[style=MyBashStyle,deletekeywords={ps}] 
+\begin{lstlisting}[style=MyBashStyle,deletekeywords={ps}]
 # pidin | more
-... 
+...
 # hogs
 ...
 # showmem -S
 ...
 \end{lstlisting}
 
-\end{example} 
+\end{example}
 
 
-\begin{example}[Usuwanie procesów] Ważną grupą poleceń są komendy umożliwiające przerwanie działania procesów, bądź przesłanie im sygnału. Ich zestawienie przedstawiono w~tabeli \ref{tab:usuwanie}. 
- 
+\begin{example}[Usuwanie procesów] Ważną grupą poleceń są komendy umożliwiające przerwanie działania procesów, bądź przesłanie im sygnału. Ich zestawienie przedstawiono w~tabeli \ref{tab:usuwanie}.
+
 \begin{table}[h!]
 \centering
 \caption{Usuwanie procesów}
@@ -795,14 +795,14 @@ Wylistować zawartość statystyk systemowych za pomocą polecenia \lstinline[st
 \begin{tabular}{ |p{0.45\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{kill [-nazwa_sygnalu| -nr_sygnalu] PID}} & Przesłanie sygnału do procesu o nr \mbox{\lstinline[style=MyBashStyle]{PID}} \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{slay [-nazwa_sygnalu| -nr_sygnalu] pro}} & Przesłanie sygnału do procesu o~nazwie \mbox{\lstinline[style=MyBashStyle]{pro}} \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{kill [-nazwa_sygnalu| -nr_sygnalu] PID}} & Przesłanie sygnału do procesu o nr \mbox{\lstinline[style=MyBashStyle]{PID}} \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{slay [-nazwa_sygnalu| -nr_sygnalu] pro}} & Przesłanie sygnału do procesu o~nazwie \mbox{\lstinline[style=MyBashStyle]{pro}} \\ \hline
 \end{tabular}
 \label{tab:usuwanie}
-\end{table} 
- 
-Na działający proces można oddziaływać wysyłając do niego sygnały. Sygnały zostały stworzone z~myślą o sytuacjach wyjątkowych, np. awariach systemu, czy błędach w pracy programu. Mechanizm sygnałów - ideą przypomina mechanizm przerwań. Proces po otrzymaniu sygnału może wykonać pewną procedurę, lub pozostawić obsługę sygnału systemowi. Nazwy sygnałów i ich liczbowe odpowiedniki możemy podejrzeć poleceniem (\lstinline[style=MyBashStyle]{kill -l}). Trzy często używane sygnały przedstawiono w tabeli~\ref{tab:wybranesygnaly}. 
- 
+\end{table}
+
+Na działający proces można oddziaływać wysyłając do niego sygnały. Sygnały zostały stworzone z~myślą o sytuacjach wyjątkowych, np. awariach systemu, czy błędach w pracy programu. Mechanizm sygnałów - ideą przypomina mechanizm przerwań. Proces po otrzymaniu sygnału może wykonać pewną procedurę, lub pozostawić obsługę sygnału systemowi. Nazwy sygnałów i ich liczbowe odpowiedniki możemy podejrzeć poleceniem (\lstinline[style=MyBashStyle]{kill -l}). Trzy często używane sygnały przedstawiono w tabeli~\ref{tab:wybranesygnaly}.
+
 \begin{table}[h!]
 \centering
 \caption{Usuwanie procesów}
@@ -812,24 +812,24 @@ Na działający proces można oddziaływać wysyłając do niego sygnały. Sygna
 \begin{tabular}{ |p{0.1\textwidth}|p{0.1\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Nazwa sygnału} & \textbf{Numer sygnału} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{INT}} & \mbox{\lstinline[style=MyBashStyle]{2}} &  Przerwanie z klawiatury \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{KILL}} & \mbox{\lstinline[style=MyBashStyle]{9}} &  Żądanie natychmiastowego zakończenia procesu \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{TERM}} & \mbox{\lstinline[style=MyBashStyle]{15}} &  Żądanie normalnego zakończenia procesu \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{INT}} & \mbox{\lstinline[style=MyBashStyle]{2}} &  Przerwanie z klawiatury \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{KILL}} & \mbox{\lstinline[style=MyBashStyle]{9}} &  Żądanie natychmiastowego zakończenia procesu \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{TERM}} & \mbox{\lstinline[style=MyBashStyle]{15}} &  Żądanie normalnego zakończenia procesu \\ \hline
 \end{tabular}
 \label{tab:wybranesygnaly}
 \end{table}
- 
- 
+
+
 W poniższym przykładzie powołuje się do życia proces \lstinline[style=MyBashStyle]{cat}, a~następnie przesyła się do niego sygnał \lstinline[style=MyBashStyle]{KILL}. Przykład ten wymaga użycia dwóch konsol. Przełączenia pomiędzy konsolami dokonujemy kombinacją klawiszy \lstinline[style=MyBashStyle]{Ctrl+Alt+1} oraz \lstinline[style=MyBashStyle]{Ctrl+Alt+2}.
- 
-\begin{lstlisting}[style=MyBashStyle,caption=Konsola 1] 
+
+\begin{lstlisting}[style=MyBashStyle,caption=Konsola 1]
 # cat
 Terminated
-# 
-\end{lstlisting} 
+#
+\end{lstlisting}
 
-\begin{lstlisting}[style=MyBashStyle,caption=Konsola 2,deletekeywords={cat,ps}] 
-# ps -f 
+\begin{lstlisting}[style=MyBashStyle,caption=Konsola 2,deletekeywords={cat,ps}]
+# ps -f
   UID        PID       PPID  C STIME TTY          TIME CMD
     0      45068          1  - Oct23 ?        00:00:00 inetd
     0       4109          1  - Oct23 ?        00:00:00 sh
@@ -841,13 +841,13 @@ Terminated
 # kill -TERM 81943
 \end{lstlisting}
 
-\end{example} 
+\end{example}
 
 
 
 \subsection{Zmienne}
 
-Zmienne środowiskowe tworzą tzw. środowisko, w którym wykonują się polecenia. Każde polecenie uruchomione w systemie działa w pewnym ,,otoczeniu'' zmiennych środowiskowych. Zmienne pozwalają na przechowywanie wartości, bądź zdefiniowanych przez użytkownika, bądź danych systemowych (zmienne środowiskowe). Powłoka umożliwia tworzenie zmiennych, przypisywanie wartości i modyfikacje oraz ich usuwanie. Podstawowe operacje na zmiennych przedstawiono w tabeli~\ref{tab:operacje}. 
+Zmienne środowiskowe tworzą tzw. środowisko, w którym wykonują się polecenia. Każde polecenie uruchomione w systemie działa w pewnym ,,otoczeniu'' zmiennych środowiskowych. Zmienne pozwalają na przechowywanie wartości, bądź zdefiniowanych przez użytkownika, bądź danych systemowych (zmienne środowiskowe). Powłoka umożliwia tworzenie zmiennych, przypisywanie wartości i modyfikacje oraz ich usuwanie. Podstawowe operacje na zmiennych przedstawiono w tabeli~\ref{tab:operacje}.
 
 \begin{table}[h!]
 \centering
@@ -858,8 +858,8 @@ Zmienne środowiskowe tworzą tzw. środowisko, w którym wykonują się polecen
 \begin{tabular}{ |p{0.3\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{ZMIENNA=wartosc}} & Przypisanie wartości do \mbox{\lstinline[style=MyBashStyle]{ZMIENNA}}. Jeśli zmienna nie istnieje, to jest tworzona \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{$ZMIENNA}} & Użycie wartości zmiennej (substytucja) \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{ZMIENNA=wartosc}} & Przypisanie wartości do \mbox{\lstinline[style=MyBashStyle]{ZMIENNA}}. Jeśli zmienna nie istnieje, to jest tworzona \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{$ZMIENNA}} & Użycie wartości zmiennej (substytucja) \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{set}}  & Umożliwia m.in. wyświetlenie wszystkich zmiennych \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{unset ZMIENNA}}  & Usuwa zmienną \mbox{\lstinline[style=MyBashStyle]{ZMIENNA}} z pamięci (ze środowiska) \\ \hline
 \mbox{\lstinline[deletekeywords={export}]{export ZMIENNA[=wartosc]}}  & Powoduje, że \mbox{\lstinline[style=MyBashStyle]{ZMIENNA}} jest przekazywana do środowiska każdego uruchamianego polecenia \\ \hline
@@ -867,9 +867,9 @@ Zmienne środowiskowe tworzą tzw. środowisko, w którym wykonują się polecen
 \label{tab:operacje}
 \end{table}
 
-\begin{example}[Podstawowe operacje na zmiennych] Należy przetestować działanie poniższych poleceń. 
+\begin{example}[Podstawowe operacje na zmiennych] Należy przetestować działanie poniższych poleceń.
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # A="foo"
 # echo $A
 foo
@@ -881,63 +881,63 @@ foo
 # echo $PATH
 /proc/boot:/bin:/usr/bin:/sbin:/usr/sbin
 #
-\end{lstlisting} 
-
- 
-\end{example} 
+\end{lstlisting}
 
 
-\begin{example}[Zmienne i~polecenia] Należy przetestować działanie poniższych poleceń. 
+\end{example}
 
-\begin{lstlisting}[style=MyBashStyle] 
+
+\begin{example}[Zmienne i~polecenia] Należy przetestować działanie poniższych poleceń.
+
+\begin{lstlisting}[style=MyBashStyle]
 # A=1 echo "Zmienna A: " $A
 Zmienna A:
 # B=2
 # echo "Zmienna B: " $B
 Zmienna B: 2
 #
-\end{lstlisting} 
+\end{lstlisting}
 
 Polecenia są wykonywane w swoim własnym środowisku. Środowisko to jest zainicjalizowane niektórymi wartościami otrzymanymi od środowiska macierzystego. Aby zmienna \lstinline[style=MyBashStyle]{A} przenosiła się do środowiska uruchamianych poleceń, należy na niej wykonać polecenie \lstinline[deletekeywords={export}]{export A}. W powyższym przykładzie wartość zmiennej \lstinline[style=MyBashStyle]{A} nie została wyświetlona, ponieważ jest ona definiowana tylko dla środowiska polecenia \lstinline[style=MyBashStyle]{echo}, a podstawienia wartości \lstinline[style=MyBashStyle]{$A} dokonuje wcześniej powłoka. Zmienna \lstinline[style=MyBashStyle]{B} natomiast jest zdefiniowana w~środowisku powłoki, zatem jej wartość \lstinline[style=MyBashStyle]{$B} jest znana w chwili wywołania \lstinline[style=MyBashStyle]{echo}.
 
-\end{example} 
+\end{example}
 
 
-\begin{example}[Wyświetlanie kodu zakończenia] 
+\begin{example}[Wyświetlanie kodu zakończenia]
 Kod zakończenia ostatnio wykonanego polecenia zapamiętywany jest w specjalnej zmiennej \lstinline[style=MyBashStyle]{$?}. Wyświetl wartość tej zmiennej po wywołaniu polecenia, które zakończyło się sukcesem oraz po zakończeniu polecenia, które nie mogło się powieść.
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # echo "dobre polecenie"
 dobre polecenie
 # echo $?
 0
 # zlepolecenie
-sh: zlepolecenie: cannot execute - No such file or directory 
+sh: zlepolecenie: cannot execute - No such file or directory
 # echo $?
 126
-\end{lstlisting} 
-\end{example} 
+\end{lstlisting}
+\end{example}
 
 
-\begin{example}[Skrypt i~zmienne środowiskowe] 
+\begin{example}[Skrypt i~zmienne środowiskowe]
 Skrypty po uruchomieniu działają w swoim własnym środowisku. Niektóre zmienne ze środowiska macierzystego (np. ze środowiska powłoki \lstinline[style=MyBashStyle]{sh}) są kopiowane do środowiska skryptu, inne nie. Poniższy przykład ilustruje oddziaływanie między skryptem a jego środowiskiem oraz środowiskiem macierzystym.
 
-Przejść do katalogu \lstinline[style=MyBashStyle]{/home} i~napisać skrypt \lstinline[style=MyBashStyle]{piszA} o~treści: 
+Przejść do katalogu \lstinline[style=MyBashStyle]{/home} i~napisać skrypt \lstinline[style=MyBashStyle]{piszA} o~treści:
 
-\begin{lstlisting}[style=MyBashStyle,deletekeywords={echo}] 
+\begin{lstlisting}[style=MyBashStyle,deletekeywords={echo}]
 echo "Zmienna A: " $A
-\end{lstlisting} 
+\end{lstlisting}
 
 W terminalu powłoki przeprowadź następujące eksperymenty:
 
-\begin{lstlisting}[style=MyBashStyle,deletekeywords={echo}] 
+\begin{lstlisting}[style=MyBashStyle,deletekeywords={echo}]
 # unset A
 # sh piszA
-Zmienna A: 
+Zmienna A:
 
 # A=10
 # sh piszA
-Zmienna A: 
+Zmienna A:
 
 # A=10 sh piszA
 Zmienna A: 10
@@ -945,13 +945,13 @@ Zmienna A: 10
 # export A=20
 # sh piszA
 Zmienna A: 20
-\end{lstlisting} 
+\end{lstlisting}
 
-\end{example} 
+\end{example}
 
 \subsection{Przetwarzanie tekstu}
 
-Powłoka zawiera specjalne skrypty, które służą do wyświetlania, modyfikacji i formatowania tekstów. Podstawowe komendy zestawiono w tabeli~\ref{tab:wyswietl}. 
+Powłoka zawiera specjalne skrypty, które służą do wyświetlania, modyfikacji i formatowania tekstów. Podstawowe komendy zestawiono w tabeli~\ref{tab:wyswietl}.
 
 \begin{table}[h!]
 \centering
@@ -962,9 +962,9 @@ Powłoka zawiera specjalne skrypty, które służą do wyświetlania, modyfikacj
 \begin{tabular}{ |p{0.3\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{cat [plik]}} & Wyświetlanie całej treści pliku (lub standardowego wejścia) \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{more}} & Wyświetlanie ze stronicowaniem \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{less}} & Wyświetlanie ze stronicowaniem \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{cat [plik]}} & Wyświetlanie całej treści pliku (lub standardowego wejścia) \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{more}} & Wyświetlanie ze stronicowaniem \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{less}} & Wyświetlanie ze stronicowaniem \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{head [-liczbalinii] [plik]}}  & Wyświetlenie kilku pierwszych wierszy tekstu \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{tail [-liczbalinii] [plik]}}  & Wyświetlenie kilku ostatnich wierszy tekstu \\ \hline
 \end{tabular}
@@ -982,16 +982,16 @@ Jednocześnie możliwe jest filtrowanie tekstu za pomocą poleceń zaprezentowan
 \begin{tabular}{ |p{0.25\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{grep wzor [plik]}} & Wyświetlanie tylko linii tekstu pasujących do wzorca \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{sort [plik]}} & Wyświetlanie posortowanej treści \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{wc [plik]}} & Zliczanie wierszy, słów, znaków, itp. \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{grep wzor [plik]}} & Wyświetlanie tylko linii tekstu pasujących do wzorca \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{sort [plik]}} & Wyświetlanie posortowanej treści \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{wc [plik]}} & Zliczanie wierszy, słów, znaków, itp. \\ \hline
 \end{tabular}
 \label{tab:filtruj}
 \end{table}
 
 \subsection{Strumienie wejściowo-wyjściowe}
 
-Uruchomiony program ma do dyspozycji trzy strumienie danych. Każdy z tych plików jest reprezentowany przez małą liczbę całkowitą, zwaną deskryptorem pliku (uchwytem do pliku) - patrz tabela~\ref{tab:strumienie}. 
+Uruchomiony program ma do dyspozycji trzy strumienie danych. Każdy z tych plików jest reprezentowany przez małą liczbę całkowitą, zwaną deskryptorem pliku (uchwytem do pliku) - patrz tabela~\ref{tab:strumienie}.
 
 \begin{table}[h!]
 \centering
@@ -1002,14 +1002,14 @@ Uruchomiony program ma do dyspozycji trzy strumienie danych. Każdy z tych plik�
 \begin{tabular}{ |p{0.15\textwidth}|p{0.15\textwidth}|p{0.4\textwidth}|}
 \hline \rowcolor{gray}
 \textbf{Strumień} & \textbf{Deskryptor} & \textbf{Opis} \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{stdin}} & \mbox{\lstinline[style=MyBashStyle]{0}} &  Standardowy strumień wejściowy  \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{stdout}} & \mbox{\lstinline[style=MyBashStyle]{1}} &  Standardowy strumień wyjściowy  \\ \hline 
-\mbox{\lstinline[style=MyBashStyle]{stderr}} & \mbox{\lstinline[style=MyBashStyle]{2}} &  Standardowy strumień dla komunikatów o~błędach  \\ \hline 
+\mbox{\lstinline[style=MyBashStyle]{stdin}} & \mbox{\lstinline[style=MyBashStyle]{0}} &  Standardowy strumień wejściowy  \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{stdout}} & \mbox{\lstinline[style=MyBashStyle]{1}} &  Standardowy strumień wyjściowy  \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{stderr}} & \mbox{\lstinline[style=MyBashStyle]{2}} &  Standardowy strumień dla komunikatów o~błędach  \\ \hline
 \end{tabular}
 \label{tab:strumienie}
 \end{table}
 
-Wiele programów działa w ten sposób, że pobierają tekst ze strumienia \lstinline[style=MyBashStyle]{stdin}, przetwarzają go wysyłając rezultat do strumienia \lstinline[style=MyBashStyle]{stdout}, a komunikaty o błędach do \lstinline[style=MyBashStyle]{stderr}, tak, jak przedstawiono to na rysunku~\ref{fig:strumienie}. Przy zwykłym uruchomieniu programu, strumień \lstinline[style=MyBashStyle]{stdin} przychodzi z klawiatury a strumienie \lstinline[style=MyBashStyle]{stdout} i \lstinline[style=MyBashStyle]{stderr} są wyświetlane w~konsoli. 
+Wiele programów działa w ten sposób, że pobierają tekst ze strumienia \lstinline[style=MyBashStyle]{stdin}, przetwarzają go wysyłając rezultat do strumienia \lstinline[style=MyBashStyle]{stdout}, a komunikaty o błędach do \lstinline[style=MyBashStyle]{stderr}, tak, jak przedstawiono to na rysunku~\ref{fig:strumienie}. Przy zwykłym uruchomieniu programu, strumień \lstinline[style=MyBashStyle]{stdin} przychodzi z klawiatury a strumienie \lstinline[style=MyBashStyle]{stdout} i \lstinline[style=MyBashStyle]{stderr} są wyświetlane w~konsoli.
 
 \begin{figure}[!h]
 \centering
@@ -1020,90 +1020,90 @@ Wiele programów działa w ten sposób, że pobierają tekst ze strumienia \lsti
 
 Źródło oraz wyjście danych można zmienić stosując tzw. przekierowanie strumieni. Jako strumień wejściowy do programu można wysłać zawartość pliku. Służy do tego zapis:
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # polecenie < plik
-\end{lstlisting} 
+\end{lstlisting}
 
- 
-\begin{example}[Przekierowanie strumienia wejściowego] 
 
-Polecenie \lstinline[style=MyBashStyle]{cat} wywołane bez żadnych argumentów kopiuje strumień \lstinline[style=MyBashStyle]{stdin} do strumienia \lstinline[style=MyBashStyle]{stdout}. Podaj zawartość pliku \lstinline[style=MyBashStyle]{piszA} jako strumień wejściowy do polecenia \lstinline[style=MyBashStyle]{cat}. 
+\begin{example}[Przekierowanie strumienia wejściowego]
 
-\begin{lstlisting}[style=MyBashStyle] 
+Polecenie \lstinline[style=MyBashStyle]{cat} wywołane bez żadnych argumentów kopiuje strumień \lstinline[style=MyBashStyle]{stdin} do strumienia \lstinline[style=MyBashStyle]{stdout}. Podaj zawartość pliku \lstinline[style=MyBashStyle]{piszA} jako strumień wejściowy do polecenia \lstinline[style=MyBashStyle]{cat}.
+
+\begin{lstlisting}[style=MyBashStyle]
 # cat < piszA
-\end{lstlisting} 
+\end{lstlisting}
 
 Strumień wyjściowy \lstinline[style=MyBashStyle]{stdout} możemy przekierować do pliku za pomocą zapisu:
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # cat > mojplik
 pierwszy wiersz
 drugi wiersz
-trzeci wiersz 
+trzeci wiersz
 #                          # Ctrl+C
 # cat mojplik
-\end{lstlisting} 
+\end{lstlisting}
 
-W ten sposób wyjście z programu zostanie zapisane do pliku \lstinline[style=MyBashStyle]{plik}. Można również sprawić, aby wyjście zostało dopisane do pliku: 
+W ten sposób wyjście z programu zostanie zapisane do pliku \lstinline[style=MyBashStyle]{plik}. Można również sprawić, aby wyjście zostało dopisane do pliku:
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # cat >> mojplik
 czwarty wiersz
 piaty wiersz
 #                          # Ctrl+C
 # cat mojplik
-\end{lstlisting} 
-\end{example} 
+\end{lstlisting}
+\end{example}
 
 
-\begin{example}[Przekierowanie strumienia wyjściowego] 
+\begin{example}[Przekierowanie strumienia wyjściowego]
 
-Wylistuj zawartość bieżącego katalogu i~przekieruj listing do pliku \lstinline[style=MyBashStyle]{mojplik2}. Wyświetl zawartość pliku \lstinline[style=MyBashStyle]{mojplik2}. 
+Wylistuj zawartość bieżącego katalogu i~przekieruj listing do pliku \lstinline[style=MyBashStyle]{mojplik2}. Wyświetl zawartość pliku \lstinline[style=MyBashStyle]{mojplik2}.
 
- 
-\begin{lstlisting}[style=MyBashStyle] 
+
+\begin{lstlisting}[style=MyBashStyle]
 # ls -la > mojplik2
 # cat mojplik2
 \end{lstlisting}
 
-Wyjście \lstinline[style=MyBashStyle]{stderr} można przekierować do pliku w następujący sposób: 
+Wyjście \lstinline[style=MyBashStyle]{stderr} można przekierować do pliku w następujący sposób:
 
-\begin{lstlisting}[style=MyBashStyle] 
-# polecenie 2> plikzbledem 
+\begin{lstlisting}[style=MyBashStyle]
+# polecenie 2> plikzbledem
 # cat plikzbledem
 \end{lstlisting}
 
-lub 
+lub
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # polecenie 2>> plikzbledem
 # cat plikzbledem
 \end{lstlisting}
-\end{example} 
+\end{example}
 
-\begin{example}[Przekierowanie strumienia stderr] 
+\begin{example}[Przekierowanie strumienia stderr]
 
 Próba skopiowania nieistniejącego pliku spowoduje wyświetlenie komunikatu o błędzie. Przekieruj ten komunikat do pliku \lstinline[style=MyBashStyle]{plikzbledem2} po czym wyświetl zawartość pliku
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # cp pliknieist . 2> plikzbledem2
 # cat plikzbledem2
 \end{lstlisting}
-\end{example} 
+\end{example}
 
-\begin{example}[Jednoczesne przekierowanie strumienia stdin i stdout] 
+\begin{example}[Jednoczesne przekierowanie strumienia stdin i stdout]
 Podaj zawartość pliku \lstinline[style=MyBashStyle]{piszA} na wejście polecenia \lstinline[style=MyBashStyle]{cat} a wyjście przekieruj do pliku wyjscie. Wyświetl zawartość pliku \lstinline[style=MyBashStyle]{wyjscie}.
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # cat < piszA > wyjscie
 # cat wyjscie
 \end{lstlisting}
-\end{example} 
+\end{example}
 
-\begin{example}[Potoki i~filtrowanie wyników] 
+\begin{example}[Potoki i~filtrowanie wyników]
 Polecenia można łączyć w potoki (ang. pipes). Dokonuje się tego poprzez zapis:
- 
-\begin{lstlisting}[style=MyBashStyle] 
+
+\begin{lstlisting}[style=MyBashStyle]
 # polecenie1 | polecenie 2 | ...
 \end{lstlisting}
 
@@ -1118,37 +1118,37 @@ Wyjście \lstinline[style=MyBashStyle]{stdout} programu1 jest podawane na wejśc
 
 Polecenie \lstinline[style=MyBashStyle]{grep} filtruje przychodzący tekst przepuszczając tylko linie tekstu pasujące do wzorca. Należy "przepompować" zawartość pliku \lstinline[style=MyBashStyle]{piszA} poleceniem \lstinline[style=MyBashStyle]{cat} do polecenia \lstinline[style=MyBashStyle]{grep}, aby wyszukać linie zawierające literę \lstinline[style=MyBashStyle]{A}.
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # cat piszA | grep 'A'
 \end{lstlisting}
 
-\end{example} 
+\end{example}
 
-\begin{example}[Sortowanie i obcinanie wyników] 
+\begin{example}[Sortowanie i obcinanie wyników]
 
-Wyświetl listę pięciu największych plików w bieżącym katalogu: 
+Wyświetl listę pięciu największych plików w bieżącym katalogu:
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # ls -s | sort -n | tail -5
 \end{lstlisting}
-\end{example} 
+\end{example}
 
-\begin{example}[Prosta sekwencja poleceń] 
+\begin{example}[Prosta sekwencja poleceń]
 
-Polecenia można grupować w tzw. sekwencje. Służą do tego operatory \lstinline[style=MyBashStyle]{;}, \lstinline[style=MyBashStyle]{&&} i~\lstinline[style=MyBashStyle]{||}. Polecenia połączone operatorem \lstinline[style=MyBashStyle]{;} wykonują się jedno po drugim bezwarunkowo. 
+Polecenia można grupować w tzw. sekwencje. Służą do tego operatory \lstinline[style=MyBashStyle]{;}, \lstinline[style=MyBashStyle]{&&} i~\lstinline[style=MyBashStyle]{||}. Polecenia połączone operatorem \lstinline[style=MyBashStyle]{;} wykonują się jedno po drugim bezwarunkowo.
 
 W jednej linii zdefiniuj zmienną o nazwie \lstinline[style=MyBashStyle]{FOO} i~wyświetl jej zawartość.
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # FOO='To jest zmienna FOO';echo $FOO
 \end{lstlisting}
 
 \end{example}
 
-\begin{example}[Sekwencja warunkowa - koniunkcja] 
+\begin{example}[Sekwencja warunkowa - koniunkcja]
 Operator \lstinline[style=MyBashStyle]{&&} umożliwia wykonanie następnego polecenia w sekwencji tylko, jeśli poprzednie wykonało się pomyślnie (kod wykonania \lstinline[style=MyBashStyle]{=0}). Polecenie \lstinline[style=MyBashStyle]{grep} zwraca \lstinline[style=MyBashStyle]{0} (sukces), jeśli poszukiwany wzór występuje w tekście. W przeciwnym przypadku zwraca wartość niezerową (błąd). Przeszukać zawartość pliku \lstinline[style=MyBashStyle]{piszA} w poszukiwaniu wzorca \lstinline[style=MyBashStyle]{A} i wyświetlić napis "Znaleziono", jeśli wzorzec wystąpił. Wykonać podobny zabieg dla wzorca \lstinline[style=MyBashStyle]{kawa}.
 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{lstlisting}[style=MyBashStyle]
 # cat piszA | grep 'A' && echo "Znaleziono"
 # echo $?
 0
@@ -1158,9 +1158,9 @@ Operator \lstinline[style=MyBashStyle]{&&} umożliwia wykonanie następnego pole
 \end{lstlisting}
 \end{example}
 
-\begin{example}[Sekwencja warunkowa - alternatywa] 
-Powtórzyć poprzedni przykład używając operatora \lstinline[style=MyBashStyle]{||}, zamiast \lstinline[style=MyBashStyle]{&&}. 
-\begin{lstlisting}[style=MyBashStyle] 
+\begin{example}[Sekwencja warunkowa - alternatywa]
+Powtórzyć poprzedni przykład używając operatora \lstinline[style=MyBashStyle]{||}, zamiast \lstinline[style=MyBashStyle]{&&}.
+\begin{lstlisting}[style=MyBashStyle]
 # cat piszA | grep 'A' || echo "Znaleziono"
 # echo $?
 0
@@ -1170,10 +1170,10 @@ Powtórzyć poprzedni przykład używając operatora \lstinline[style=MyBashStyl
 \end{lstlisting}
 \end{example}
 
-\subsection{Ćwiczenia} 
+\subsection{Ćwiczenia}
 
 \begin{myenumerate}
-\item W systemie pomocy znajdź opis programu do archiwizacji danych tar. Spakować wszystkie pliki znajdujące się w katalogu bieżącym (tj. \lstinline[style=MyBashStyle]{/home}) do pojedynczego archiwum o nazwie \lstinline[style=MyBashStyle]{programy.tar} (opcje \lstinline[style=MyBashStyle]{-cvf}). Utworzyć w katalogu domowym, katalog o nazwie \lstinline[style=MyBashStyle]{Dokumenty}. Skopiować archiwum do katalogu \lstinline[style=MyBashStyle]{/home/Dokumenty} i~tam go rozpakować (opcje \lstinline[style=MyBashStyle]{-xvf}). 
+\item W systemie pomocy znajdź opis programu do archiwizacji danych tar. Spakować wszystkie pliki znajdujące się w katalogu bieżącym (tj. \lstinline[style=MyBashStyle]{/home}) do pojedynczego archiwum o nazwie \lstinline[style=MyBashStyle]{programy.tar} (opcje \lstinline[style=MyBashStyle]{-cvf}). Utworzyć w katalogu domowym, katalog o nazwie \lstinline[style=MyBashStyle]{Dokumenty}. Skopiować archiwum do katalogu \lstinline[style=MyBashStyle]{/home/Dokumenty} i~tam go rozpakować (opcje \lstinline[style=MyBashStyle]{-xvf}).
 \end{myenumerate}
 
-\cleardoublepage 
+\cleardoublepage
