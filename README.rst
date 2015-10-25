@@ -5,8 +5,8 @@ ZTMiR-TeXFactory
    :target: https://travis-ci.org/ztmir/ztmir-texfactory
    :alt: Travis CI
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/vmu22j1584ojt7c2/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/ztmir/ztmir-texfactory/branch/master
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/0is3qa6oua0px8p2/branch/master?svg=true
+   :target: https://ci.appveyor.com/project/ptomulik/ztmir-texfactory-8g067/branch/master
    :alt: Appveyor CI
 
 +---------------+--------------+
