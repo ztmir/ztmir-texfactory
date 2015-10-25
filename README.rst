@@ -1,7 +1,7 @@
 ZTMiR-TeXFactory
 ================
 
-.. |travis| image:: https://travis-ci.org/ztmir/ztmir-texfactory.svg?branch=devel
+.. |travis| image:: https://travis-ci.org/ztmir/ztmir-texfactory.svg?branch=master
    :target: https://travis-ci.org/ztmir/ztmir-texfactory
    :alt: Travis CI
 
