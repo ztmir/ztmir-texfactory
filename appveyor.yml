@@ -1,0 +1,30 @@
+environment:
+
+  matrix:
+    - PYTHON: "C:\\Python27"
+
+install:
+
+  - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - easy_install scons
+  - python bin\downloads.py
+  - python bin\install-tex.py
+  - SET "PATH=%USERPROFILE%\\TeXLive2015\\bin\\win32;%PATH%"
+
+# Sorry, but our cache would exceed 500MB, and appveyor treats caching
+# failures as errors. At some point, however, it would be beneficial to have
+# TeXLive cached.
+#cache:
+    #- '%USERPROFILE%\TexLive2015'
+
+before_build:
+
+  - echo %PATH%
+  - python --version
+  - scons --version
+
+build_script:
+  - scons
+
+test_script:
+  - echo "no tests yet!"

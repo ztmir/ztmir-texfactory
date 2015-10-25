@@ -1,0 +1,6 @@
+# These files comprise the template
+SConscript
+main.bib:$NAME.bib
+main.tex:$NAME.tex
+sin.eps 
+sin.tex

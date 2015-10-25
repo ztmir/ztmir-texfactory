@@ -1,0 +1,3 @@
+# Files that comprise the template
+SConscript
+main.tex:$NAME.tex
