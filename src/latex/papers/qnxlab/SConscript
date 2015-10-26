@@ -23,6 +23,7 @@
 Import('env')
 
 import SCons.Tool.tar
+import platform
 
 env.Tool('texas')
 
@@ -42,7 +43,9 @@ version = '0.1'
 pdf = env.TeXASPDF(name, '%s.tex' % name, pdf_deps = deps, version = version)
 
 # Tar is unavailable on some platforms (windows e.g) ...
-if SCons.Tool.tar.exists(env):
+# On mingw/windows (BASH CLI for example) it has a bug with commandline paths
+# handling (e.g. 'a\t' is interpreted as a + tab).
+if SCons.Tool.tar.exists(env) and not platform.system() == 'Windows':
     src = env.TeXASChildren(pdf)
     tgz = env.TeXASTarGz(name, src, strip_dirs = '..', version = version)
 else:
