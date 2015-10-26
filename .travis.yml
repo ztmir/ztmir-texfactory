@@ -23,7 +23,7 @@ install:
     else
       echo "$HOME/TeXLive2015/bin/x86_64-linux DOES NOT EXIST";
     fi
-  - python bin/install-tex.py
+  - python bin/install-tex.py --repository="http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
   - PATH="$HOME/TeXLive2015/bin/x86_64-linux:$PATH"
 
 before_script:

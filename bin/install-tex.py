@@ -130,11 +130,19 @@ def install_texlive(**kw):
     else:
         raise RuntimeError("unsuported OS %s" % platform.system())
 
+    repository = kw.get('repository')
+
     profile = os.path.join(tempdir, 'texlive.profile')
     
-    info("starting TeX installer", **kw)
-    sp = subprocess.Popen([cmd, '-profile', profile], env = os.environ.copy(), stdin = subprocess.PIPE)
+    args = [cmd, '-profile', profile]
+    if repository:
+        args += ['-repository', repository]
+
+    info("starting TeX instaler", **kw)
+    info("%s" % map(lambda x : str(x), args), **kw)
+    sp = subprocess.Popen(args, env = os.environ.copy(), stdin = subprocess.PIPE)
     if platform.system() == 'Windows':
+        # Answer to "Press any key to continue..."
         sp.stdin.write("\r\n")
     sp.stdin.close()
     sp.wait()
@@ -185,6 +193,7 @@ _parser.add_argument('--installer-url',
                       help='url used to retrieve TeX installer from')
 _parser.add_argument('--profile',
                       help='path to texlive profile for unattended installation')
+_parser.add_argument('--repository', help='path/url to package repository')
 
 _args = _parser.parse_args()
 main(**vars(_args))

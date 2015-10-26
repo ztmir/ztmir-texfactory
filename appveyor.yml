@@ -8,7 +8,7 @@ install:
   - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - easy_install scons
   - python bin\downloads.py
-  - python bin\install-tex.py
+  - python bin\install-tex.py --repository="http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
   - SET "PATH=%USERPROFILE%\\TeXLive2015\\bin\\win32;%PATH%"
 
 # Sorry, but our cache would exceed 500MB, and appveyor treats caching
