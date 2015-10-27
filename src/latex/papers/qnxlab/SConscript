@@ -31,7 +31,7 @@ env.Tool('texas')
 # env.Tool('gnuplot')
 
 # TODO: add dependencies that are not discovered by SCons LaTeX SCanner.
-deps = [ env.Glob('img/*') ]
+deps = env.Glob('img/*')
 
 # TODO: If you wish to import files from our local TeX Directory Structure
 # deps += env.TeXASImport( ['qnxlab.cls'], progname = 'latex',
@@ -40,7 +40,7 @@ deps = [ env.Glob('img/*') ]
 name = 'qnxlab'
 version = '0.1'
 
-pdf = env.TeXASPDF(name, '%s.tex' % name, pdf_deps = deps, version = version)
+pdf = env.TeXASPDF(name, '%s.tex' % name, deps = deps, version = version)
 
 # Tar is unavailable on some platforms (windows e.g) ...
 # On mingw/windows (BASH CLI for example) it has a bug with commandline paths
