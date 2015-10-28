@@ -40,6 +40,6 @@ int main ()
 			exit(-1);
 		}
 	}
-	printf("Watek glowny zakończony. Wyjscie\n");
+	printf("Watek glowny zakonczony. Wyjscie\n");
 	pthread_exit(NULL);
 }

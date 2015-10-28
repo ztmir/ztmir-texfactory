@@ -21,7 +21,7 @@ void* start_routine (void* arg)
 	pthread_exit((void *)id);
 }
 
-/* The main program. */
+/* Program glowny */
 int main ()
 {
 	int i, rc;
