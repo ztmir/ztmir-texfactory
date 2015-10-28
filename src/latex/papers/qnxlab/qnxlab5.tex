@@ -226,7 +226,7 @@ Po inicjalizacji struktury z atrybutami, możemy pobierać i ustawiać atrybuty 
 \setlength{\arrayrulewidth}{1pt}
 \setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{ |p{0.25\textwidth}|p{0.30\textwidth}|p{0.30\textwidth}| }
+\begin{tabular}{ |p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}| }
 \hline \rowcolor{gray}
 \textbf{Atrybut} & \textbf{Pobierz atrybut} & \textbf{Ustaw atrybut} \\ \hline
 Dołączalność & \mbox{\lstinline[style=MyCStyle]{pthread_attr_getdetachstate()}} & \mbox{\lstinline[style=MyCStyle]{pthread_attr_setdetachstate()}} \\ \hline 
@@ -247,7 +247,109 @@ Przykład ilustruje omawiane zagadnienia łączenia wątków, wraz z~przekazanie
 \lstinputlisting[caption=Ustawianie atrybutu dołączalności,style=MyCStyle,label=src:attThread]{src/lab5/attThread.c}
 \end{example} 
 
-\subsection{Ustalanie priorytetu, strategii i parametrów szeregowania wątków}
+\subsubsection{Ustalanie priorytetu, strategii i parametrów szeregowania wątków}
+
+
+\underline{Dziedziczenie atrybutów}
+
+
+\noindent\textbf{Ustawianie atrybutów}. Wątki potomne domyślnie dziedziczą priorytet i~własności dotyczące szeregowania z~wątku macierzystego. Funkcja \lstinline[style=MyCStyle]{pthread_attr_setinheritsched} umożliwia zmianę tego stanu: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_attr_setinheritsched(pthread_attr_t * attr, int inheritsched );
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{attr} jest wskaźnikiem na strukturę definiującą atrybuty wątku, a~wartość \lstinline[style=MyCStyle]{inheritsched} jest jedną z~dwóch wartości: 
+
+\begin{myitemize}
+\item \lstinline[style=MyCStyle]{PTHREAD_INHERIT_SCHED} - wątek potomny dziedziczy strategię szeregowania od wątku rodzica - wartość domyślna.
+\item \lstinline[style=MyCStyle]{PTHREAD_EXPLICIT_SCHED} - strategia szeregowania jest ustawiona przez strukturę \lstinline[style=MyCStyle]{attr}. 
+\end{myitemize}
+
+\noindent\textbf{Pobieranie atrybutów}. Funkcją, która umożliwia pobieranie parametrów dot. dziedziczenia własności z~wątku macierzystego ma następującą sygnaturę:  
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_attr_getinheritsched(const pthread_attr_t* attr,int* inheritsched );
+\end{lstlisting}
+
+gdzie wartość \lstinline[style=MyCStyle]{inheritsched} jest wskaźnikiem do miejsca, gdzie funkcja przechowa atrybut. 
+
+\noindent\underline{Strategia szeregowania}
+ 
+\noindent\textbf{Ustawianie atrybutów}. Ustawianie strategii szeregowania realizujemy funkcją: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_attr_setschedpolicy(pthread_attr_t* attr, int policy);
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{attr} jest wskaźnikiem na strukturę definiującą atrybuty wątku, a~wartość \lstinline[style=MyCStyle]{policy} jest jedną z~wartości zdefiniowanych w~tabeli~\ref{tab:sched}.
+
+\begin{table}[h!]
+\centering
+\caption{Strategie szeregowania w QNX Neutrino}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ |p{0.15\textwidth}|p{0.2\textwidth}|p{0.4\textwidth}| }
+\hline \rowcolor{gray}
+\textbf{Numer} & \textbf{Symbol} & \textbf{Opis} \\ \hline
+\mbox{\lstinline[style=MyCStyle]{0}} & \mbox{\lstinline[style=MyCStyle]{SCHED_NOCHANGE}} & Brak zmiany strategii szeregowania \\ \hline 
+\mbox{\lstinline[style=MyCStyle]{1}} & \mbox{\lstinline[style=MyCStyle]{SCHED_FIFO}} & Szeregowanie FIFO \\ \hline 
+\mbox{\lstinline[style=MyCStyle]{2}} & \mbox{\lstinline[style=MyCStyle]{SCHED_RR}} & Szeregowanie karuzelowe \\ \hline 
+\mbox{\lstinline[style=MyCStyle]{3}} & \mbox{\lstinline[style=MyCStyle]{SCHED_OTHER}} & wskazuje wartość \mbox{\lstinline[style=MyCStyle]{SCHED_RR}} \\ \hline 
+\mbox{\lstinline[style=MyCStyle]{4}} & \mbox{\lstinline[style=MyCStyle]{SCHED_SPORADIC}} & Szeregowanie sporadyczne \\ \hline 
+\end{tabular}
+\label{tab:sched}
+\end{table}
+
+\noindent\textbf{Pobieranie atrybutów}. Pobieranie strategii szeregowania można zrealizować funkcją:
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_attr_getschedpolicy(const pthread_attr_t* attr,int* policy );
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{policy} jest wskaźnikiem do miejsca przechowywania ustawionej wartości strategii szeregowania. 
+
+\noindent\underline{Parametry szeregowania}
+
+\noindent\textbf{Ustawianie atrybutów}. Aby ustawić atrybuty z~tego zbioru należy zastosować funkcję: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_attr_setschedparam(pthread_attr_t * attr,const struct sched_param * param );
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{attr} jest wskaźnikiem na strukturę definiującą atrybuty wątku, a~zmienna \lstinline[style=MyCStyle]{param} jest wskaźnikiem na strukturę \lstinline[style=MyCStyle]{sched_param}, która definiuje parametry szeregowania watków. 
+
+\noindent\textbf{Pobieranie atrybutów}. Tę funkcję realizujemy następująco: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_attr_getschedparam(const pthread_attr_t * attr, struct sched_param * param );
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{param} jest wskaźnikiem na strukturę \lstinline[style=MyCStyle]{sched_param}.
+
+\begin{example}{[Zarządzanie atrybutami szeregowania wątków]}
+Przykład pokazuje w~jaki sposób używać atrybutów, w~celu utworzenia wątku ze zdefiniowanymi przez programistę parametrami i~strategią szeregowania. 
+
+\lstinputlisting[caption=Pobieranie i ustawianie atrybutów szeregowania wątków,style=MyCStyle,label=src:attThread]{src/lab5/sched.c}
+
+Przykładowy wynik działania programu powinien wyglądać następująco: 
+
+\begin{lstlisting}[style=MyCStyle]
+Priorytet ustawiony przy starcie procesu (watku glownego) 10.
+Domyslna strategia ROUND ROBIN, priorytet: 10
+Domyslna strategia FIFO, priorytet: 8
+Tworze watek z nowymi atrybutami: 
+	Step = 0
+	Step = 1
+	Step = 2
+	Step = 3
+	Step = 4
+Watek glowny dolaczyl watek potomny.
+Watek glowny zakonczony. Wyjscie.
+\end{lstlisting}
+
+\end{example}
 
 
 \subsection{Ćwiczenia}
