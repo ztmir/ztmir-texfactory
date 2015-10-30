@@ -26,6 +26,21 @@ headsep=0.5cm,headheight=1.0cm,marginpar=2cm,reversemp]{geometry}
 \usepackage{listings}
 \usepackage{pdfpages}
 \usepackage{hyperref}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows,positioning}
+
+% Define tikz styles
+\tikzset{
+  % Text box, 6em width, centered, rounded corners
+  TBox6emCentered/.style={
+    rectangle,
+    rounded corners,
+    draw=black, very thick,
+    text width=6.5em,
+    minimum height=2em,
+    text centered}
+}
 
 \definecolor{mycolor1}{RGB}{0,0,128}
 \definecolor{lightgray}{gray}{0.9}
