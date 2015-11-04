@@ -30,10 +30,10 @@ int main(int argc, char *argv[])
 	if (access(FIFO_FILE, F_OK) == -1)
 	{
 		res = mkfifo(FIFO_FILE, mode);
-		/* Nie udalo się utworzyc pliku FIFO */
+		/* Nie udalo sie utworzyc pliku FIFO */
 		if (res == -1)
 		{
-			printf("Nie udalo się utworzyc pliku FIFO.\n");
+			printf("Nie udalo sie utworzyc pliku FIFO.\n");
 			exit(EXIT_FAILURE);
 		}
 	}

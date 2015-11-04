@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
 	{
 		printf("Serwer (%d): Tworze plik FIFO.\n",PID);
 		res = mkfifo(FIFO_FILE, mode);
-		/* Nie udalo się utworzyc pliku FIFO */
+		/* Nie udalo sie utworzyc pliku FIFO */
 		if (res == -1)
 		{
-			printf("Serwer (%d): Nie udalo się utworzyc pliku FIFO.\n",PID);
+			printf("Serwer (%d): Nie udalo sie utworzyc pliku FIFO.\n",PID);
 			exit(EXIT_FAILURE);
 		}
 	}
