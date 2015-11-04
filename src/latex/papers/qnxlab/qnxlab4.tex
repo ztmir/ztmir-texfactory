@@ -70,7 +70,7 @@ Na ogół mamy do czynienia z sytuacją, kiedy procesów gotowych do wykonania j
 więcej niż umożliwiają to dostępne w~danej chwili zasoby. Procedura szeregująca
 (scheduler) rozstrzyga, któremu z procesów (wątków) zostanie w~danej chwili
 przydzielony czas procesora. Jednym z~istotnych parametrów rzutujących na
-kolejność przydzielania czasu procesora jest priorytet -- każdy z procesów (i
+kolejność przydzielania czasu procesora jest priorytet -- każdy z procesów (i
 wątków -- patrz następne laboratoria) ma przyporządkowany priorytet (process
 priority).  Jest on miarą pilności wykonania danego procesu względem innych.
 W systemie QNX Neutrino 6 priorytet jest liczbą z zakresu od 0 (najniższy) do
@@ -99,7 +99,7 @@ W systemie QNX są dostępne trzy strategie szeregowania:
   \item szeregowanie karuzelowe (round robin scheduling),
   \item szeregowanie sporadyczne (sporadic scheduling).
 \end{myitemize}
-Są one omówione szczegółowo w dokumentacji QNX~\cite{qnx}. W tabeli
+Są one omówione szczegółowo w dokumentacji QNX~\cite{qnx}. W tabeli
 \ref{tab:A9C2X} przedstawiono ich symbole, wykorzystywane w~wywołaniach
 systemowych.
 
@@ -139,7 +139,7 @@ systemowych.
 
 W systemie QNX Neutrino, modułem odpowiedzialnym za dynamiczne tworzenie,
 usuwanie oraz zarządzanie procesami jest zawarty w mikrojądrze (procnto)
-manager procesów. W systemie QNX istnieją różne metody tworzenia procesów.
+manager procesów. W systemie QNX istnieją różne metody tworzenia procesów.
 Część z nich pochodzi wprost od systemów UNIX-owych, opartych o standard POSIX,
 inne funkcje do tworzenia procesów są charakterystyczne tylko dla systemu QNX.
 Podstawowe funkcje do tworzenia procesów przedstawiono w tabeli
@@ -159,7 +159,7 @@ tworzeniu procesów, tj. \texttt{system()}, \texttt{fork()}, \texttt{exec()},
     \texttt{fork()}     & Utworzenie kopii procesu bieżącego \\ \hline
     \texttt{exec()}     & Zastąpienie bieżącego procesu nowym procesem -- rodzina funkcji \\ \hline
     \texttt{spawn()}    & Utworzenie procesu potomnego -- rodzina funkcji \\ \hline
-    \texttt{vfork()}    & Utworzenie procesu potomnego i zablokowanie procesu macierzystego \\ \hline
+    \texttt{vfork()}    & Utworzenie procesu potomnego i zablokowanie procesu macierzystego \\ \hline
     \texttt{forkpty()}  & Utworzenie procesu potomnego w oknie pseudoterminala \\ \hline
     \texttt{popen()}    & Uruchomienie programu jako procesu potomnego z
                           jednoczesnym utworzeniem łącza pomiędzy procesem
@@ -185,12 +185,12 @@ potomny. Utworzony proces potomny wykonuje się współbieżnie z procesem
 tworzącym, posiada własny nr PID, a jego PPID wskazuje na proces tworzący.
 Funkcja \texttt{fork()} tworzy deskryptor nowego procesu oraz kopię segmentu
 kodu, danych i stosu. Modyfikacje zmiennych w procesie macierzystym nie są
-widoczne w procesie potomnym i odwrotnie. Jeżeli operacja utworzenia procesu
+widoczne w procesie potomnym i odwrotnie. Jeżeli operacja utworzenia procesu
 potomnego zakończy się powodzeniem, to funkcja w procesie macierzystym zwraca
 identyfikator (PID) procesu potomnego (wartość większa od 1), a w procesie
 potomnym wartość 0. Jeżeli próba utworzenia procesu się nie powiedzie, to
 funkcja \texttt{fork()} zwraca w procesie macierzystym wartość -1. Działanie
-funkcji przedstawiono na rysunku, a jej użycie w przykładzie~\ref{ex:HP9M8}.
+funkcji przedstawiono na rysunku, a jej użycie w przykładzie~\ref{ex:HP9M8}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
@@ -228,7 +228,7 @@ szczególną uwagę przy rozwoju wiarygodnego oprogramowania w systemie QNX.
 Powodem tego jest fakt, że procesy na ogół współdziałają ze sobą, mogą być np.
 procesami macierzystymi, bądź oczekiwać na określone zdarzenia, wygenerowane
 przez inne procesy. W związku z tym, przed zakończeniem procesu należy zwolnić
-zajęte przez ten proces zasoby, zakończyć z innymi procesami scenariusze
+zajęte przez ten proces zasoby, zakończyć z innymi procesami scenariusze
 komunikacyjne i synchronizacyjne oraz zaczekać na zakończenie procesów
 potomnych.
 
@@ -338,9 +338,9 @@ pid_t waitpid( pid_t pid, int *status, int options );
 
 Funkcja zwraca PID zakończonego procesu, bądź -1, w przypadku, gdy brak jest
 procesów potomnych. Funkcja zwraca również status zakończonego procesu poprzez
-argument \texttt{status}. Jedną z użytecznych opcji funkcji jest flaga
-\texttt{WNOHANG}, która powoduje, że proces macierzysty, w przypadku braku
-potomnych, natychmiast wraca z funkcji i kontynuuje swoje działanie i w tym
+argument \texttt{status}. Jedną z użytecznych opcji funkcji jest flaga
+\texttt{WNOHANG}, która powoduje, że proces macierzysty, w przypadku braku
+potomnych, natychmiast wraca z funkcji i kontynuuje swoje działanie i w tym
 przypadku możemy użyć takiej kombinacji do cyklicznego sprawdzania, czy proces
 potomny się zakończył.
 
@@ -350,7 +350,7 @@ potomny się zakończył.
 Funkcje z rodziny exec() zastępują bieżący proces, nowym procesem, na podstawie
 pliku wykonywalnego, którego nazwa jest parametrem funkcji. W odróżnieniu od
 funkcji \texttt{fork()},  w przypadku użytkowania funkcji z rodziny
-\texttt{exec()}, kody procesów macierzystych i potomnych mogą być umieszczone w
+\texttt{exec()}, kody procesów macierzystych i potomnych mogą być umieszczone w
 oddzielnych plikach źródłowych. Taka konfiguracja zapewnia łatwiejsze
 uruchamianie i testowanie programów. W systemie QNX zdefiniowano następującą
 rodzinę funkcji: \texttt{execl()}, \texttt{execle()}, \texttt{execlp()},
@@ -398,7 +398,7 @@ uruchomić.
 Posługiwanie się funkcjami \texttt{fork()} i \texttt{exec()} do tworzenia
 procesów współbieżnych bywa niewygodne. System operacyjny QNX udostępnia
 rodzinę \texttt{spawn()}, która służy do tworzenia procesów potomnych na
-podstawie pliku wykonywalnego, którego nazwa jest jednym z argumentów funkcji.
+podstawie pliku wykonywalnego, którego nazwa jest jednym z argumentów funkcji.
 Do tej grupy zaliczamy następujące funkcje: \texttt{spawn()},
 \texttt{spawnl()}, \texttt{spawnv()}, \texttt{spawnle()}, \texttt{spawnlp()},
 \texttt{spawnlpe()}, \texttt{spawnve()}, \texttt{spawnvp()},
@@ -426,7 +426,7 @@ gdzie path jest ścieżką do pliku wykonywalnego, argumenty \texttt{arg[0]} do
 \texttt{arg[n]} stanowią nazwę i argumenty programu. Ostatnim parametrem
 funkcji jest string \texttt{NULL}, który służy do zakończenia listy parametrów
 wywoływanego programu. Parametr mode jest trybem wykonania procesu. Tryb ten
-mówi o sposobie wywołania procesu potomnego i metodzie zachowania procesu
+mówi o sposobie wywołania procesu potomnego i metodzie zachowania procesu
 macierzystego, gdy proces potomny zostanie zainicjowany.
 
 Funkcja \texttt{spawnv()} pobiera trzy argumenty i daje możliwość elastycznego
@@ -482,14 +482,14 @@ Ilustrację wywołania funkcji stanowi przykład:
         i~potomków.
   \item Napisać program, który tworzy proces macierzysty P1 i  potomny P2.
         Proces P2 uruchamia inny proces P3 za pomocą funkcji \texttt{execv()}.
-        Parametry wywołania procesu P3 są przekazywane z wiersza poleceń.
+        Parametry wywołania procesu P3 są przekazywane z wiersza poleceń.
   \item Utworzyć proces macierzysty mac, który stworzy za pomocą funkcji
         \texttt{fork()} 5 procesów potomnych oraz zaczekać na ich zakończenie.
         Niech każdy z procesów wyświetla co jedną sekundę swój numer PID, numer
         identyfikacyjny (w zależności od kolejności utworzenia) oraz czas
         działania. Czas działania poszczególnych procesów podawać jako
         argumenty do programu głównego (np.  mac 20 5 3 8 9). Na zakończenie
-        procesu potomnego o nr i wywołać funkcję \texttt{exit(i)}. Proces
+        procesu potomnego o nr i wywołać funkcję \texttt{exit(i)}. Proces
         macierzysty powinien czekać na zakończenie potomnych i wyświetlić
         informację, który z procesów potomnych się zakończył.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
