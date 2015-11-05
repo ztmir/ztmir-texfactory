@@ -102,8 +102,8 @@ def prepare_texlive_profile(**kw):
     profile_out = os.path.join(kw['tempdir'], "texlive.profile")
     if not profile_in:
         profile_map = {
-            'Windows' : 'texlive-small-win32.profile',
-            'Linux'   : 'texlive-small-linux.profile'
+            'Windows' : 'texlive-default-win32.profile',
+            'Linux'   : 'texlive-default-linux.profile'
         }
         try:
             profile_in = profile_map[platform.system()]
