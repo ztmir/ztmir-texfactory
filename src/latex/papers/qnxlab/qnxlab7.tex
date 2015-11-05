@@ -391,7 +391,7 @@ języka C wywołania sekwencji procesów w~postaci
 Mechanizm potoków nienazwanych jest dość skomplikowany. Programista musi dbać
 o~tworzenie potoków (\texttt{pipe()}), zarządzanie procesami (\texttt{fork()},
 \texttt{exec()}), czy przekierowanie strumieni standardowych (\texttt{dup2()}).
-Istnieją funkcje, które ułatwiają ten proces. Należą do nich \texttt{popen()}
+Istnieją funkcje, które ułatwiają ten proces. Należą do nich \texttt{popen()}
 i~\texttt{pclose()}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
@@ -543,7 +543,7 @@ zwraca do klienta. Programy tworzą szkielet prostego systemu buforowania.
     \item Napisać dwa programy p1 i p2. Pierwszy z nich ma wypisywać na
       standardowe wyjście napis (funkcja \texttt{fprintf (stdout, "Tekst1")}).
       Drugi program ma czytać ze standardowego wejścia (funkcja \texttt{fscanf
-      (stdin, \&zmienna)}) i wyświetlać przetworzony tekst. Wywołać i przetestować
+      (stdin, \&zmienna)}) i wyświetlać przetworzony tekst. Wywołać i przetestować
       programy pojedynczo. Wywołać programy przez potok (p1 | p2). Zastosować
       funkcję \texttt{join()} do połączenia obu programów. 
     \item Programy \textbf{klient.c} i \textbf{serwer.c} tworzą prosty system
