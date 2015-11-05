@@ -121,7 +121,7 @@ Funkcja \lstinline[style=MyCStyle]{pthread_mutex_unlock()} zwalnia muteks. Gdy i
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=0.4\textwidth]{img/thrd_mutex}
+\includegraphics[width=0.3\textwidth]{img/thrd_mutex}
 \caption{Przykład użycia muteksów}
 \label{fig:mutex}
 \end{figure}
@@ -166,9 +166,9 @@ W systemie QNX Neutrino są stosowane dwie strategie zapobiegania inwersji prior
 \item Zastosowanie protokołu wykorzystującego pułap priorytetów -- polega na przydzieleniu zasobowi (muteksowi) priorytetu statycznego, większego od najwyższego priorytetu wątków, które o dany zasób będą konkurowały. Gdy jakiś wątek będzie próbował zająć zasób, to zostanie mu przydzielony tymczasowo priorytet związany z zasobem. Po zwolnieniu zasobu priorytet wątku wraca do wartości pierwotnej. 
 \end{myenumerate}
 
-\section{Zmienne warunkowe} 
+\subsection{Zmienne warunkowe} 
 
-\subsection{Wstęp}
+\subsubsection{Wstęp}
 
 Zmienne warunkowe dostarczają alternatywnego sposobu synchronizacji wątków. Podczas gdy muteksy synchronizują dostęp poszczególnych wątków do danych, zmienne warunkowe umożliwiają wątkom uzyskiwać informację (sygnalizować) o aktualnym stanie współdzielonych zasobów. Bez mechanizmu sygnalizowania zmiennych warunkowych, jeden z wątków musiałby nieustannie badać w pętli (potencjalnie w sekcji krytycznej) spełnienie pewnego warunku. Taki zabieg prowadziłby do niekorzystnego zużycia czasu procesora. Zmienna warunkowa pozwala osiągnąć ten sam cel bez użycia nieskończonej pętli. 
 Zmienna warunkowa jest mechanizmem sygnalizowania informacji i powinna być skojarzona z muteksem, który z kolei chroni dostępu do wspólnego zasobu (danych). Trzy podstawowe operacje dokonywane na zmiennych są następujące: 
@@ -193,5 +193,196 @@ Typowy scenariusz synchronizacji zmiennymi warunkowymi jest następujący:
 \end{myitemize}
 
 
+\subsubsection{Tworzenie i kasowanie zmiennych warunkowych}
+
+Zmienna warunkowa jest reprezentowana w programie, jako zmienna typu \lstinline[style=MyCStyle]{pthread_cond_t} i musi być zainicjalizowana przed użyciem. Podobnie jak w przypadku muteksów istnieją dwa sposoby inicjalizacji statycznie, bądź dynamicznie. 
+\lstinline[style=MyCStyle]{pthread_cond_t cond = PTHREAD_COND_INITIALIZER;}
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_cond_init( pthread_cond_t* cond,
+                       pthread_condattr_t* attr );
+\end{lstlisting}
+
+gdzie 
+
+\begin{myitemize}
+\item \lstinline[style=MyCStyle]{cond} -- jest wskaźnikiem do zmiennej warunkowej \lstinline[style=MyCStyle]{pthread_cond_t}.
+\item \lstinline[style=MyCStyle]{attr} -- jest albo \lstinline[style=MyCStyle]{NULL} (atrybuty domyślne) albo wskaźnikiem do struktury definiującej atrybuty muteksu.  
+\end{myitemize}
+
+
+Zmienne warunkowe możemy inicjalizować nie tylko dynamicznie, używając struktury \lstinline[style=MyCStyle]{attr}, ale również  statycznie, poprzez zastosowanie makra \lstinline[style=MyCStyle]{PTHREAD_COND_INITIALIZER}, które zapewnia przypisanie domyślnych wartości do zmiennej warunkowej. Do kasowania zmiennej warunkowej służy funkcja:
+
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_cond_destroy( pthread_cond_t* cond );
+\end{lstlisting}
+
+Funkcja \lstinline[style=MyCStyle]{pthread_cond_destroy} kasuje zasoby zajęte przez zmienną warunkową.
+
+\subsubsection{Czekanie i sygnalizowanie zmiennej warunkowej}
+
+Funkcja \lstinline[style=MyCStyle]{pthread_cond_wait()} pozwala na oczekiwanie na zmienną warunkową:
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_cond_wait( pthread_cond_t* cond,
+                       pthread_mutex_t* mutex );
+\end{lstlisting}
+
+gdzie 
+
+\begin{myitemize}
+\item \lstinline[style=MyCStyle]{cond} -- jest wskaźnikiem do zmiennej warunkowej \lstinline[style=MyCStyle]{pthread_cond_t}.
+\item \lstinline[style=MyCStyle]{mutex} -- stowarzyszony muteks. 
+\end{myitemize}
+
+Funkcja \lstinline[style=MyCStyle]{pthread_cond_wait()} zawiesza wątek na zmiennej warunkowej \lstinline[style=MyCStyle]{cond}, ustawia go w kolejce wątków oczekujących i jednocześnie odblokowuje stowarzyszony muteks. Funkcja ta powinna być wywołana, wówczas kiedy muteks jest zajęty i automatycznie ponownie zamknie muteks po wyjściu z funkcji. 
+
+Istnieje odmiana funkcji, która pozwala czekać na zmiennej warunkowej przez określony czas:
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_cond_timedwait(
+            pthread_cond_t* cond,
+            pthread_mutex_t* mutex,
+            const struct timespec* abstime );
+\end{lstlisting}
+
+gdzie 
+\begin{myitemize}
+\item \lstinline[style=MyCStyle]{abstime} -- jest wskaźnikiem do struktury \lstinline[style=MyCStyle]{timespec}, która definiuje maksymalny absolutny czas blokowania wątku.
+\end{myitemize}
+
+Wątek w przypadku funkcji \lstinline[style=MyCStyle]{pthread_cond_wait()} lub \lstinline[style=MyCStyle]{pthread_cond_timedwait()} jest zablokowany do czasu zasygnalizowania zmiennej warunkowej przez  inny z wątków przez funkcję: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_cond_signal( pthread_cond_t* cond );
+\end{lstlisting}
+
+Funkcja odblokowuje wątek o najwyższym priorytecie, który czeka na zmiennej warunkowej \lstinline[style=MyCStyle]{cond}. Gdy wątków o najwyższym priorytecie jest więcej, odblokowany będzie ten, który czeka najdłużej. Odblokowanie wszystkich wątków, które czekają na zmiennej warunkowej można zrealizować poprzez wywołanie funkcji: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_cond_broadcast( pthread_cond_t* cond );
+\end{lstlisting}
+
+Wątki są odblokowane w zależności od wysokości priorytetów. W przypadku, gdy istnieje kilka wątków, o takich samych priorytetach, to wątki będą odblokowywane wg strategii FIFO. Działanie zmiennej warunkowej przedstawiono na rysunku~\ref{fig:condvar}. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.75\textwidth]{img/condvar}
+\caption{Idea działania zmiennej warunkowej}
+\label{fig:condvar}
+\end{figure}
+
+\begin{example}{[Zmienne warunkowe]}
+Program tworzy trzy wątki. Wątek główny pracuje jako zarządca (manager) i co 2 sekundy deleguje do pracy jeden z dwóch wątków wykonawczych. Realizacja zadania zajmuje każdemu z wątków wykonawców 3 sekundy. Skompilować program, uruchomić i prześledzić jego współbieżną pracę.
+\lstinputlisting[caption=Zastosowanie zmiennej warunkowej,style=MyCStyle,label=src:condvar]{src/lab6/condvar.c}
+\end{example}
+
+\subsection{Bariery} 
+
+\subsubsection{Tworzenie i kasowanie bariery} 
+
+Synchronizacja przy użyciu bariery umożliwia koordynację pracy algorytmów. Bariera definiuje punkt w programie, do którego muszą dotrzeć wszystkie wątki zanim rozpoczną dalsze wykonanie. Liczba wątków potrzebnych do przełamania bariery jest definiowana w chwili tworzenia bariery.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/thrd_barrier}
+\caption{Idea działania bariery}
+\label{fig:thrd_barrier}
+\end{figure}
+
+Bariera jest reprezentowana w programie, jako zmienna typu \lstinline[style=MyCStyle]{pthread_barrier_t} i musi być zainicjalizowana przed użyciem. Inicjalizacja bariery odbywa się poprzez wywołanie następującej funkcji: 
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_barrier_init( 
+                    pthread_barrier_t * barrier,
+                    const pthread_barrierattr_t * attr
+                    unsigned int count );
+
+\end{lstlisting}
+
+gdzie 
+
+\begin{myitemize}
+\item \lstinline[style=MyCStyle]{barrier} -- wskaźnik do obiektu typu \lstinline[style=MyCStyle]{pthread_barrier_t}, który chcemy zainicjalizować. 
+\item \lstinline[style=MyCStyle]{attr} -- jest albo \lstinline[style=MyCStyle]{NULL} (atrybuty domyślne) albo wskaźnikiem do struktury definiującej atrybuty bariery \lstinline[style=MyCStyle]{pthread_barrierattr_t}.
+\item \lstinline[style=MyCStyle]{count} -- liczba wątków, które muszą dojść do momentu wywołania funkcji \lstinline[style=MyCStyle]{pthread_barrier_wait()}, aby wszystkie mogły kontynuować dalej swoje działanie. 
+\end{myitemize}
+
+Bariery możemy inicjalizować nie tylko dynamicznie, używając struktury attr, ale również  statycznie, poprzez zastosowanie makra \lstinline[style=MyCStyle]{PTHREAD_BARRIER_INITIALIZER(count)}, które zapewnia przypisanie domyślnych wartości do bariery oraz liczby \lstinline[style=MyCStyle]{count}, omówionej poprzednio.
+
+Do kasowania bariery służy funkcja:
+
+\begin{lstlisting}[style=MyCStyle]
+int pthread_barrier_destroy(
+       pthread_barrier_t * barrier );
+\end{lstlisting}
+
+Funkcja \lstinline[style=MyCStyle]{pthread_barrier_destroy()} kasuje zasoby zajęte przez barierę. 
+
+\subsubsection{Czekanie na barierze}
+
+Funkcja  \lstinline[style=MyCStyle]{pthread_barrier_wait()} pozwala na synchronizację wątków na barierze: 
+
+\begin{lstlisting}[style=MyCStyle]
+	int pthread_barrier_wait( pthread_barrier_t * barrier );
+\end{lstlisting}
+
+Wątki, które wywołują funkcję są blokowane, aż do momentu, gdy wymagana liczba wątków (\lstinline[style=MyCStyle]{count}) wywołała funkcję \lstinline[style=MyCStyle]{pthread_barrier_wait()}, wówczas bariera jest przełamywana, jednemu z wątków (nieokreślonemu) jest zwracana wartość \lstinline[style=MyCStyle]{BARRIER_SERIAL_THREAD}, natomiast innym jest zwracana wartość zero. Po tym etapie stan bariery jest ustawiany do wartości po wywołaniu inicjalizacji bariery. 
+
+\begin{example}{[Brak synchronizacji]}
+Program zawiera dwa wątki. Wątek 1 oblicza pewną wartość $a$, wątek 2 oblicza wartość $b$. Następnie wątek 1 powinien obliczyć $c=a+b$, a wątek 2 powinien obliczyć $d=a\cdot b$ -- zobacz rysunek~\ref{fig:thrd_async_example}. Przykład ilustruje brak synchronizacji pracy wątków.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.35\textwidth]{img/thrd_async_example}
+\caption{Idea działania bariery}
+\label{fig:thrd_async_example}
+\end{figure}
+
+\lstinputlisting[caption=Brak synchronizacji pracy wątków,style=MyCStyle,label=src:nosynchro]{src/lab6/nosynchro.c}
+\end{example}
+
+\begin{example}{[Użycie bariery]} Poniższy przykład jest modyfikacją poprzedniego. Obliczenia zsynchronizowano używając bariery -- zobacz rysunek~\ref{fig:thrd_barrier_example}. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.35\textwidth]{img/thrd_barrier_example}
+\caption{Idea działania bariery}
+\label{fig:thrd_barrier_example}
+\end{figure}
+
+\lstinputlisting[caption=Brak synchronizacji pracy wątków,style=MyCStyle,label=src:synchrobarrier]{src/lab6/synchrobarrier.c}
+
+\end{example}
+
+\subsection{Ćwiczenia}
+
+\begin{myenumerate}
+\item Zaproponować współbieżną (równoległą – gdy dysponujemy komputerem wieloprocesorowym) wersję programu do obliczania liczby $\pi$ za pomocą wątków i mechanizmów synchronizacji. Matematycznie wiadomo, że:
+
+\begin{equation}\nonumber 
+\displaystyle\int_0^1{\frac{4}{1+x^2}dx}=\pi
+\end{equation}
+
+Całkę oznaczoną możemy aproksymować jako sumę:
+
+\begin{equation}\nonumber 
+\sum_{i=0}^N\frac{4}{1+x_i^2}\Delta x\approx\pi
+\end{equation}
+
+Ilustrację graficzną aproksymacji liczby $\pi$ można znaleźć na rysunku~\ref{fig:piApprox}. Należy zadeklarować sumę, jak zmienną globalną oraz obliczać ją w sekcji krytycznej. Synchronizację dostępu do zmiennej globalnej zapewnić poprzez zastosowanie muteksów.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.4\textwidth]{img/piApprox}
+\caption{Idea aproksymacji liczby $\pi$}
+\label{fig:piApprox}
+\end{figure}
+
+\lstinputlisting[caption=Kod źródłowy sekwencyjnej wersji do obliczania liczby $\pi$,style=MyCStyle,label=src:piApprox]{src/lab6/piApprox.c}
+
+\item Należy przeczytać artykuł dotyczący inwersji prioryterów w przypadku sondy marsjańskiej Pathfinder  \href{http://research.microsoft.com/en-us/um/people/mbj/mars\_pathfinder/Mars\_Pathfinder.html}{http://research.microsoft.com/en-us/um/people/mbj/mars\_pathfinder/Mars\_Pathfinder.html}.
+\end{myenumerate}
 
 \cleardoublepage
