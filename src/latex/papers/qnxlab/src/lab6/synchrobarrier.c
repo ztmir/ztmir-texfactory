@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 int a = -1234,b = 4321;  /* Wartosci przed obliczeniami */
-/* Obiekt reprezentujący barierę */
+/* Obiekt reprezentujacy bariere */
 pthread_barrier_t barrier;
 /* Inicjalizacja statyczna */
 /* pthread_barrier_t barrier = PTHREAD_BARRIER_INITIALIZER(2); */
