@@ -499,14 +499,14 @@ Ilustrację wywołania funkcji \texttt{spawnl()} stanowi przykład \ref{ex:VSCD0
         \node[circle,fill=black] (c3) at (-0.00,-1.00) {};
         \node[circle,fill=black] (c4) at ( 0.50,-1.00) {};
         \node[circle,fill=black] (c5) at ( 1.00,-1.00) {};
-        \node[] at (3.00,0.00) {Proces macierzysty};
+        \node[] at (2.00,0.00) {Proces macierzysty};
         \node[] at (3.00,-1.00) {Procesy potomne};
 
-        \draw[-]     (o) to (c1);
-        \draw[-]     (o) to (c2);
-        \draw[-]     (o) to (c3);
-        \draw[-]     (o) to (c4);
-        \draw[-]     (o) to (c5);
+        \draw[->]  (o) to (c1);
+        \draw[->]  (o) to (c2);
+        \draw[->]  (o) to (c3);
+        \draw[->]  (o) to (c4);
+        \draw[->]  (o) to (c5);
       \end{tikzpicture}
       \caption{Hierarchia procesów w~ćwiczeniu 3}
       \label{fig:YT6VA}
@@ -519,13 +519,14 @@ Ilustrację wywołania funkcji \texttt{spawnl()} stanowi przykład \ref{ex:VSCD0
     \begin{figure}[ht]
       \centering
       \begin{tikzpicture}
-        \node[circle,fill=black] (c1) at ( 0.00, 2.25) {};
-        \node[circle,fill=black] (c2) at ( 0.00, 1.50) {};
-        \node[circle,fill=black] (c3) at ( 0.00, 0.75) {};
+        \node[circle,fill=black] (c1) at (-1.50, 1.50) {};
+        \node[circle,fill=black] (c2) at (-1.00, 1.00) {};
+        \node[circle,fill=black] (c3) at (-0.50, 0.50) {};
         \node[circle,fill=black] (c4) at ( 0.00, 0.00) {};
-        \node[] at (0.00,2.75) {Proces macierzysty};
 
-        \draw[-]     (c1) to (c2) to (c3) to (c4);
+        \draw[->]  (c1) to (c2);
+        \draw[->]  (c2) to (c3);
+        \draw[->]  (c3) to (c4);
       \end{tikzpicture}
       \caption{Hierarchia procesów w~ćwiczeniu 4}
       \label{fig:XDQ8Q}
