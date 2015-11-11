@@ -3,17 +3,17 @@
 
 int main()
 {
-	int rc;
+  int rc;
 
-	rc = system( "pwd; ls" );
+  rc = system( "pwd; ls" );
 
-	if( rc == -1 )
-	{
-		printf( "Nie mozna uruchomic polecenia\n" );
-	}
-	else
-	{
-		printf( "Status zakonczenia %d\n", rc );
+  if( rc == -1 )
+    {
+      printf( "Nie mozna uruchomic polecenia\n" );
     }
-    return EXIT_SUCCESS;
+  else
+    {
+      printf( "Status zakonczenia %d\n", rc );
+    }
+  return EXIT_SUCCESS;
 }
