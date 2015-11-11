@@ -23,10 +23,10 @@ int main()
       /* proces potomny */
       printf("P: Proces potomny PID = %d\n",getpid());
       for(j = 0; j < CHILD; j++)
-      {
-        printf("P: pracuje %d sek. ...\n", j);
-        sleep(1);
-      }
+        {
+          printf("P: pracuje %d sek. ...\n", j);
+          sleep(1);
+        }
       printf("P: Zakonczenie procesu potomnego\n");
       exit(EXIT_SUCCESS);
     }
@@ -35,13 +35,13 @@ int main()
       /* Proces macierzysty */
       printf("M: Proces macierzysty PID = %d\n",getpid());
       for(i = 0; i < PARENT; i++)
-      {
-        printf("M: pracuje %d sek. ...\n", i);
-        sleep(1);
-      }
+        {
+          printf("M: pracuje %d sek. ...\n", i);
+          sleep(1);
+        }
       printf("M: Czekam na potomny...\n");
       child_pid = wait(&status);
-      printf("M: Proces potomny o PID=%d zakonczony; status: %d\n", child_pid, WEXITSTATUS(status));
+      printf("M: Proces potomny PID=%d zakonczony; status: %d\n", child_pid, WEXITSTATUS(status));
 
     }
   return 0;
