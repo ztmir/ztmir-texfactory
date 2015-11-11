@@ -9,9 +9,10 @@ w~urzędzie), podlega pewnym ograniczeniom (np.  procedurom prawnym) i~wymaga
 pewnych zasobów (np.  pieniędzy podatników). Pewne zdarzenia w~procesie
 mogą występować sekwencyjnie, inne mogą nakładać się na siebie w~czasie. Jeśli
 jesteśmy w~stanie wyodrębnić unikalny ciąg występujących po sobie zdarzeń
-i~stwierdzić, że są ze sobą jakoś powiązane, to taką sekwencję często określa
-się mianem wątku. Proces, podobnie jak fabuła powieści, może obejmować wiele
-wątków biegnących równocześnie.
+powiązanych tak, że ich przestawienie czy uniezależnienie od siebie jest
+niemożliwe bądź przeczyłoby logice, to taką sekwencję często określa się mianem
+wątku. Proces, podobnie jak fabuła powieści, może obejmować wiele wątków
+biegnących równocześnie.
 
 W~informatyce proces jest dynamicznym obiektem utworzonym przez system
 operacyjny w~celu wykonania pewnego programu. Procesowi przydzielane są zasoby
@@ -22,12 +23,6 @@ procesu występuje jeden lub więcej wątków (w uproszczeniu wątek obrazuje ci
 wykonywanych po sobie instrukcji procesora), wątki mogą być wykonywane
 równolegle (tj. wątek A biegnie równolegle z~wątkiem B).
 
-Często proces jest utożsamiany z~programem uruchomionym w~systemie operacyjnym.
-Rzeczywiste aplikacje mogą się jednak składać z~wielu procesów, które
-komunikują się ze sobą za pomocą mechanizmów komunikacji międzyprocesowej
-(inter-process communication, IPC). Zagadnieniom komunikacji IPC poświęcono
-odrębne rozdziały tej instrukcji.
-
 Obiekt-proces (tak jak większość obiektów w~informatyce) posiada pewne atrybuty,
 oraz podlega regułom określającym jego czas życia. W~niniejszym laboratorium
 omówimy następujące zagadnienia:
@@ -35,6 +30,11 @@ omówimy następujące zagadnienia:
   \item wyświetlanie i~modyfikowanie atrybutów procesów (atrybuty),
   \item tworzenie i usuwanie procesów (czas życia).
 \end{myitemize}
+
+Często proces jest utożsamiany z~programem uruchomionym w~systemie operacyjnym.
+Rzeczywiste aplikacje mogą się jednak składać z~wielu procesów. W~niniejszym
+laboratorium zostaną pokazane przykłady prostych programów wielo-procesowych
+zapisanych w~języku C.
 
 \subsection{Wyświetlanie i modyfikowanie atrybutów procesów}
 
@@ -46,7 +46,7 @@ Każdy proces w systemie QNX ma przypisany unikalny identyfikator PID (process
 ID), który jest liczbą całkowitą. Każdy proces (oprócz procesu ,,głównego''
 \texttt{procnto}) ma również swój proces macierzysty. Identyfikator PPID
 (parent process ID) jest identyfikatorem PID procesu macierzystego. Proces
-\texttt{procnto} ma identyfikator PID=1 i~nie ma identyfikatora PPID. Wybrane
+\texttt{procnto} ma identyfikator PID=1 i~PPID=0. Wybrane
 atrybuty i~funkcje systemowe umożliwiające dostęp do nich przedstawiono
 w~tabeli \ref{tab:HE6LE}.
 
@@ -180,17 +180,17 @@ wprost z~powłoki. Funkcja zwraca status zakończenia uruchomionego programu.
 \end{example}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Funkcja \texttt{fork()} tworzy kopię procesu i~uruchamia ją jako proces
-potomny. Utworzony proces potomny wykonuje się współbieżnie z procesem
+Funkcja \texttt{fork()} tworzy kopię bieżącego procesu i~uruchamia ją jako
+proces potomny. Utworzony proces potomny wykonuje się współbieżnie z procesem
 tworzącym, posiada własny nr PID, a jego PPID wskazuje na proces tworzący.
 Funkcja \texttt{fork()} tworzy deskryptor nowego procesu oraz kopię segmentu
 kodu, danych i stosu. Modyfikacje zmiennych w procesie macierzystym nie są
 widoczne w procesie potomnym i odwrotnie. Jeżeli operacja utworzenia procesu
 potomnego zakończy się powodzeniem, to funkcja w procesie macierzystym zwraca
 identyfikator (PID) procesu potomnego (wartość większa od 1), a w procesie
-potomnym wartość 0. Jeżeli próba utworzenia procesu się nie powiedzie, to
-funkcja \texttt{fork()} zwraca w procesie macierzystym wartość -1. Działanie
-funkcji przedstawiono na rysunku, a jej użycie w przykładzie~\ref{ex:HP9M8}.
+potomnym wartość 0. W~przypadku niepowodzenia, funkcja \texttt{fork()} zwraca w
+procesie macierzystym wartość -1. Działanie funkcji przedstawiono na rysunku
+\ref{fig:S278F}, a użycie w przykładzie~\ref{ex:HP9M8}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
@@ -395,15 +395,13 @@ uruchomić.
 
 \subsection{Tworzenie procesów funkcją spawn()}
 
-Posługiwanie się funkcjami \texttt{fork()} i \texttt{exec()} do tworzenia
-procesów współbieżnych bywa niewygodne. System operacyjny QNX udostępnia
-rodzinę \texttt{spawn()}, która służy do tworzenia procesów potomnych na
-podstawie pliku wykonywalnego, którego nazwa jest jednym z argumentów funkcji.
-Do tej grupy zaliczamy następujące funkcje: \texttt{spawn()},
+System operacyjny QNX udostępnia rodzinę funkcji \texttt{spawn()}, służących
+do tworzenia procesów potomnych poprzez uruchomienie wskazanego pliku
+wykonywalnego. Do tej grupy zaliczamy następujące funkcje: \texttt{spawn()},
 \texttt{spawnl()}, \texttt{spawnv()}, \texttt{spawnle()}, \texttt{spawnlp()},
 \texttt{spawnlpe()}, \texttt{spawnve()}, \texttt{spawnvp()},
-\texttt{spawnvpe()}. Ponownie omówimy tylko dwie wybrane funkcje
-\texttt{spawnl()} i~\texttt{spawnv()}, których deklaracje wyglądają
+\texttt{spawnvpe()}. Omówimy tylko funkcje \texttt{spawnl()}
+i~\texttt{spawnv()}, których deklaracje wyglądają
 następująco:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -493,7 +491,7 @@ Ilustrację wywołania funkcji stanowi przykład:
         macierzysty powinien czekać na zakończenie potomnych i wyświetlić
         informację, który z procesów potomnych się zakończył.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \begin{figure}[!h]
+        \begin{figure}[htbp]
           \centering
           \begin{tikzpicture}
             \node[circle,fill=black] (o)  at ( 0.00, 0.00) {};
@@ -519,7 +517,7 @@ Ilustrację wywołania funkcji stanowi przykład:
   \item Zadanie jest analogiczne do poprzedniego, z tym, że struktura procesów
         ma wyglądać jak drzewo przedstawione na rysunku \ref{fig:XDQ8Q}.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \begin{figure}[!h]
+        \begin{figure}[ht]
           \centering
           \begin{tikzpicture}
             \node[circle,fill=black] (c1) at ( 0.00, 2.25) {};
