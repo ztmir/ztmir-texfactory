@@ -298,13 +298,13 @@ być w~pewien sposób ,,zakodowana''. Do jej ,,odkodowania'' używa się makra
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Ilustrację omawianych zagadnień stanowi przykład \ref{ex:11SSB}.
+Ilustrację omawianych zagadnień stanowi przykład \ref{ex:11SSB}. Zastosowanie
+funkcji \texttt{wait()} w~przykładzie \ref{ex:11SSB} powoduje, że proces
+macierzysty nie zakończy się przed procesem potomnym.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{example}{[Wywołanie funkcji fork() wraz z obsługą zakończenia procesów]}
   \label{ex:11SSB}
   \lstinputlisting[style=MyCStyle,label=src:92W6D]{src/lab4/process1.c}
-  Zastosowanie funkcji \texttt{wait()} w~przykładzie \ref{ex:11SSB} powoduje,
-  że proces macierzysty nie zakończy się przed procesem potomnym.
 \end{example}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -318,7 +318,7 @@ macierzystego. Proces oczekuje w~rekordach systemowych na zwolnienie
 deskryptora, które może być dokonane dopiero po wywołaniu \texttt{wait()} przez
 proces macierzysty. Taki stan procesu potomnego nazywa się stanem ,,zombie''.
 
-Do oczekiwanie na zakończenie \textit{konkretnego} procesu można użyć funkcji
+Do oczekiwania na zakończenie \textit{konkretnego} procesu można użyć funkcji
 \texttt{waitpid()}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
@@ -524,11 +524,14 @@ Ilustrację wywołania funkcji \texttt{spawnl()} stanowi przykład \ref{ex:VSCD0
         \node[circle,fill=black] (c3) at (-0.50, 0.50) {};
         \node[circle,fill=black] (c4) at ( 0.00, 0.00) {};
 
+        \node[] at (-1.00, 1.90) {Proces początkowy (,,root'')};
+        \node[] at (-0.00,-0.40) {Trzeci potomek};
+
         \draw[->]  (c1) to (c2);
         \draw[->]  (c2) to (c3);
         \draw[->]  (c3) to (c4);
       \end{tikzpicture}
-      \caption{Hierarchia procesów w~ćwiczeniu 4}
+      \caption{Hierarchia procesów w~ćwiczeniu 4 dla trzech potomków}
       \label{fig:XDQ8Q}
     \end{figure}
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
