@@ -10,45 +10,42 @@ pewnych zasobów (np.  pieniędzy podatników). Pewne zdarzenia w~procesie
 mogą występować sekwencyjnie, inne mogą nakładać się na siebie w~czasie. Jeśli
 jesteśmy w~stanie wyodrębnić unikalny ciąg występujących po sobie zdarzeń
 powiązanych tak, że ich przestawienie czy uniezależnienie od siebie jest
-niemożliwe bądź przeczyłoby logice, to taką sekwencję często określa się mianem
-wątku. Proces, podobnie jak fabuła powieści, może obejmować wiele wątków
+niemożliwe, bądź przeczyłoby logice, to taką sekwencję często określa się
+mianem wątku. Proces, podobnie jak fabuła powieści, może obejmować wiele wątków
 biegnących równocześnie.
 
-W~informatyce proces jest dynamicznym obiektem utworzonym przez system
-operacyjny w~celu wykonania pewnego programu. Procesowi przydzielane są zasoby
-takie jak czas procesora, obszar pamięci operacyjnej, pliki, urządzenia
-peryferyjne. W~pamięci komputera zwykle znajduje się wiele procesów, które są
-na różnych etapach wykonania i~współzawodniczą o~zasoby. W~obrębie jednego
-procesu występuje jeden lub więcej wątków (w uproszczeniu wątek obrazuje ciąg
-wykonywanych po sobie instrukcji procesora), wątki mogą być wykonywane
-równolegle (tj. wątek A biegnie równolegle z~wątkiem B).
+Niektóre z~wymienionych faktów mają przeniesienie na procesy w~systemach
+operacyjnych. Proces działa w~środowisku systemu operacyjnego, podlega
+restrykcjom narzucanym przez system operacyjny (np. ograniczenia dostępu do
+cudzych plików). Procesowi przydzielane są zasoby takie jak czas procesora,
+obszar pamięci operacyjnej, pliki, urządzenia peryferyjne. W~pamięci komputera
+zwykle znajduje się wiele procesów, które są na różnych etapach wykonania
+i~współzawodniczą o~zasoby. W~obrębie jednego procesu występuje jeden lub
+więcej wątków (w uproszczeniu wątek obrazuje ciąg wykonywanych po sobie
+instrukcji), wątki mogą być wykonywane równolegle
 
-Obiekt-proces (tak jak większość obiektów w~informatyce) posiada pewne atrybuty,
-oraz podlega regułom określającym jego czas życia. W~niniejszym laboratorium
-omówimy następujące zagadnienia:
+Proces, jak większość obiektów w~informatyce, posiada pewne atrybuty, można na
+nim dokonywać pewnych operacji (funkcje) oraz podlega regułom określającym jego
+czas życia. W~niniejszym laboratorium omówimy następujące zagadnienia:
 \begin{myitemize}
   \item wyświetlanie i~modyfikowanie atrybutów procesów (atrybuty),
-  \item tworzenie i usuwanie procesów (czas życia).
+  \item funkcje umożliwiające tworzenie i usuwanie procesów (czas życia).
 \end{myitemize}
 
 Często proces jest utożsamiany z~programem uruchomionym w~systemie operacyjnym.
 Rzeczywiste aplikacje mogą się jednak składać z~wielu procesów. W~niniejszym
-laboratorium zostaną pokazane przykłady prostych programów wielo-procesowych
+laboratorium zostaną pokazane przykłady prostych aplikacji wielo-procesowych
 zapisanych w~języku C.
 
 \subsection{Wyświetlanie i modyfikowanie atrybutów procesów}
 
-Atrybuty to informacje przechowywane przez obiekt-proces na rzecz systemu
-operacyjnego. Pozwalają systemowi i~użytkownikowi identyfikować procesy oraz
-np. określać jakie zasoby są aktualnie przydzielone poszczególnym procesom.
-
-Każdy proces w systemie QNX ma przypisany unikalny identyfikator PID (process
-ID), który jest liczbą całkowitą. Każdy proces (oprócz procesu ,,głównego''
-\texttt{procnto}) ma również swój proces macierzysty. Identyfikator PPID
-(parent process ID) jest identyfikatorem PID procesu macierzystego. Proces
-\texttt{procnto} ma identyfikator PID=1 i~PPID=0. Wybrane
-atrybuty i~funkcje systemowe umożliwiające dostęp do nich przedstawiono
-w~tabeli \ref{tab:HE6LE}.
+Atrybuty to pewne właściwości przypisane procesowi. Każdy proces w systemie QNX
+ma np. przypisany unikalny identyfikator PID (process ID), który jest liczbą
+całkowitą. Każdy proces (oprócz procesu ,,głównego'' \texttt{procnto}) ma
+również swój proces macierzysty. Identyfikator PPID (parent process ID) jest
+identyfikatorem PID procesu macierzystego. Proces \texttt{procnto} ma
+identyfikator PID=1. Wybrane atrybuty i~funkcje systemowe umożliwiające dostęp
+do nich przedstawiono w~tabeli \ref{tab:HE6LE}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[h!]
@@ -101,8 +98,7 @@ W systemie QNX są dostępne trzy strategie szeregowania:
 \end{myitemize}
 Są one omówione szczegółowo w dokumentacji QNX~\cite{qnx}. W tabeli
 \ref{tab:A9C2X} przedstawiono ich symbole, wykorzystywane w~wywołaniach
-systemowych.
-
+systemowych (symbole te zdefiniowane są w~pliku nagłówkowym \texttt{sched.h}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[h!]
@@ -143,7 +139,7 @@ manager procesów. W systemie QNX istnieją różne metody tworzenia procesów.
 Część z nich pochodzi wprost od systemów UNIX-owych, opartych o standard POSIX,
 inne funkcje do tworzenia procesów są charakterystyczne tylko dla systemu QNX.
 Podstawowe funkcje do tworzenia procesów przedstawiono w tabeli
-\ref{tab:IMJR3}. W ramach laboratorium omówimy cztery funkcje, służące
+\ref{tab:IMJR3}. W ramach laboratorium omówimy cztery funkcje służące
 tworzeniu procesów, tj. \texttt{system()}, \texttt{fork()}, \texttt{exec()},
 \texttt{spawn()}.
 
@@ -168,10 +164,11 @@ tworzeniu procesów, tj. \texttt{system()}, \texttt{fork()}, \texttt{exec()},
 \end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Jednym z~najprostszych sposobów uruchomienia innego procesu z~poziomu programu
-w~języku C jest użycie funkcji \texttt{system()} (przykład \ref{ex:V86MA}).
-Poleceniem tym można uruchomić program w~sposób podobny, jak to się czyni
-wprost z~powłoki. Funkcja zwraca status zakończenia uruchomionego programu.
+Jeden ze sposobów na utworzenie nowego procesu polega na uruchomieniu programu
+zapisanego w~pliku wykonywalnym. Z~poziomu języka C można tego dokonać używając
+funkcji \texttt{system()} (przykład \ref{ex:V86MA}). Poleceniem tym można
+uruchomić program w~sposób podobny, jak to się czyni wprost z~powłoki. Funkcja
+zwraca status zakończenia uruchomionego programu.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{example}{[Wywołanie programu za pomocą polecenia system()]}
@@ -223,46 +220,40 @@ wartość \texttt{-1}. Działanie funkcji przedstawiono na rysunku
 
 \subsection{Obsługa zakończenia procesów}
 
-Poprawne zakończenie procesów jest zagadnieniem, na które należy zwrócić
-szczególną uwagę przy rozwoju wiarygodnego oprogramowania w systemie QNX.
-Powodem tego jest fakt, że procesy na ogół współdziałają ze sobą, mogą być np.
-procesami macierzystymi, bądź oczekiwać na określone zdarzenia, wygenerowane
-przez inne procesy. W związku z tym, przed zakończeniem procesu należy zwolnić
-zajęte przez ten proces zasoby, zakończyć z innymi procesami scenariusze
-komunikacyjne i synchronizacyjne oraz zaczekać na zakończenie procesów
-potomnych.
+Procesy na ogół współdziałają ze sobą (np. komunikują się), mogą też być
+w~relacji pokrewieństwa (dany proces może być np. procesem macierzystym innych
+procesów). Proces może, dla przykładu, oczekiwać na określone zdarzenia,
+generowane przez inne procesy. Przedwczesne lub nieprawidłowe zakończenie
+procesu, będącego częścią aplikacji wielo-procesowej, może doprowadzić do
+błędów w~działaniu aplikacji lub niepotrzebnego zużycia zasobów systemowych.
+Przed zakończeniem procesu należy zwolnić zajęte przezeń zasoby, zakończyć z
+innymi procesami scenariusze komunikacyjne i~synchronizacyjne, a w~przypadku
+procesów macierzystych, zaczekać na zakończenie procesów potomnych.
 
-Zakończenie procesu następuje w następujących przypadkach:
+Zakończenie procesu jest inicjowane w~następujących sytuacjach:
 \begin{myitemize}
-  \item poprzez wywołanie funkcji exit(),
-  \item funkcja main() wywołuje instrukcję return lub zakończyło się działanie
-        ostatniej instrukcji kodu,
-  \item proces zostanie zakończony przez system operacyjny lub inny proces.
+  \item wywołaniem funkcji \texttt{exit()} z~poziomu procesu,
+  \item poprzez powrót z~funkcji \texttt{main()}, np. instrukcją \texttt{return},
+  \item proces zakończony/unicestwiony przez system operacyjny lub inny proces.
 \end{myitemize}
 
-Normalne zakończenie procesu może być zainicjowane przez programistę, poprzez
-wywołanie funkcji \texttt{exit()}
-
+W~dowolnym miejscu programu można zainicjować zakończenie procesu funkcją \texttt{exit()}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
  #include <stdlib.h>
  void exit( int status );
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Funkcja ta powoduje zakończenie procesu bieżącego oraz przekazanie do procesu
+macierzystego wartości \texttt{status}. Przyjęło się przekazywać wartość
+\texttt{EXIT\_SUCCESS}, gdy proces zakończył się poprawnie, bądź
+\texttt{EXIT\_FAILURE}, gdy wystąpił błąd (to samo dotyczy instrukcji
+\texttt{return} w~funkcji \texttt{main}).
 
-Funkcja ta powoduje zakończenie procesu bieżącego oraz zwrócenie statusu
-zakończonego procesu.  Status jest dostępny dla procesu macierzystego. Na ogół
-wartość statusu jest ustawiana na \texttt{EXIT\_SUCCESS}, gdy proces zakończył
-się poprawnie, bądź na wartość \texttt{EXIT\_FAILURE}, bądź innych kod, gdy
-wystąpił błąd.
-
-W przypadku, gdy proces macierzysty uruchamia procesy potomne, należy unikać
-sytuacji, gdy proces macierzysty kończy się wcześniej, niż jego procesy potomne
-(osierocenie procesów). Proces macierzysty powinien zaczekać na zakończenie
-swoich procesów potomnych. Do synchronizacji zakończenia procesów używa się
-funkcji:
-
-
+Jeśli dany proces posiada potomków, należy zapobiegać tzw. ,,osieracaniu
+procesów''. Ma to miejsce gdy proces macierzysty kończy się wcześniej niż jego
+procesy potomne. Proces macierzysty powinien zaczekać na zakończenie wszystkich
+swoich procesów potomnych. Można do tego użyć funkcji \texttt{wait()}:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
   #include <sys/types.h>
@@ -270,12 +261,14 @@ funkcji:
   pid_t wait( int * status );
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Zmienna \texttt{status} jest statusem zakończenia procesu potomnego. Funkcja
-zwraca PID zakończonego procesu, bądź -1, w przypadku gdy brak procesów
-potomnych. \texttt{wait()} blokuje proces wywołujący, do momentu, gdy któryś z procesów
-potomnych zakończył się poprawnie (np. wywołał funkcję \texttt{exit()}), bądź
-wystąpił błąd.
+Funkcja \texttt{wait()} wstrzymuje bieżący proces do momentu zakończenia
+któregokolwiek z~jego procesów potomnych. Funkcja zwraca PID zakończonego
+procesu (bądź \texttt{-1}, gdy brak procesów potomnych). Pod adres wskazany
+przez argument \texttt{status} wpisywany jest status zakończenia procesu. Ten
+\texttt{status} zawiera liczbę \texttt{status} podaną w~procesie potomnym do
+funkcji \texttt{exit()} bądź instrukcji \texttt{return}, ale wartość ta może
+być w~pewien sposób ,,zakodowana''. Do jej ,,odkodowania'' używa się makra
+\texttt{WEXITSTATUS()}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
@@ -305,28 +298,28 @@ wystąpił błąd.
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Ilustrację omawianych zagadnień stanowi niniejszy przykład.
-
+Ilustrację omawianych zagadnień stanowi przykład \ref{ex:11SSB}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{example}{[Wywołanie funkcji fork() wraz z obsługą zakończenia procesów]}
   \label{ex:11SSB}
   \lstinputlisting[style=MyCStyle,label=src:92W6D]{src/lab4/process1.c}
+  Zastosowanie funkcji \texttt{wait()} w~przykładzie \ref{ex:11SSB} powoduje,
+  że proces macierzysty nie zakończy się przed procesem potomnym.
 \end{example}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Możliwy jest scenariusz, w~którym proces potomny zainicjuje swoje zakończenie
+zanim proces macierzysty ,,dobiegnie'' do funkcji \texttt{wait()}. Zwalniane są
+wtedy wtedy wszystkie zasoby procesu potomnego, z wyjątkiem deskryptora
+procesu, czyli miejsca w pamięci operacyjnej, gdzie przechowywane są informacje
+potrzebne do zarządzania procesem. Tam zapamiętywany jest m.in. status
+zakończenia procesu potomnego, który ma być przekazany do procesu
+macierzystego. Proces oczekuje w~rekordach systemowych na zwolnienie
+deskryptora, które może być dokonane dopiero po wywołaniu \texttt{wait()} przez
+proces macierzysty. Taki stan procesu potomnego nazywa się stanem ,,zombie''.
 
-Zastosowanie funkcji \texttt{wait()} zapewnia, że proces macierzysty nie zakończy się
-przed procesem potomnym. W przypadku, gdy proces potomny zakończy się przed
-wywołaniem przez macierzysty funkcji \texttt{wait()}, proces potomny zwalnia
-wszystkie zasoby, z wyjątkiem deskryptora procesu, czyli miejsca w pamięci
-operacyjnej, gdzie przechowywane są wszystkie informacje potrzebne do
-zarządzania procesem. Status zakończenia procesu potomnego jest przekazywany do
-procesu macierzystego w deskryptorze procesu potomnego. Taki stan procesu
-potomnego nazywa się stanem ,,zombie''.
-
-Inną funkcją, pozwalającą na oczekiwanie na zakończenie konkretnego procesu
-potomnego jest funkcja \texttt{waitpid()}.
-
+Do oczekiwanie na zakończenie \textit{konkretnego} procesu można użyć funkcji
+\texttt{waitpid()}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
 #include <sys/types.h>
@@ -335,31 +328,25 @@ potomnego jest funkcja \texttt{waitpid()}.
 pid_t waitpid( pid_t pid, int *status, int options );
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Funkcja zwraca PID zakończonego procesu, bądź -1, w przypadku, gdy brak jest
-procesów potomnych. Funkcja zwraca również status zakończonego procesu poprzez
-argument \texttt{status}. Jedną z użytecznych opcji funkcji jest flaga
-\texttt{WNOHANG}, która powoduje, że proces macierzysty, w przypadku braku
-potomnych, natychmiast wraca z funkcji i kontynuuje swoje działanie i w tym
-przypadku możemy użyć takiej kombinacji do cyklicznego sprawdzania, czy proces
-potomny się zakończył.
+Funkcja zwraca PID zakończonego procesu, bądź \texttt{-1}, w przypadku, gdy
+brak jest procesów potomnych. Funkcja zwraca również status zakończonego
+procesu poprzez argument \texttt{status}. Jedną z użytecznych opcji
+(\texttt{options}) jest flaga \texttt{WNOHANG}, która powoduje, że proces
+macierzysty, w przypadku braku oczekujących procesów potomnych, natychmiast
+wraca z funkcji i kontynuuje swoje działanie i w tym przypadku możemy użyć
+takiej kombinacji do cyklicznego sprawdzania, czy proces potomny się zakończył.
 
 
 \subsection{Zastąpienie procesu bieżącego innymi procesami}
 
-Funkcje z rodziny exec() zastępują bieżący proces, nowym procesem, na podstawie
-pliku wykonywalnego, którego nazwa jest parametrem funkcji. W odróżnieniu od
-funkcji \texttt{fork()},  w przypadku użytkowania funkcji z rodziny
-\texttt{exec()}, kody procesów macierzystych i potomnych mogą być umieszczone w
-oddzielnych plikach źródłowych. Taka konfiguracja zapewnia łatwiejsze
-uruchamianie i testowanie programów. W systemie QNX zdefiniowano następującą
-rodzinę funkcji: \texttt{execl()}, \texttt{execle()}, \texttt{execlp()},
-\texttt{execlpe()}, \texttt{execv()}, \texttt{execve()}, \texttt{execvp()},
-\texttt{execvpe()}. Działanie tych funkcji jest podobne, natomiast różnią się
-listą parametrów formalnych. W trakcie laboratorium będziemy używać
-najprostszych funkcji \texttt{execl()} oraz \texttt{execv()}, których sygnatury
-wyglądają następująco:
-
+Funkcje z rodziny \texttt{exec()} zastępują bieżący proces nowym procesem,
+powstałym poprzez uruchomienie wskazanego pliku wykonywalnego. W~systemie QNX
+zdefiniowano następującą rodzinę funkcji: \texttt{execl()}, \texttt{execle()},
+\texttt{execlp()}, \texttt{execlpe()}, \texttt{execv()}, \texttt{execve()},
+\texttt{execvp()}, \texttt{execvpe()}. Działanie tych funkcji jest podobne,
+natomiast różnią się listą parametrów formalnych. W trakcie laboratorium
+będziemy używać najprostszych funkcji \texttt{execl()} oraz \texttt{execv()},
+o~następujących sygnaturach:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
 #include <process.h>
@@ -374,18 +361,15 @@ int execv( const char * path,
            char * const argv[] );
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 gdzie \texttt{path} jest ścieżką do pliku wykonywalnego, a argumenty
-\texttt{arg[0]} do \texttt{arg[n]} -- nazwą i argumentami programu. Na ostatnim
-miejscu podaje się wartość \texttt{NULL}, na oznaczenie zakończenia listy
-parametrów wywoływanego programu.
-
-Funkcja \texttt{execv()} pobiera tylko dwa argumenty i daje możliwość
-elastycznego budowania listy parametrów. Drugi z argumentów jest tablicą
-napisów, która musi być zakończona pustym wskaźnikiem \texttt{((char *)0)}.
-Wartość pola \texttt{argv[0]} musi wskazywać na nazwę procesu, który chcemy
-uruchomić.
-
+\texttt{arg0} \dots \texttt{argn} (\texttt{argv[0]} \dots \texttt{argv[n]}) --
+argumentami przekazanymi do programu. Na ostatnim miejscu podaje się wartość
+\texttt{NULL}, na oznaczenie zakończenia listy parametrów wywoływanego
+programu. Funkcja \texttt{execl()} nadaje się w~sytuacji, kiedy długość listy
+argumentów przekazywanych do uruchamianego programu jest znana już na etapie
+programowania aplikacji. Funkcja \texttt{execv()} nadaje się w~sytuacji gdy
+długość listy argumentów jest ustalana dopiero w~trakcie działania aplikacji,
+np. jest zadana przez użytkownika aplikacji.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{example}{[Wywołanie funkcji execl()]}
   \label{ex:WHF3V}
@@ -395,15 +379,13 @@ uruchomić.
 
 \subsection{Tworzenie procesów funkcją spawn()}
 
-System operacyjny QNX udostępnia rodzinę funkcji \texttt{spawn()}, służących
-do tworzenia procesów potomnych poprzez uruchomienie wskazanego pliku
-wykonywalnego. Do tej grupy zaliczamy następujące funkcje: \texttt{spawn()},
-\texttt{spawnl()}, \texttt{spawnv()}, \texttt{spawnle()}, \texttt{spawnlp()},
-\texttt{spawnlpe()}, \texttt{spawnve()}, \texttt{spawnvp()},
-\texttt{spawnvpe()}. Omówimy tylko funkcje \texttt{spawnl()}
-i~\texttt{spawnv()}, których deklaracje wyglądają
+Funkcje z~rodziny \texttt{spawn()}, służą do tworzenia procesów potomnych
+poprzez uruchomienie wskazanego pliku wykonywalnego. Do tej grupy zaliczamy
+następujące funkcje: \texttt{spawn()}, \texttt{spawnl()}, \texttt{spawnv()},
+\texttt{spawnle()}, \texttt{spawnlp()}, \texttt{spawnlpe()},
+\texttt{spawnve()}, \texttt{spawnvp()}, \texttt{spawnvpe()}. Omówimy tylko
+funkcje \texttt{spawnl()} i~\texttt{spawnv()}, których deklaracje wyglądają
 następująco:
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lstlisting}[style=MyCStyle]
 #include <process.h>
@@ -420,17 +402,11 @@ int spawnv( int mode,
             char * const argv[] );
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gdzie path jest ścieżką do pliku wykonywalnego, argumenty \texttt{arg[0]} do
-\texttt{arg[n]} stanowią nazwę i argumenty programu. Ostatnim parametrem
-funkcji jest string \texttt{NULL}, który służy do zakończenia listy parametrów
-wywoływanego programu. Parametr mode jest trybem wykonania procesu. Tryb ten
-mówi o sposobie wywołania procesu potomnego i metodzie zachowania procesu
-macierzystego, gdy proces potomny zostanie zainicjowany.
-
-Funkcja \texttt{spawnv()} pobiera trzy argumenty i daje możliwość elastycznego
-budowania listy parametrów. Trzeci argument jest tablicą napisów, która musi być
-zakończona pustym wskaźnikiem \texttt{((char *)0)}. Wartość pola
-\texttt{argv[0]} musi wskazywać na nazwę procesu, który chcemy uruchomić.
+Argument \texttt{mode} jest trybem wykonania procesu, który określa sposób
+wywołania procesu potomnego i~zachowanie procesu macierzystego, gdy proces
+potomny zostanie zainicjowany (tabela \ref{tab:V0CUU}). Pozostałe argumenty są
+interpretowane dokładnie tak samo jak w~przypadku funkcji \texttt{execl()}
+i~\texttt{execv()}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}
@@ -459,13 +435,13 @@ zakończona pustym wskaźnikiem \texttt{((char *)0)}. Wartość pola
 \end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Ilustrację wywołania funkcji stanowi przykład:
-
+Ilustrację wywołania funkcji \texttt{spawnl()} stanowi przykład \ref{ex:VSCD0}:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{example}{[Wywołanie funkcji spawnl()]}
   \label{ex:VSCD0}
-  Utworzyć  dwa programy o nazwie macierzysty i potomny, następnie wywołać
-  program macierzysty.
+  Utworzyć dwa programy (oddzielne projekty w~środowisku IDE) o~nazwie
+  \texttt{macierzysty} i~\texttt{potomny}, następnie wywołać program
+  \texttt{macierzysty}.
   \lstinputlisting[style=MyCStyle,label=src:4HNG2]{src/lab4/parent1.c}
   \lstinputlisting[style=MyCStyle,label=src:YZY1R]{src/lab4/child1.c}
 \end{example}
@@ -475,64 +451,88 @@ Ilustrację wywołania funkcji stanowi przykład:
 \subsection{Ćwiczenia}
 
 \begin{myenumerate}
-  \item Napisać program, który tworzy dwa procesy. Każdy z procesów powinien
-        utworzyć proces potomny. Wyświetlić identyfikatory procesów rodziców
-        i~potomków.
-  \item Napisać program, który tworzy proces macierzysty P1 i  potomny P2.
-        Proces P2 uruchamia inny proces P3 za pomocą funkcji \texttt{execv()}.
-        Parametry wywołania procesu P3 są przekazywane z wiersza poleceń.
-  \item Utworzyć proces macierzysty mac, który stworzy za pomocą funkcji
-        \texttt{fork()} 5 procesów potomnych oraz zaczekać na ich zakończenie.
-        Niech każdy z procesów wyświetla co jedną sekundę swój numer PID, numer
-        identyfikacyjny (w zależności od kolejności utworzenia) oraz czas
-        działania. Czas działania poszczególnych procesów podawać jako
-        argumenty do programu głównego (np.  mac 20 5 3 8 9). Na zakończenie
-        procesu potomnego o nr i wywołać funkcję \texttt{exit(i)}. Proces
-        macierzysty powinien czekać na zakończenie potomnych i wyświetlić
-        informację, który z procesów potomnych się zakończył.
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \begin{figure}[htbp]
-          \centering
-          \begin{tikzpicture}
-            \node[circle,fill=black] (o)  at ( 0.00, 0.00) {};
-            \node[circle,fill=black] (c1) at (-1.00,-1.00) {};
-            \node[circle,fill=black] (c2) at (-0.50,-1.00) {};
-            \node[circle,fill=black] (c3) at (-0.00,-1.00) {};
-            \node[circle,fill=black] (c4) at ( 0.50,-1.00) {};
-            \node[circle,fill=black] (c5) at ( 1.00,-1.00) {};
-            \node[] at (3.00,0.00) {Proces macierzysty};
-            \node[] at (3.00,-1.00) {Procesy potomne};
+  \item Napisać program, w~którym proces macierzysty \texttt{P} tworzy dwa
+    procesy potomne \texttt{R1}, \texttt{R2}. Każdy z~procesów potomnych
+    powinien utworzyć swój własny proces potomny: \texttt{R1} $\to$
+    \texttt{S1}, \texttt{R2} $\to$ \texttt{S2}. Każdy z~procesów (z~wyjątkiem
+    \texttt{P}) niech wyświetli swój PID oraz PPID.
+    \begin{figure}[htbp]
+      \centering
+      \begin{tikzpicture}
+        \node[circle,draw=black,minimum size=2.5em] (P)  at  ( 0.00, 0.00) {P};
+        \node[circle,draw=black,minimum size=2.5em] (R1) at  (-1.00,-0.75) {R1};
+        \node[circle,draw=black,minimum size=2.5em] (R2) at  ( 1.00,-0.75) {R2};
+        \node[circle,draw=black,minimum size=2.5em] (S1) at  (-1.00,-2.00) {S1};
+        \node[circle,draw=black,minimum size=2.5em] (S2) at  ( 1.00,-2.00) {S2};
 
-            \draw[-]     (o) to (c1);
-            \draw[-]     (o) to (c2);
-            \draw[-]     (o) to (c3);
-            \draw[-]     (o) to (c4);
-            \draw[-]     (o) to (c5);
-          \end{tikzpicture}
-          \caption{Struktura 1-poziomowa}
-          \label{fig:YT6VA}
-        \end{figure}
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \draw[-]     (P) to (R1);
+        \draw[-]     (P) to (R2);
+        \draw[-]     (R1) to (S1);
+        \draw[-]     (R2) to (S2);
+      \end{tikzpicture}
+      \caption{Hierarchia procesów w~ćwiczeniu 1}
+      \label{fig:1QZGH}
+    \end{figure}
+  \item Napisać program, w~którym proces macierzysty \texttt{P} tworzy jeden
+    proces potomny \texttt{R} (\texttt{fork()}). Proces \texttt{R} niech
+    wyświetli swój PID i uruchomi wskazany plik wykonywalny przy użyciu funkcji
+    \texttt{execv()}. Ścieżkę do pliku wykonywalnego oraz argumenty jego
+    wywołania przekazać z~wiersza poleceń.
+  \item Utworzyć za pomocą funkcji \texttt{fork()} pięć procesów potomnych,
+    ponumerowanych (numer kolejny \texttt{i}) od \texttt{0} do \texttt{4}.
+    Zaczekać na ich zakończenie. Niech każdy z~procesów potomnych wyświetla
+    cyklicznie co jedną sekundę swój \texttt{PID}, numer kolejny \texttt{i},
+    oraz numer cyklu. Liczba cykli do wykonania przez poszczególne procesy
+    powinny pochodzić z~tablicy zdefiniowanej wewnątrz funkcji \texttt{main()},
+    np. \texttt{int t[] = \{20, 5, 3, 8, 9\}}. Na zakończenie procesu potomnego
+    o nr \texttt{i} wywołać funkcję \texttt{exit(i)}. Proces macierzysty
+    powinien czekać na zakończenie potomnych i wyświetlić \texttt{PID}
+    zakończonego procesu oraz wartość podaną przez proces potomny do funkcji
+    \texttt{exit()}.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{figure}[htbp]
+      \centering
+      \begin{tikzpicture}
+        \node[circle,fill=black] (o)  at ( 0.00, 0.00) {};
+        \node[circle,fill=black] (c1) at (-1.00,-1.00) {};
+        \node[circle,fill=black] (c2) at (-0.50,-1.00) {};
+        \node[circle,fill=black] (c3) at (-0.00,-1.00) {};
+        \node[circle,fill=black] (c4) at ( 0.50,-1.00) {};
+        \node[circle,fill=black] (c5) at ( 1.00,-1.00) {};
+        \node[] at (2.00,0.00) {Proces macierzysty};
+        \node[] at (3.00,-1.00) {Procesy potomne};
+
+        \draw[->]  (o) to (c1);
+        \draw[->]  (o) to (c2);
+        \draw[->]  (o) to (c3);
+        \draw[->]  (o) to (c4);
+        \draw[->]  (o) to (c5);
+      \end{tikzpicture}
+      \caption{Hierarchia procesów w~ćwiczeniu 3}
+      \label{fig:YT6VA}
+    \end{figure}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   \item Zadanie jest analogiczne do poprzedniego, z tym, że struktura procesów
-        ma wyglądać jak drzewo przedstawione na rysunku \ref{fig:XDQ8Q}.
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \begin{figure}[ht]
-          \centering
-          \begin{tikzpicture}
-            \node[circle,fill=black] (c1) at ( 0.00, 2.25) {};
-            \node[circle,fill=black] (c2) at ( 0.00, 1.50) {};
-            \node[circle,fill=black] (c3) at ( 0.00, 0.75) {};
-            \node[circle,fill=black] (c4) at ( 0.00, 0.00) {};
-            \node[] at (0.00,2.75) {Proces macierzysty};
+    ma wyglądać jak drzewo przedstawione na rysunku \ref{fig:XDQ8Q}.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{figure}[ht]
+      \centering
+      \begin{tikzpicture}
+        \node[circle,fill=black] (c1) at (-1.50, 1.50) {};
+        \node[circle,fill=black] (c2) at (-1.00, 1.00) {};
+        \node[circle,fill=black] (c3) at (-0.50, 0.50) {};
+        \node[circle,fill=black] (c4) at ( 0.00, 0.00) {};
 
-            \draw[-]     (c1) to (c2) to (c3) to (c4);
-          \end{tikzpicture}
-          \caption{Struktura 3-poziomowa}
-          \label{fig:XDQ8Q}
-        \end{figure}
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        Każdy z procesów, oprócz ostatniego tworzy jeden proces potomny.
+        \draw[->]  (c1) to (c2);
+        \draw[->]  (c2) to (c3);
+        \draw[->]  (c3) to (c4);
+      \end{tikzpicture}
+      \caption{Hierarchia procesów w~ćwiczeniu 4}
+      \label{fig:XDQ8Q}
+    \end{figure}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Każdy z procesów, oprócz ostatniego tworzy jeden proces potomny.
 \end{myenumerate}
 
 
@@ -564,5 +564,5 @@ Ilustrację wywołania funkcji stanowi przykład:
 %% \label{??:IUWYS}
 %% \label{??:AKF4R}
 %% \label{??:T7RU4}
-%% \label{??:1QZGH}
 
+% vim: set spell spelllang=pl:
