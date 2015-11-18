@@ -28,7 +28,6 @@ void* lock_forward(void* unused)
 {
   (void)unused;  /* nie uzywamy 'arg' w funkcji  */
   INFORM(pthread_mutex_lock(&mutex_a));
-  sched_yield(); /* zrzeczenie sie CPU na rzecz innych watkow */
   sleep(1);      /* dajemy czas watkowi backward na lock(mutex_b) */
   INFORM(pthread_mutex_lock(&mutex_b));
 
@@ -44,7 +43,6 @@ void* lock_backward(void* unused)
 {
   (void)unused;  /* nie uzywamy 'arg' w funkcji  */
   INFORM(pthread_mutex_lock(&mutex_b));
-  sched_yield(); /* zrzeczenie sie CPU na rzecz innych watkow */
   sleep(1);      /* dajemy czas watkowi forward na lock(mutex_a) */
   INFORM(pthread_mutex_lock(&mutex_a));
 

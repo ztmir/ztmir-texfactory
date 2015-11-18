@@ -32,7 +32,6 @@ void* lock_forward(void* unused)
 {
   (void)unused;  /* nie uzywamy 'arg' w funkcji  */
   INFORM(pthread_mutex_lock(&mutex_a));
-  sched_yield(); /* zrzeczenie sie CPU na rzecz innych watkow */
   sleep(1);      /* dajemy czas watkowi backward na lock(mutex_b) */
   if(INFORM(pthread_mutex_trylock(&mutex_b)) == 0) {
     printf("lock_forward: zablokowalem mutex_a i mutex_b\n");
@@ -47,7 +46,6 @@ void* lock_backward(void* unused)
 {
   (void)unused;  /* nie uzywamy 'arg' w funkcji  */
   INFORM(pthread_mutex_lock(&mutex_b));
-  sched_yield(); /* zrzeczenie sie CPU na rzecz innych watkow */
   sleep(1);      /* dajemy czas watkowi forward na lock(mutex_a) */
   if(INFORM(pthread_mutex_trylock(&mutex_a)) == 0) {
     printf("lock_backward: zablokowalem mutex_b i mutex_a\n");
