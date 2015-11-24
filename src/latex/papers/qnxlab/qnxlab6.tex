@@ -31,7 +31,7 @@ Skompilować, uruchomić kilkakrotnie program oraz zaobserwować różne scenari
 
 \subsection{Muteksy}
 
-Popularną i ogólną metodą synchronizowania pracy wątków jest zapewnienie dostępu do współdzielonych zasobów (np. pamięci) tylko dla jednego z potencjalnie wielu wykonywanych wątków lub procesów. Wymaganie to nazywa się wzajemnym wykluczaniem (ang. mutual exclusion). System QNX RTOS dostarcza zgodnego ze standardem POSIX mechanizmu wzajemnego wykluczania zwanego muteksem, który jest specjalną formą bardziej ogólnego mechanizmu semafora. Muteks jest rodzajem blokady, którą może zająć tylko jeden wątek jednocześnie. Jeśli jeden wątek zajął muteks i drugi w tym czasie próbuje zająć muteks, to będzie on w stanie zablokowanym (ang. locked). Muteks może być zwolniony tylko przez ten wątek, który go zajął. W tej sytuacji, wątek drugi jest w stanie odblokowanym (ang. unlocked). System operacyjny gwarantuje, że nie pojawią się wyścigi pomiędzy wątkami o zajęcie muteksu. Tylko jeden wątek może zająć muteks, pozostałe będą zablokowane. Ciąg instrukcji, który jest wykonywany tylko przez jeden, z potencjalnie wielu wątków (procesów) nazywamy \underline{sekcją krytyczną} (ang. critical section). Zasadę działania muteksu, w przypadku dwóch wątków, pracujących współbieżnie przedstawia rysunek~\ref{fig:mutex}.
+Popularną i ogólną metodą synchronizowania pracy wątków jest zapewnienie dostępu do współdzielonych zasobów (np. pamięci) tylko dla jednego z potencjalnie wielu wykonywanych wątków lub procesów. Wymaganie to nazywa się wzajemnym wykluczaniem (ang. mutual exclusion). System QNX RTOS dostarcza zgodnego ze standardem POSIX mechanizmu wzajemnego wykluczania zwanego muteksem, który jest specjalną formą bardziej ogólnego mechanizmu semafora. Muteks jest rodzajem blokady, którą może zająć tylko jeden wątek jednocześnie. Jeśli jeden wątek zajął muteks i drugi w tym czasie próbuje zająć muteks, to drugi wątek zostanie zablokowany (ang. locked). Muteks może być zwolniony tylko przez ten wątek, który go zajął. W tej sytuacji, wątek drugi zostaje odblokowany (ang. unlocked). System operacyjny gwarantuje, że nie pojawią się wyścigi pomiędzy wątkami o zajęcie muteksu. Tylko jeden wątek może zająć muteks, pozostałe będą zablokowane. Ciąg instrukcji, który jest wykonywany tylko przez jeden, z potencjalnie wielu wątków (procesów) nazywamy \underline{sekcją krytyczną} (ang. critical section). Zasadę działania muteksu, w przypadku dwóch wątków, pracujących współbieżnie przedstawia rysunek~\ref{fig:mutex}.
 
 \begin{figure}[!h]
 \centering
@@ -62,8 +62,6 @@ int pthread_mutex_init(
             pthread_mutex_t* mutex,
             const pthread_mutexattr_t* attr );
 \end{lstlisting}
-
-
 gdzie
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{mutex} -- jest wskaźnikiem do obiektu, który chcemy zainicjalizować.
@@ -86,25 +84,20 @@ Funkcja  \lstinline[style=MyCStyle]{pthread_mutex_lock()} służy do zajęcia mu
 \begin{lstlisting}[style=MyCStyle]
 int pthread_mutex_lock( pthread_mutex_t* mutex );
 \end{lstlisting}
-
-gdzie mutex jest wskaźnikiem do obiektu typu \lstinline[style=MyCStyle]{pthread_mutex_t}. Zablokowane wątki mogą czekać dowolnie długo na odblokowanie muteksu. Funkcją, która umożliwia zajęcie muteksu na określony czas jest funkcja o~sygnaturze:
-
+gdzie mutex jest wskaźnikiem do obiektu typu \lstinline[style=MyCStyle]{pthread_mutex_t}. Zablokowane wątki mogą czekać dowolnie długo na odblokowanie muteksu. Funkcją, która umożliwia zajęcie muteksu na określony czas jest \lstinline[style=MyCStyle]{pthread_mutex_timedlock()} o~sygnaturze
 \begin{lstlisting}[style=MyCStyle]
 int pthread_mutex_timedlock(
                   pthread_mutex_t * mutex,
                   const struct timespec * abs_timeout );
 \end{lstlisting}
-
 gdzie \lstinline[style=MyCStyle]{mutex} jest wskaźnikiem do obiektu typu \lstinline[style=MyCStyle]{pthread_mutex_t}, \lstinline[style=MyCStyle]{abs_timeout} wskaźnikiem do struktury:
-
 \begin{lstlisting}[style=MyCStyle]
 struct timespec {
    time_t   tv_sec;
    long     tv_nsec;
 }
 \end{lstlisting}
-
-opisującej maksymalny czas, do którego ma czekać wątek, w celu odblokowania muteksu (czas absolutny).
+opisującej końcową chwilę czasową, do której wątek ma czekać na odblokowanie muteksu (czas absolutny).
 Używanie funkcji \lstinline[style=MyCStyle]{pthread_mutex_lock()}, czy \lstinline[style=MyCStyle]{pthread_mutex_timedlock()} do zajęcia muteksu powoduje zablokowanie wątków wywołujących, gdy muteks jest zajęty. Na ogół taki stan jest pożądany. Zdarzają się jednak sytuacje, kiedy wątek zamiast czekać na zwolnienie muteksu, może wykonać użyteczne operacje. Biblioteka pthread dostarcza użytecznego mechanizmu \lstinline[style=MyCStyle]{pthread_mutex_trylock()}, który jest formą nieblokującego zajęcia muteksu.
 
 \begin{lstlisting}[style=MyCStyle]
@@ -208,9 +201,7 @@ Zmienna warunkowa jest reprezentowana w programie, jako zmienna typu \lstinline[
 int pthread_cond_init( pthread_cond_t* cond,
                        pthread_condattr_t* attr );
 \end{lstlisting}
-
 gdzie
-
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{cond} -- jest wskaźnikiem do zmiennej warunkowej \lstinline[style=MyCStyle]{pthread_cond_t}.
 \item \lstinline[style=MyCStyle]{attr} -- jest albo \lstinline[style=MyCStyle]{NULL} (atrybuty domyślne) albo wskaźnikiem do struktury definiującej atrybuty muteksu.
@@ -234,9 +225,7 @@ Funkcja \lstinline[style=MyCStyle]{pthread_cond_wait()} pozwala na oczekiwanie n
 int pthread_cond_wait( pthread_cond_t* cond,
                        pthread_mutex_t* mutex );
 \end{lstlisting}
-
 gdzie
-
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{cond} -- jest wskaźnikiem do zmiennej warunkowej \lstinline[style=MyCStyle]{pthread_cond_t}.
 \item \lstinline[style=MyCStyle]{mutex} -- stowarzyszony muteks.
@@ -252,7 +241,6 @@ int pthread_cond_timedwait(
             pthread_mutex_t* mutex,
             const struct timespec* abstime );
 \end{lstlisting}
-
 gdzie
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{abstime} -- jest wskaźnikiem do struktury \lstinline[style=MyCStyle]{timespec}, która definiuje maksymalny absolutny czas blokowania wątku.
@@ -306,9 +294,7 @@ int pthread_barrier_init(
                     unsigned int count );
 
 \end{lstlisting}
-
 gdzie
-
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{barrier} -- wskaźnik do obiektu typu \lstinline[style=MyCStyle]{pthread_barrier_t}, który chcemy zainicjalizować.
 \item \lstinline[style=MyCStyle]{attr} -- jest albo \lstinline[style=MyCStyle]{NULL} (atrybuty domyślne) albo wskaźnikiem do struktury definiującej atrybuty bariery \lstinline[style=MyCStyle]{pthread_barrierattr_t}.
@@ -342,7 +328,7 @@ Program zawiera dwa wątki. Wątek 1 oblicza pewną wartość $a$, wątek 2 obli
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.35\textwidth]{img/thrd_async_example}
-\caption{Idea działania bariery}
+\caption{Przykładowy scenariusz przy braku synchronizacji wątków}
 \label{fig:thrd_async_example}
 \end{figure}
 
@@ -358,7 +344,7 @@ Program zawiera dwa wątki. Wątek 1 oblicza pewną wartość $a$, wątek 2 obli
 \label{fig:thrd_barrier_example}
 \end{figure}
 
-\lstinputlisting[caption=Brak synchronizacji pracy wątków,style=MyCStyle,label=src:synchrobarrier]{src/lab6/synchrobarrier.c}
+\lstinputlisting[caption=Synchronizacja przy pomocy bariery,style=MyCStyle,label=src:synchrobarrier]{src/lab6/synchrobarrier.c}
 
 \end{example}
 
