@@ -13,31 +13,31 @@ W trakcie laboratorium omówimy podstawowe operacje synchronizacji wątków (mut
 
 \subsection{Wyścigi}
 
-Scenariusz, w którym występuje wyścig o współdzielony zasób przedstawia przykład. Wątek główny (wątek 1) wykonuje się współbieżnie z wątkiem 2. Oba wątki współdzielą zmienną \lstinline[style=MyCStyle]{b}. Problem pojawia się w sytuacji, gdy dwa wątki próbują ''jednocześnie'' zmodyfikować dane. W rezultacie wynik operacji będzie nieprzewidywalny i zależny od kolejności wykonania ciągów instrukcji przez poszczególne wątki. Jeden ze scenariuszy przedstawiono na rysunku~\ref{fig:race}.
+Scenariusz, w którym występuje wyścig o współdzielony zasób przedstawia przykład. Wątek główny (wątek 1) wykonuje się współbieżnie z wątkiem 2. Oba wątki współdzielą zmienną \lstinline[style=MyCStyle]{b}. Problem pojawia się w sytuacji, gdy dwa wątki próbują ''jednocześnie'' zmodyfikować dane. W rezultacie wynik operacji będzie nieprzewidywalny i zależny od kolejności wykonania ciągów instrukcji przez poszczególne wątki. Jeden ze scenariuszy przedstawiono na rysunku~\ref{fig:I6GXX}.
 
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\textwidth]{img/thrd_race}
 \caption{Ilustracja wyścigu (race condition) pomiędzy dwoma wątkami}
-\label{fig:race}
+\label{fig:I6GXX}
 \end{figure}
 
-\begin{example}{[Brak synchronizacji pracy wątków]} \label{ex:nosynchro}
+\begin{example}{[Brak synchronizacji pracy wątków]} \label{ex:AO8BL}
 Skompilować, uruchomić kilkakrotnie program oraz zaobserwować różne scenariusze wykonania programu w~zależności od czasu pracy poszczególnych wątków.
 
-\lstinputlisting[caption=Ilustracja braku synchronizacji pracy wątków,style=MyCStyle,label=src:racecond]{src/lab6/racecond.c}
+\lstinputlisting[caption=Ilustracja braku synchronizacji pracy wątków,style=MyCStyle,label=src:Q1WL8]{src/lab6/racecond.c}
 \end{example}
 
 \subsection{Muteksy}
 
-Popularną i ogólną metodą synchronizowania pracy wątków jest zapewnienie dostępu do współdzielonych zasobów (np. pamięci) tylko dla jednego z potencjalnie wielu wykonywanych wątków lub procesów. Wymaganie to nazywa się wzajemnym wykluczaniem (ang. mutual exclusion). System QNX RTOS dostarcza zgodnego ze standardem POSIX mechanizmu wzajemnego wykluczania zwanego muteksem, który jest specjalną formą bardziej ogólnego mechanizmu semafora. Muteks jest rodzajem blokady, którą może zająć tylko jeden wątek jednocześnie. Jeśli jeden wątek zajął muteks i drugi w tym czasie próbuje zająć muteks, to będzie on w stanie zablokowanym (ang. locked). Muteks może być zwolniony tylko przez ten wątek, który go zajął. W tej sytuacji, wątek drugi jest w stanie odblokowanym (ang. unlocked). System operacyjny gwarantuje, że nie pojawią się wyścigi pomiędzy wątkami o zajęcie muteksu. Tylko jeden wątek może zająć muteks, pozostałe będą zablokowane. Ciąg instrukcji, który jest wykonywany tylko przez jeden, z potencjalnie wielu wątków (procesów) nazywamy \underline{sekcją krytyczną} (ang. critical section). Zasadę działania muteksu, w przypadku dwóch wątków, pracujących współbieżnie przedstawia rysunek~\ref{fig:mutex}.
+Popularną i ogólną metodą synchronizowania pracy wątków jest zapewnienie dostępu do współdzielonych zasobów (np. pamięci) tylko dla jednego z potencjalnie wielu wykonywanych wątków lub procesów. Wymaganie to nazywa się wzajemnym wykluczaniem (ang. mutual exclusion). System QNX RTOS dostarcza zgodnego ze standardem POSIX mechanizmu wzajemnego wykluczania zwanego muteksem, który jest specjalną formą bardziej ogólnego mechanizmu semafora. Muteks jest rodzajem blokady, którą może zająć tylko jeden wątek jednocześnie. Jeśli jeden wątek zajął muteks i drugi w tym czasie próbuje zająć muteks, to drugi wątek zostanie zablokowany (ang. locked). Muteks może być zwolniony tylko przez ten wątek, który go zajął. W tej sytuacji, wątek drugi zostaje odblokowany (ang. unlocked). System operacyjny gwarantuje, że nie pojawią się wyścigi pomiędzy wątkami o zajęcie muteksu. Tylko jeden wątek może zająć muteks, pozostałe będą zablokowane. Ciąg instrukcji, który jest wykonywany tylko przez jeden, z potencjalnie wielu wątków (procesów) nazywamy \underline{sekcją krytyczną} (ang. critical section). Zasadę działania muteksu, w przypadku dwóch wątków, pracujących współbieżnie przedstawia rysunek~\ref{fig:YVN1V}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.85\textwidth]{img/mutex}
 \caption{Zasada działania muteksów}
-\label{fig:mutex}
+\label{fig:YVN1V}
 \end{figure}
 
 Typowy sposób użycia muteksu składa się z następujących operacji:
@@ -62,8 +62,6 @@ int pthread_mutex_init(
             pthread_mutex_t* mutex,
             const pthread_mutexattr_t* attr );
 \end{lstlisting}
-
-
 gdzie
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{mutex} -- jest wskaźnikiem do obiektu, który chcemy zainicjalizować.
@@ -86,25 +84,20 @@ Funkcja  \lstinline[style=MyCStyle]{pthread_mutex_lock()} służy do zajęcia mu
 \begin{lstlisting}[style=MyCStyle]
 int pthread_mutex_lock( pthread_mutex_t* mutex );
 \end{lstlisting}
-
-gdzie mutex jest wskaźnikiem do obiektu typu \lstinline[style=MyCStyle]{pthread_mutex_t}. Zablokowane wątki mogą czekać dowolnie długo na odblokowanie muteksu. Funkcją, która umożliwia zajęcie muteksu na określony czas jest funkcja o~sygnaturze:
-
+gdzie mutex jest wskaźnikiem do obiektu typu \lstinline[style=MyCStyle]{pthread_mutex_t}. Zablokowane wątki mogą czekać dowolnie długo na odblokowanie muteksu. Funkcją, która umożliwia zajęcie muteksu na określony czas jest \lstinline[style=MyCStyle]{pthread_mutex_timedlock()} o~sygnaturze
 \begin{lstlisting}[style=MyCStyle]
 int pthread_mutex_timedlock(
                   pthread_mutex_t * mutex,
                   const struct timespec * abs_timeout );
 \end{lstlisting}
-
 gdzie \lstinline[style=MyCStyle]{mutex} jest wskaźnikiem do obiektu typu \lstinline[style=MyCStyle]{pthread_mutex_t}, \lstinline[style=MyCStyle]{abs_timeout} wskaźnikiem do struktury:
-
 \begin{lstlisting}[style=MyCStyle]
 struct timespec {
    time_t   tv_sec;
    long     tv_nsec;
 }
 \end{lstlisting}
-
-opisującej maksymalny czas, do którego ma czekać wątek, w celu odblokowania muteksu (czas absolutny).
+opisującej końcową chwilę czasową, do której wątek ma czekać na odblokowanie muteksu (czas absolutny).
 Używanie funkcji \lstinline[style=MyCStyle]{pthread_mutex_lock()}, czy \lstinline[style=MyCStyle]{pthread_mutex_timedlock()} do zajęcia muteksu powoduje zablokowanie wątków wywołujących, gdy muteks jest zajęty. Na ogół taki stan jest pożądany. Zdarzają się jednak sytuacje, kiedy wątek zamiast czekać na zwolnienie muteksu, może wykonać użyteczne operacje. Biblioteka pthread dostarcza użytecznego mechanizmu \lstinline[style=MyCStyle]{pthread_mutex_trylock()}, który jest formą nieblokującego zajęcia muteksu.
 
 \begin{lstlisting}[style=MyCStyle]
@@ -123,24 +116,25 @@ Funkcja \lstinline[style=MyCStyle]{pthread_mutex_unlock()} zwalnia muteks. Gdy i
 \centering
 \includegraphics[width=0.3\textwidth]{img/thrd_mutex}
 \caption{Przykład użycia muteksów}
-\label{fig:mutex}
+\label{fig:GMVES}
 \end{figure}
 
 \begin{example}{[Synchronizacja pracy wątków]}
-Przykład jest modyfikacją przykładu~\ref{ex:nosynchro} i~pokazuje sposób użycia muteksu do ochrony wspólnych zasobów. Skompilować, uruchomić program oraz prześledzić jego działanie.
+Przykład jest modyfikacją przykładu~\ref{ex:AO8BL} i~pokazuje sposób użycia muteksu do ochrony wspólnych zasobów. Skompilować, uruchomić program oraz prześledzić jego działanie.
 
-\lstinputlisting[caption=Przykład użycia muteksów,style=MyCStyle,label=src:mutex]{src/lab6/mutex.c}
+\lstinputlisting[caption=Przykład użycia muteksów,style=MyCStyle,label=src:ZADF9]{src/lab6/mutex.c}
+
 \end{example}
 
 \subsubsection{Problemy przy stosowaniu muteksów}
 
-\textbf{Zakleszczenia}. Czasami użycie jednego muteksu do ochrony wspólnych danych jest niewystarczające. W przypadku jednoczesnego stosowania więcej niż jednego muteksu pojawiają się problemy, które nie występują, gdy stosujemy jeden muteks. Jednym z nich jest zakleszczenie (ang. deadlock), czyli sytuacja, gdy dwa (lub więcej wątków) czekają na siebie nawzajem, zajmując muteks (zasób) i jednocześnie czekają na zwolnienie innego muteksu (zasobu), zajętego przez inne wątki, potrzebnego do kontynuacji swojego działania. Klasyczną sytuacją jest scenariusz przedstawiony na rysunku~\ref{fig:deadlock}.
+\textbf{Zakleszczenia}. Czasami użycie jednego muteksu do ochrony wspólnych danych jest niewystarczające. W przypadku jednoczesnego stosowania więcej niż jednego muteksu pojawiają się problemy, które nie występują, gdy stosujemy jeden muteks. Jednym z nich jest zakleszczenie (ang. deadlock), czyli sytuacja, gdy dwa (lub więcej wątków) czekają na siebie nawzajem, zajmując muteks (zasób) i jednocześnie czekają na zwolnienie innego muteksu (zasobu), zajętego przez inne wątki, potrzebnego do kontynuacji swojego działania. Klasyczną sytuacją jest scenariusz przedstawiony na rysunku~\ref{fig:W16R0}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\textwidth]{img/deadlock}
 \caption{Sytuacja zakleszczenia wątków (deadlock)}
-\label{fig:deadlock}
+\label{fig:W16R0}
 \end{figure}
 
 Oba wątki mogą ukończyć pierwszy etap scenariusza (zablokowanie na muteksach  \lstinline[style=MyCStyle]{mutex_a} oraz  \lstinline[style=MyCStyle]{mutex_b}) orientacyjnie w tym samym czasie. Jeśli ciąg instrukcji będzie taki, że np. wątek 2 najpierw zablokuje  \lstinline[style=MyCStyle]{mutex_b}, to wątek 1 zostanie zablokowany na muteksie, który jest już zajęty przez wątek 2, a następnie dojdzie do zablokowania wątku 2. Istnieją dwa typowe rozwiązania tego problemu:
@@ -153,13 +147,13 @@ Oba wątki mogą ukończyć pierwszy etap scenariusza (zablokowanie na muteksach
 \begin{example}{[Zakleszczenie wątków]}
 Przykład pokazuje zakleszczenie wątków. Skompilować i uruchomić program.
 
-\lstinputlisting[caption=Deadlock,style=MyCStyle,label=src:asynchron]{src/lab6/deadlock1.c}
+\lstinputlisting[caption=Deadlock,style=MyCStyle,label=src:5JNSL]{src/lab6/deadlock1.c}
 \end{example}
 
 \begin{example}{[Użycie \texttt{pthread\_mutex\_trylock()} dla uniknięcia zakleszczenia wątków]}
 Przykład pokazuje użycie funkcji \texttt{pthread\_mutex\_trylock()}. Skompilować i uruchomić program.
 
-\lstinputlisting[caption=Nieblokujące próbkowanie muteksów (\texttt{thread\_mutex\_trylock()}),style=MyCStyle,label=src:asynchron]{src/lab6/deadlock2.c}
+\lstinputlisting[caption=Nieblokujące próbkowanie muteksów (\texttt{thread\_mutex\_trylock()}),style=MyCStyle,label=src:7DECG]{src/lab6/deadlock2.c}
 \end{example}
 
 \textbf{Inwersja priorytetów}. Inwersja priorytetów jest problemem, który pojawia się w sytuacji, gdy występują conajmniej trzy wątki o różnych priorytetach. Istnieje wtedy konflikt pomiędzy wymaganiami nakładanymi przez metody synchronizacji (np. muteksy), a wymaganiami, dotyczącymi szeregowania wątków. Wykonywany jest wątek o niższym priorytecie, w sytuacji, gdy wątek o wyższym priorytecie został zablokowany na operacji synchronizacyjnej.
@@ -208,9 +202,7 @@ Zmienna warunkowa jest reprezentowana w programie, jako zmienna typu \lstinline[
 int pthread_cond_init( pthread_cond_t* cond,
                        pthread_condattr_t* attr );
 \end{lstlisting}
-
 gdzie
-
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{cond} -- jest wskaźnikiem do zmiennej warunkowej \lstinline[style=MyCStyle]{pthread_cond_t}.
 \item \lstinline[style=MyCStyle]{attr} -- jest albo \lstinline[style=MyCStyle]{NULL} (atrybuty domyślne) albo wskaźnikiem do struktury definiującej atrybuty muteksu.
@@ -234,9 +226,7 @@ Funkcja \lstinline[style=MyCStyle]{pthread_cond_wait()} pozwala na oczekiwanie n
 int pthread_cond_wait( pthread_cond_t* cond,
                        pthread_mutex_t* mutex );
 \end{lstlisting}
-
 gdzie
-
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{cond} -- jest wskaźnikiem do zmiennej warunkowej \lstinline[style=MyCStyle]{pthread_cond_t}.
 \item \lstinline[style=MyCStyle]{mutex} -- stowarzyszony muteks.
@@ -252,7 +242,6 @@ int pthread_cond_timedwait(
             pthread_mutex_t* mutex,
             const struct timespec* abstime );
 \end{lstlisting}
-
 gdzie
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{abstime} -- jest wskaźnikiem do struktury \lstinline[style=MyCStyle]{timespec}, która definiuje maksymalny absolutny czas blokowania wątku.
@@ -270,18 +259,18 @@ Funkcja odblokowuje wątek o najwyższym priorytecie, który czeka na zmiennej w
 int pthread_cond_broadcast( pthread_cond_t* cond );
 \end{lstlisting}
 
-Wątki są odblokowane w zależności od wysokości priorytetów. W przypadku, gdy istnieje kilka wątków, o takich samych priorytetach, to wątki będą odblokowywane wg strategii FIFO. Działanie zmiennej warunkowej przedstawiono na rysunku~\ref{fig:condvar}.
+Wątki są odblokowane w zależności od wysokości priorytetów. W przypadku, gdy istnieje kilka wątków, o takich samych priorytetach, to wątki będą odblokowywane wg strategii FIFO. Działanie zmiennej warunkowej przedstawiono na rysunku~\ref{fig:K0XHJ}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.75\textwidth]{img/condvar}
 \caption{Idea działania zmiennej warunkowej}
-\label{fig:condvar}
+\label{fig:K0XHJ}
 \end{figure}
 
 \begin{example}{[Zmienne warunkowe]}
 Program tworzy trzy wątki. Wątek główny pracuje jako zarządca (manager) i co 2 sekundy deleguje do pracy jeden z dwóch wątków wykonawczych. Realizacja zadania zajmuje każdemu z wątków wykonawców 3 sekundy. Skompilować program, uruchomić i prześledzić jego współbieżną pracę.
-\lstinputlisting[caption=Zastosowanie zmiennej warunkowej,style=MyCStyle,label=src:condvar]{src/lab6/condvar.c}
+\lstinputlisting[caption=Zastosowanie zmiennej warunkowej,style=MyCStyle,label=src:LX7ME]{src/lab6/condvar.c}
 \end{example}
 
 \subsection{Bariery}
@@ -306,9 +295,7 @@ int pthread_barrier_init(
                     unsigned int count );
 
 \end{lstlisting}
-
 gdzie
-
 \begin{myitemize}
 \item \lstinline[style=MyCStyle]{barrier} -- wskaźnik do obiektu typu \lstinline[style=MyCStyle]{pthread_barrier_t}, który chcemy zainicjalizować.
 \item \lstinline[style=MyCStyle]{attr} -- jest albo \lstinline[style=MyCStyle]{NULL} (atrybuty domyślne) albo wskaźnikiem do struktury definiującej atrybuty bariery \lstinline[style=MyCStyle]{pthread_barrierattr_t}.
@@ -342,23 +329,23 @@ Program zawiera dwa wątki. Wątek 1 oblicza pewną wartość $a$, wątek 2 obli
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.35\textwidth]{img/thrd_async_example}
-\caption{Idea działania bariery}
+\caption{Przykładowy scenariusz przy braku synchronizacji wątków}
 \label{fig:thrd_async_example}
 \end{figure}
 
 \lstinputlisting[caption=Brak synchronizacji pracy wątków,style=MyCStyle,label=src:nosynchro]{src/lab6/nosynchro.c}
 \end{example}
 
-\begin{example}{[Użycie bariery]} Poniższy przykład jest modyfikacją poprzedniego. Obliczenia zsynchronizowano używając bariery -- zobacz rysunek~\ref{fig:thrd_barrier_example}.
+\begin{example}{[Użycie bariery]} Poniższy przykład jest modyfikacją poprzedniego. Obliczenia zsynchronizowano używając bariery -- zobacz rysunek~\ref{fig:P4LGD}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.35\textwidth]{img/thrd_barrier_example}
 \caption{Idea działania bariery}
-\label{fig:thrd_barrier_example}
+\label{fig:P4LGD}
 \end{figure}
 
-\lstinputlisting[caption=Brak synchronizacji pracy wątków,style=MyCStyle,label=src:synchrobarrier]{src/lab6/synchrobarrier.c}
+\lstinputlisting[caption=Synchronizacja przy pomocy bariery,style=MyCStyle,label=src:V3ZB9]{src/lab6/synchrobarrier.c}
 
 \end{example}
 
@@ -377,18 +364,32 @@ Całkę oznaczoną możemy aproksymować jako sumę:
 \sum_{i=0}^N\frac{4}{1+x_i^2}\Delta x\approx\pi
 \end{equation}
 
-Ilustrację graficzną aproksymacji liczby $\pi$ można znaleźć na rysunku~\ref{fig:piApprox}. Należy zadeklarować sumę, jak zmienną globalną oraz obliczać ją w sekcji krytycznej. Synchronizację dostępu do zmiennej globalnej zapewnić poprzez zastosowanie muteksów.
+Ilustrację graficzną aproksymacji liczby $\pi$ można znaleźć na rysunku~\ref{fig:Q2SVD}. Należy zadeklarować sumę, jak zmienną globalną oraz obliczać ją w sekcji krytycznej. Synchronizację dostępu do zmiennej globalnej zapewnić poprzez zastosowanie muteksów.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.4\textwidth]{img/piApprox}
 \caption{Idea aproksymacji liczby $\pi$}
-\label{fig:piApprox}
+\label{fig:Q2SVD}
 \end{figure}
 
-\lstinputlisting[caption=Kod źródłowy sekwencyjnej wersji do obliczania liczby $\pi$,style=MyCStyle,label=src:piApprox]{src/lab6/piApprox.c}
+\lstinputlisting[caption=Kod źródłowy sekwencyjnej wersji do obliczania liczby $\pi$,style=MyCStyle,label=src:9GV4V]{src/lab6/piApprox.c}
 
 \item Należy przeczytać tekst dot. inwersji prioryterów w~oprogramowaniu sondy marsjańskiej Pathfinder  \href{http://research.microsoft.com/en-us/um/people/mbj/mars\_pathfinder/Mars\_Pathfinder.html}{http://research.microsoft.com/en-us/um/people/mbj/mars\_pathfinder/Mars\_Pathfinder.html}.
 \end{myenumerate}
 
 \cleardoublepage
+
+%% \label{??:OY5TT}
+%% \label{??:KAT9H}
+%% \label{??:RFRHK}
+%% \label{??:2TSN0}
+%% \label{??:YETAE}
+%% \label{??:BJMWB}
+%% \label{??:CIPL6}
+%% \label{??:HU8LH}
+%% \label{??:AW221}
+%% \label{??:5UPUF}
+%% \label{??:OOZ13}
+%% \label{??:YFPK9}
+%% \label{??:XYDW0}
