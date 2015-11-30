@@ -1116,7 +1116,7 @@ Polecenia można łączyć w potoki (ang. pipes). Dokonuje się tego poprzez zap
 
 Wyjście \lstinline[style=MyBashStyle]{stdout} programu1 jest podawane na wejście \lstinline[style=MyBashStyle]{stdin} programu2 itd. Kodem zakończenia potoku jest kod zwrócony przez ostatnie polecenie.
 
-Polecenie \lstinline[style=MyBashStyle]{grep} filtruje przychodzący tekst przepuszczając tylko linie tekstu pasujące do wzorca. Należy "przepompować" zawartość pliku \lstinline[style=MyBashStyle]{piszA} poleceniem \lstinline[style=MyBashStyle]{cat} do polecenia \lstinline[style=MyBashStyle]{grep}, aby wyszukać linie zawierające literę \lstinline[style=MyBashStyle]{A}.
+Polecenie \lstinline[style=MyBashStyle]{grep} filtruje przychodzący tekst przepuszczając tylko linie tekstu pasujące do wzorca. Należy ,,przepompować'' zawartość pliku \lstinline[style=MyBashStyle]{piszA} poleceniem \lstinline[style=MyBashStyle]{cat} do polecenia \lstinline[style=MyBashStyle]{grep}, aby wyszukać linie zawierające literę \lstinline[style=MyBashStyle]{A}.
 
 \begin{lstlisting}[style=MyBashStyle]
 # cat piszA | grep 'A'
@@ -1150,6 +1150,7 @@ Operator \lstinline[style=MyBashStyle]{&&} umożliwia wykonanie następnego pole
 
 \begin{lstlisting}[style=MyBashStyle]
 # cat piszA | grep 'A' && echo "Znaleziono"
+Znaleziono
 # echo $?
 0
 # cat piszA | grep 'kawa' && echo "Znaleziono"
@@ -1161,10 +1162,12 @@ Operator \lstinline[style=MyBashStyle]{&&} umożliwia wykonanie następnego pole
 \begin{example}[Sekwencja warunkowa - alternatywa]
 Powtórzyć poprzedni przykład używając operatora \lstinline[style=MyBashStyle]{||}, zamiast \lstinline[style=MyBashStyle]{&&}.
 \begin{lstlisting}[style=MyBashStyle]
-# cat piszA | grep 'A' || echo "Znaleziono"
+# cat piszA | grep 'A' || echo "Nie znaleziono"
+echo "Zmienna A: " $A
 # echo $?
 0
-# cat piszA | grep 'kawa' || echo "Znaleziono"
+# cat piszA | grep 'kawa' || echo "Nie znaleziono"
+Nie znaleziono
 # echo $?
 0
 \end{lstlisting}
