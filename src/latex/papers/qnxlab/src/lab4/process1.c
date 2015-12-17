@@ -8,17 +8,17 @@
 
 int main()
 {
-  int child_pid;
+  int fork_pid;
   int i, j;
   int status;
 
-  child_pid = fork();
+  fork_pid = fork();
 
-  if (child_pid == -1)
+  if (fork_pid == -1)
     {
       perror("M: Nie udalo sie utworzyc procesu potomnego...\n");
     }
-  else if (child_pid == 0)
+  else if (fork_pid == 0)
     {
       /* proces potomny */
       printf("P: Proces potomny PID = %d\n",getpid());
@@ -27,23 +27,23 @@ int main()
           printf("P: pracuje %d sek. ...\n", j);
           sleep(1);
         }
-      printf("P: Zakonczenie procesu potomnego\n");
-      exit(EXIT_SUCCESS);
+      printf("P: Koniec petli\n");
     }
   else
     {
-      /* Proces macierzysty */
+      /* Proces macierzysty, fork_pid = PID procesu potomnego */
       printf("M: Proces macierzysty PID = %d\n",getpid());
       for(i = 0; i < PARENT; i++)
         {
           printf("M: pracuje %d sek. ...\n", i);
           sleep(1);
         }
+      printf("M: Koniec petli\n");
       printf("M: Czekam na potomny...\n");
-      child_pid = wait(&status);
-      printf("M: Proces potomny PID=%d zakonczony; status: %d\n", child_pid, WEXITSTATUS(status));
-
+      fork_pid = wait(&status);
+      printf("M: Proces potomny PID=%d zakonczony; status: %d\n", fork_pid, WEXITSTATUS(status));
     }
+  printf("Proces PID=%d konczy prace\n", getpid());
   return 0;
 }
 
