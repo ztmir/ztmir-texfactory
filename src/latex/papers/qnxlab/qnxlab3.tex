@@ -232,16 +232,16 @@ Większość programów zawiera pętle, umożliwiające powtarzanie określonych
 
 \begin{lstlisting}[style=MyCStyle]
 while (expression)
-{
-...block of statements to execute...
-}
+  {
+    ...block of statements to execute...
+  }
 \end{lstlisting}
 
 \begin{lstlisting}[style=MyCStyle]
 for (expression_1; expression_2; expression_3)
-{
-...block of statements to execute...
-}
+  {
+    ...block of statements to execute...
+  }
 \end{lstlisting}
 
 Pętla \lstinline[style=MyCStyle]{while} jest kontynuowana do momentu, w~którym  wyrażenie logiczne jest prawdą, przy czym warunek ten jest sprawdzany po wejściu do pętli. Pętla \lstinline[style=MyCStyle]{for} jest równoważna następującej pętli \lstinline[style=MyCStyle]{while}.
@@ -249,10 +249,10 @@ Pętla \lstinline[style=MyCStyle]{while} jest kontynuowana do momentu, w~którym
 \begin{lstlisting}[style=MyCStyle]
 expression_1;
 while (expression_2)
-{
-...block of statements...
-expression_3;
-}
+  {
+    ...block of statements...
+    expression_3;
+  }
 \end{lstlisting}
 
 Przykłady zastosowania pętli.
@@ -265,10 +265,10 @@ Przykłady zastosowania pętli.
 i = initial_i;
 
 while (i < i_max)
-{
-...block of statements...
-i = i + i_increment;
-}
+  {
+    ...block of statements...
+    i = i + i_increment;
+  }
 \end{lstlisting}
 
 \begin{myitemize}
@@ -277,9 +277,9 @@ i = i + i_increment;
 
 \begin{lstlisting}[style=MyCStyle,caption=Pętla for - przykład]
 for (i = initial_i; i <= i_max; i = i + i_increment)
-{
-...block of statements...
-}
+  {
+    ...block of statements...
+  }
 \end{lstlisting}
 
 
@@ -289,17 +289,17 @@ Składnia wyrażeń warunkowych w~konstrukcji \lstinline[style=MyCStyle]{if} wyg
 
 \begin{lstlisting}[style=MyCStyle]
 if (conditional_1) 
-{
-...block of statements executed if conditional_1 is true...
-}
+  {
+    ...block of statements executed if conditional_1 is true...
+  }
 else if (conditional_2)
-{
-...block of statements executed if conditional_2 is true...
-}
+  {
+    ...block of statements executed if conditional_1 was false and conditional_2 is true...
+  }
 else
-{
-...block of statements executed otherwise...
-}
+  {
+    ...block of statements executed otherwise...
+  }
 
 \end{lstlisting}
 
@@ -309,19 +309,14 @@ Innego typu często używaną konstrukcją warunkową jest \lstinline[style=MyCS
 switch (expression)
 {
 	case const_expression_1:
-	{
-	...block of statements...
-		break;
-	}
+      ...block of statements...
+    break;
 	case const_expression_2:
-	{
-	...block of statements...
-		break;
-	}
+      ...block of statements...
+    break;
 	default:
-	{
-	...block of statements..
-	}
+	    ...block of statements..
+    break;
 }
 \end{lstlisting}
 
@@ -500,7 +495,7 @@ Odpowiednikiem powyższych wyrażeń, pozwalających pisać do tablic zmiennych 
 
 \begin{lstlisting}[style=MyCStyle,morekeywords={scanf,sprintf}]
 sprintf(string, "format", zmienne);
-scanf(string, "format", &zmienne);
+sscanf(string, "format", &zmienne);
 \end{lstlisting}
 
 String w~składni oznacza nazwę tablicy zmiennych typu \lstinline[style=MyCStyle]{char}, bądź wskaźnik do jej pierwszego elementu.
