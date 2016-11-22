@@ -401,7 +401,7 @@ FILE* popen( const char *command, const char *mode );
 gdzie
 \begin{myitemize}
   \item \texttt{command} -- komenda, którą chcemy uruchomić jako proces potomny,
-  \item \texttt{mode} -- tryb otwierania potoku (\texttt{"r"}, bądź \texttt{"w"}).
+  \item \texttt{mode} -- tryb otwierania potoku (\texttt{\char`\"r\char`\"}, bądź \texttt{\char`\"w\char`\"}).
 \end{myitemize}
 Funkcja \texttt{popen()} uruchamia proces wskazany przez \texttt{command}
 i~tworzy potok między procesem wywołującym a~procesem \texttt{command}.
@@ -426,7 +426,7 @@ zakończenie, bądź $-1$, w przypadku błędu.
 
 \begin{example}{[Przykład pisania do potoku nienazwanego \texttt{popen()}, \texttt{pclose()}]}
   Skompilować, uruchomić program.
-  \lstinputlisting[style=MyCStyle,label=src:7EKH1]{src/lab7/redirect1.c}
+  \lstinputlisting[style=MyCStyle,label=src:7EKH1]{src/lab7/popen1.c}
 \end{example}
 
 \subsection{Potoki nazwane}
