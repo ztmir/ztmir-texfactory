@@ -1,0 +1,119 @@
+#
+# Copyright (c) 2013-2017 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE
+
+
+Import('env')
+
+import SCons.Tool.tar
+import SCons.Action
+import SCons.Util
+import platform
+
+env.Tool('texas')
+env.Tool('gnuplot')
+
+# Convert SVG to PDF. If we have inkscape, we use it, if not, we try
+# imagemagick.
+inkscapes = [ 'inkscape' ]
+try:
+    env['BUILDERS']['SVGPDF']
+except KeyError:
+    try:
+        env['INKSCAPE']
+    except KeyError:
+        env['INKSCAPE'] = env.Detect(inkscapes) or inkscapes[0]
+    env['INKSCAPECOM'] = "$INKSCAPE --without-gui $INKSCAPEFLAGS --file=$SOURCE --export-pdf=$TARGET"
+    env['INKSCAPEFLAGS'] = SCons.Util.CLVar('--export-area-drawing')
+    env.Append(BUILDERS = {
+        'SVGPDF': env.Builder(
+            action = SCons.Action.Action("$INKSCAPECOM"),
+            src_suffix = '.svg',
+            suffix = '.pdf'
+        )
+    })
+
+# TODO: If you wish to import files from our local TeX Directory Structure
+# deps += env.TeXASImport( ['tmmlab.cls'], progname = 'latex',
+#                KPSVARIABLES = {'TEXMFHOME' : '../../../../share/texmf:'} )
+
+labs = {
+  'tmmlab11' : {
+    'version' : '0.1.4',
+    'svgs'    : [ 'lab11/strugarka.svg',
+                  'lab11/strugarka-schemat.svg',
+                  'lab11/strugarka-zwrotniki.svg',
+                  'lab11/korbowodzik-asymetryczny.svg' ],
+    'gplots'  : [['lab11/srednia.gp', {'gp_extoutputs' : 'lab11/srednia.eps'}],
+                 ['lab11/sredsin.gp', {'gp_extoutputs' : 'lab11/sredsin.eps',
+                                       'gp_inputs'     : 'lab11/sredsin.csv'}],
+                 ['lab11/erf.gp', {'gp_extoutputs' : 'lab11/erf.eps' }]]
+#    'deps'    : [],
+  },
+  'tmmlab12' : {
+    'version' : '0.2.4',
+    'svgs'    : [],
+    'gplots'  : [],
+#    'deps'    : [],
+  }
+}
+
+# common deps
+deps =  [ 'tmmlab.cls', 'titlepage.svg' ]
+
+
+for name, lab in labs.items():
+    labvers = lab.get('version')
+    labdeps = lab.get('deps',[]) + deps
+    labplts = []
+
+    for svg in lab.get('svgs',[]):
+        env.SVGPDF(svg)
+    for gp in lab.get('gplots',[]):
+        kw = dict()
+        try:
+            kw = gp[1]
+        except IndexError:
+            pass
+        labdeps += (env.GplotGraph(gp[0], **kw)[1:])
+
+
+    pdf = env.TeXASPDF(name, "%s.tex" % name, deps = labdeps, version = labvers)
+
+    # Tar is unavailable on some platforms (windows e.g) ...
+    # On mingw/windows (BASH CLI for example) it has a bug with commandline paths
+    # handling (e.g. 'a\t' is interpreted as a + tab).
+    if SCons.Tool.tar.exists(env) and not platform.system() == 'Windows':
+        src = env.TeXASChildren(pdf)
+        tgz = env.TeXASTarGz(name, src, strip_dirs = '..', version = labvers)
+    else:
+        tgz = []
+
+    env.Alias(name, pdf + tgz)
+    env.AlwaysBuild(name)
+
+env.Alias('tmmlab', labs.keys())
+env.AlwaysBuild('tmmlab')
+
+# Local Variables:
+# # tab-width:4
+# # indent-tabs-mode:nil
+# # End:
+# vim: set syntax=python expandtab tabstop=4 shiftwidth=4:

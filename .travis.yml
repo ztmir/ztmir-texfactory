@@ -7,6 +7,12 @@ before_install:
   - which "python"
   - python -c "import sys; print(sys.path);"
 
+addons:
+  apt:
+    packages:
+      - inkscape
+      - gnuplot
+      - ghostscript
 cache:
   directories:
     - $HOME/.local/texlive

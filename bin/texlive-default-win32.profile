@@ -14,7 +14,7 @@ binary_win32 1
 ##collection-context 1
 collection-fontsextra 1
 collection-fontsrecommended 1
-##collection-fontutils 1
+collection-fontutils 1
 ##collection-formatsextra 0
 ##collection-games 0
 ##collection-genericextra 1
@@ -59,13 +59,13 @@ option_adjustrepo 1
 option_autobackup 1
 option_backupdir tlpkg/backups
 option_desktop_integration 0
-option_doc 1
+option_doc 0
 option_file_assocs 0
-option_fmt 1
+option_fmt 0
 option_letter 0
 option_path 1
 option_post_code 1
-option_src 1
+option_src 0
 option_sys_bin /usr/local/bin
 option_sys_info /usr/local/share/info
 option_sys_man /usr/local/share/man

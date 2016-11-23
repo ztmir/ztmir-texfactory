@@ -1,0 +1,17 @@
+model = 'Shaper A'
+a = 40
+b = 135
+r = 20
+c = 0
+Ax = -30
+Ay = -75
+Dx = -50
+Dy = 50
+om = 1
+xmin = -80
+xmax = 80
+ymin = -100
+ymax = 60
+phi = -3.11E-32
+alpha = -0.23
+beta = 1.44
