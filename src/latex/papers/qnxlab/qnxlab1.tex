@@ -150,9 +150,9 @@ vi plikPoranny
 Wykonać następujące eksperymenty:
 
 \begin{myitemize}
-\item Wykasować tekst \lstinline[style=MyBashStyle]{Tytul:} litera po literze poleceniem \lstinline[style=MyBashStyle]{x}.
+  \item Wykasować tekst \lstinline[style=MyBashStyle]{Tytul:} litera po literze poleceniem \lstinline[style=MyBashStyle]{x}. Wykasować także pustą linię, powstałą w~miejscu tekstu \lstinline[style=MyBashStyle]{Tytul:} (polecenie \lstinline[style=MyBashStyle]{dd}).
 \item Klawiszami \lstinline[style=MyBashStyle]{h}, \lstinline[style=MyBashStyle]{j}, \lstinline[style=MyBashStyle]{k}, \lstinline[style=MyBashStyle]{l} przejść do linii z tekstem \lstinline[style=MyBashStyle]{Radosc o poranku}.
-\item Wykasować bieżącą linię za pomocą komendy \lstinline[style=MyBashStyle]{dd}. Wykasować także pustą linię, powstałą po tekście \lstinline[style=MyBashStyle]{Tytul:}.
+\item Wykasować bieżącą linię za pomocą komendy \lstinline[style=MyBashStyle]{dd}.
 \item Przejść do pierwszej linii pliku (\lstinline[style=MyBashStyle]{h}, \lstinline[style=MyBashStyle]{j}, \lstinline[style=MyBashStyle]{k}, \lstinline[style=MyBashStyle]{l}) i~wkleić usunięty tekst kombinacją klawiszy \lstinline[style=MyBashStyle]{Shift + P}, tak, aby cały tekst wyglądał następująco:
 \end{myitemize}
 
@@ -412,7 +412,7 @@ System operacyjny jest wyposażony w zestaw instrukcji, które umożliwiają por
 \textbf{Polecenie} & \textbf{Opis} \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{pwd}} & Wyświetlenie nazwy katalogu bieżącego (ang. print working directory) \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{cd}}  & Zmiana katalogu bieżącego (ang. change directory) \\ \hline
-\mbox{\lstinline[style=MyBashStyle]{cd..}} & Przejście do katalogu nadrzędnego \\ \hline
+\mbox{\lstinline[style=MyBashStyle]{cd ..}} & Przejście do katalogu nadrzędnego \\ \hline
 \mbox{\lstinline[style=MyBashStyle]{cd /}} & Przejście do katalogu głównego \\ \hline
 %\mbox{\lstinline[style=MyBashStyle]{cd ~}} &	Przejście do katalogu domowego \\ \hline
 \end{tabular}
@@ -568,11 +568,9 @@ Atrybuty plików oraz ich właścicieli można zmieniać - zobacz tabela \ref{ta
 \end{table}
 
 Zmiana atrybutów pliku odbywa się wg następujące składni:
-
 \begin{lstlisting}[style=MyBashStyle]
 # chmod wlasciciel akcja atrybuty
 \end{lstlisting}
-
 gdzie \lstinline[style=MyBashStyle]{wlasciciel} jest jednym ze skrótów literowych (\lstinline[style=MyBashStyle]{u}, \lstinline[style=MyBashStyle]{g}, \lstinline[style=MyBashStyle]{o}, bądź \lstinline[style=MyBashStyle]{a} - dla wszystkich użytkowników), atrybuty dotyczą oznaczeń (\lstinline[style=MyBashStyle]{r}, \lstinline[style=MyBashStyle]{w} lub \lstinline[style=MyBashStyle]{x}). Możliwe do wykonania akcje opisano w~tabeli~\ref{tab:zarzadzanie}.
 
 \begin{table}[h!]
