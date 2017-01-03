@@ -4,7 +4,7 @@
 
 Podczas rozwoju oprogramowania, np. czasu rzeczywistego, wbudowanego, graficznego, często zachodzi potrzeba przetwarzania współbieżnego, bądź równoległego, w przypadku implementacji na komputerach równoległych z~pamięcią wspólną. Współbieżność (równoległość) tę można osiągnąć poprzez używanie wątków POSIX (biblioteka \lstinline[style=MyBashStyle]{pthread}), zaimplementowanych w~systemie QNX i~opartych na standardzie \lstinline[style=MyBashStyle]{IEEE POSIX 1003.1c}.
 
-Procesy mogą być rozpatrywane jako obiekty, które mają jeden wątek sterowania. Pojęcie procesu można rozszerzyć do istnienia wielu wątków sterowania i~rozpatrywać proces jako zbiór wątków i zasobów. Wątek w~tym przypadku będzie traktowany jako elementarna, niezależna jednostka, podlegająca szeregowaniu (scheduling). Część zasobów procesu jest wspólna dla wszystkich wątków. Należą do nich:
+Dotyczczas zajmowaliśmy się procesami mającymi po jednym wątku. Pojęcie procesu można rozszerzyć do istnienia wielu wątków sterowania i~rozpatrywać proces jako zbiór wątków i zasobów. Wątek w~tym przypadku będzie traktowany jako elementarna, niezależna jednostka, podlegająca szeregowaniu (scheduling). Część zasobów procesu jest wspólna dla jego wszystkich wątków. Należą do nich:
 
 \begin{myitemize}
 \item Wspólna przestrzeń adresowa, w~szczególności zmienne statyczne i sterta.
@@ -359,19 +359,19 @@ Watek glowny zakonczony. Wyjscie.
 
 \begin{lstlisting}[style=MyCStyle]
 struct thread_data
-{
-	int	thread_id; /* ID watku */
-	int sum; /* suma kontrolna */
-	char *message;	 /* wiadomosc */
-}
+  {
+    int	cnt;          /* numer watku */
+    int sum;          /* suma kontrolna */
+    const char *msg;  /* wiadomosc */
+  }
 \end{lstlisting}
 
 gdzie
 
 \begin{myitemize}
-\item \lstinline[style=MyCStyle]{thread_id} - identyfikator wątku.
-\item \lstinline[style=MyCStyle]{sum} - suma kontrolna, będąca sumą identyfikatorów wątków (np. dla pierwszego wątku \mbox{\lstinline[style=MyCStyle]{sum=0}}, dla drugiego \lstinline[style=MyCStyle]{sum=0+1}, dla trzeciego \lstinline[style=MyCStyle]{sum=0+1+2}, itd.).
-\item \lstinline[style=MyCStyle]{message} - wskaźnik, przechowujący wiadomość, otrzymaną z~programu głównego.
+  \item \lstinline[style=MyCStyle]{cnt} - numer wątku (nadajemy sami wg kolejności tworzenia: \lstinline[style=MyCStyle]{cnt=0,1,2,...}).
+\item \lstinline[style=MyCStyle]{sum} - ,,suma kontrolna'', będąca sumą numerów wątków (np. dla pierwszego wątku \mbox{\lstinline[style=MyCStyle]{sum=0}}, dla drugiego \lstinline[style=MyCStyle]{sum=0+1}, dla trzeciego \lstinline[style=MyCStyle]{sum=0+1+2}, itd.).
+\item \lstinline[style=MyCStyle]{msg} - wskaźnik do wiadomości otrzymanej z~programu głównego.
 \end{myitemize}
 
 W programie głównym utworzyć tablicę o~następującej zawartości:
