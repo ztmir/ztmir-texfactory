@@ -38,7 +38,7 @@ int main ()
 		if (rc)
 		{
 			printf("Blad. Kod powrotu z funkcji pthread_create(): %d\n", rc);
-			exit(-1);
+			exit(1);
 		}
 	}
 	/* Oczekiwanie na watki potomne */
@@ -48,7 +48,7 @@ int main ()
 		if (rc)
 		{
 			printf("Blad. Kod powrotu z funkcji pthread_join(): %d\n", rc);
-			exit(-1);
+			exit(1);
 		}
 		printf("Watek glowny dolaczyl watek %d o statusie %d\n", i, (int)status);
 	}

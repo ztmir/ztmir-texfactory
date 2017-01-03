@@ -37,7 +37,7 @@ int main ()
 		if (rc)
 		{
 			printf("Blad. Kod powrotu z funkcji pthread_create(): %d\n", rc);
-			exit(-1);
+			exit(1);
 		}
 	}
 	printf("Watek glowny zakonczony. Wyjscie\n");
