@@ -133,20 +133,20 @@ def install_texlive(**kw):
     repository = kw.get('repository')
 
     profile = os.path.join(tempdir, 'texlive.profile')
-    
+
     args = [cmd, '-profile', profile]
     if repository:
         args += ['-repository', repository]
 
     info("starting TeX instaler", **kw)
-    info("%s" % map(lambda x : str(x), args), **kw)
-    sp = subprocess.Popen(args, env = os.environ.copy(), stdin = subprocess.PIPE)
+    info("%s" % list(map(lambda x : str(x), args)), **kw)
+    sp = subprocess.Popen(args, env = os.environ.copy(), stdin = subprocess.PIPE, universal_newlines = True)
     if platform.system() == 'Windows':
         # Answer to "Press any key to continue..."
         sp.stdin.write("\r\n")
     sp.stdin.close()
     sp.wait()
-     
+
 
 def download_and_install_texlive(**kw):
     download_texlive_installer(**kw)

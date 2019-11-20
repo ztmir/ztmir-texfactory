@@ -13,10 +13,15 @@
 /err
 /out
 /repl.sed
+/tmp
 
 # Python generated stuff
 *.py[cod]
 __pycache__
+
+# virtualenv
+/.venv/
+/venv/
 
 
 # TeX intermediate files
