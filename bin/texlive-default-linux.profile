@@ -1,12 +1,12 @@
 # Default texlive.profile for Linux-based CI
 selected_scheme scheme-small
-TEXDIR $HOME/TeXLive2015
-TEXMFCONFIG ~/.texlive2015/texmf-config
+TEXDIR $HOME/.local/texlive
+TEXMFCONFIG ~/.texlive/texmf-config
 TEXMFHOME ~/texmf
 TEXMFLOCAL ~/.local/texlive/texmf-local
-TEXMFSYSCONFIG $HOME/TeXLive2015/texmf-config
-TEXMFSYSVAR $HOME/TeXLive2015/texmf-var
-TEXMFVAR ~/.texlive2015/texmf-var
+TEXMFSYSCONFIG $HOME/.local/texlive/texmf-config
+TEXMFSYSVAR $HOME/.local/texlive/texmf-var
+TEXMFVAR ~/.texlive/texmf-var
 binary_x86_64-linux 1
 ##collection-basic 1
 ##collection-bibtexextra 1
@@ -44,7 +44,7 @@ collection-latex 1
 collection-latexextra 1
 collection-latexrecommended 1
 ##collection-luatex 1
-collection-mathextra 1
+collection-mathscience 1
 ##collection-metapost 1
 ##collection-music 0
 ##collection-omega 0
@@ -55,7 +55,6 @@ collection-mathextra 1
 ##collection-science 1
 ##collection-texworks 0
 ##collection-xetex 0
-in_place 0
 option_adjustrepo 1
 option_autobackup 1
 option_backupdir tlpkg/backups
@@ -64,7 +63,6 @@ option_doc 1
 option_file_assocs 1
 option_fmt 1
 option_letter 0
-option_menu_integration 1
 option_path 0
 option_post_code 1
 option_src 1

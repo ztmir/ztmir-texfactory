@@ -1,21 +1,21 @@
 environment:
 
   matrix:
-    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python37"
 
 install:
 
   - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - easy_install scons
+  - pip install -r requirements.txt
   - python bin\downloads.py
   - python bin\install-tex.py --repository="http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
-  - SET "PATH=%USERPROFILE%\\TeXLive2015\\bin\\win32;%PATH%"
+  - SET "PATH=%USERPROFILE%\\texlive\\bin\\win32;%PATH%"
 
 # Sorry, but our cache would exceed 500MB, and appveyor treats caching
 # failures as errors. At some point, however, it would be beneficial to have
 # TeXLive cached.
 #cache:
-    #- '%USERPROFILE%\TexLive2015'
+    #- '%USERPROFILE%\texlive'
 
 before_build:
 

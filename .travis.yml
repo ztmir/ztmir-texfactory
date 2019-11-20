@@ -1,34 +1,35 @@
 language: python
 
 python:
-  - "2.7"
+  - "3.7"
 
 before_install:
   - which "python"
-  - python -c "import sys; print sys.path"
+  - python -c "import sys; print(sys.path);"
 
-addons:
-  apt:
-    packages:
-      - scons
-        #- texlive-full
 cache:
   directories:
-    - $HOME/TeXLive2015
+    - $HOME/.local/texlive
 
 install:
   - python bin/downloads.py
-  - if [ -e "$HOME/TeXLive2015/bin/x86_64-linux" ]; then
-      echo "$HOME/TeXLive2015/bin/x86_64-linux EXISTS";
+  - pip install -r requirements.txt
+  # We need SCons > 3.1.1 (SCons <=3.1.1 has a bug, as described in issue #72)
+  - (mkdir -p ./tmp/scons && cd ./tmp/scons && curl -sL https://github.com/SCons/scons/archive/master.tar.gz | tar -xz --strip-components=1 -f -)
+  - if [ -e "$HOME/.local/texlive/bin/x86_64-linux" ]; then
+      echo "$HOME/.local/texlive/bin/x86_64-linux EXISTS";
     else
-      echo "$HOME/TeXLive2015/bin/x86_64-linux DOES NOT EXIST";
+      echo "$HOME/.local/texlive/bin/x86_64-linux DOES NOT EXIST";
       python bin/install-tex.py --repository="http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet";
     fi
-  - PATH="$HOME/TeXLive2015/bin/x86_64-linux:$PATH"
+  - PATH="$HOME/.local/texlive/bin/x86_64-linux:$PATH"
 
 before_script:
   - echo $PATH
-  - scons --version
+  # We need SCons > 3.1.1 (SCons <=3.1.1 has a bug, as described in issue #72)
+  # - scons --version
+  - ./tmp/scons/src/script/scons.py --version
 
 script:
-  - scons
+  #- scons
+  - ./tmp/scons/src/script/scons.py

@@ -33,7 +33,7 @@ The following software is usually available in form of installable packages and
 is present in software repositories for easy/quick installation:
 
 - `git`_ (optional) if you want to contribute to this repository,
-- `python`_ version 2.7 - as required by `scons`_ (Windows users need python 2.7 32-bit),
+- `python`_ version 3 - as required by `scons`_
 - `scons`_ to drive compilation of TeX projects,
 - `texlive`_ to compile TeX sources,
 - `bibtool`_ (optional) to perform automated processing of **BibTeX** databases,
@@ -42,12 +42,42 @@ is present in software repositories for easy/quick installation:
 - `gnuplot`_ to generate plots from numerical data,
 - `tar`_ to generate tarballs with documents sources.
 
-OTHER DEPENDENCIES
-^^^^^^^^^^^^^^^^^^
+INITIALIZING PYTHON VIRTUALENV
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Few small modules are required locally by the project. These sources are
-usually not available in the form of installable packages but may be easily
-downloaded with ``bin/downloads.py`` python script::
+We recommend using python's virtualenv to work with the project. To initialize
+virtualenv, type in your project's top directory::
+
+  python3 -m venv .venv
+
+or::
+
+  python -m virtualenv .venv
+
+if your "python" command is actually python 3.x interpreter.
+
+ACTIVATING PYHON VIRTUALENV
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The virtualenv should be activated, by executing::
+
+  . .venv/bin/activate
+
+to deactivate currently active virtualenv, use the following command::
+
+  deactivate
+
+INSTALLING BASIC DEPENDENCIES
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Scons and its modules can be easily installed into local virtualenv as follows
+(the commands should be ran in an active virtualenv)::
+
+  pip install -r requirements.txt
+
+Few small modules are required locally, that are not available in the form of
+installable. They may be easily downloaded with ``bin/downloads.py`` python
+script::
 
     python bin/downloads.py
 
@@ -60,46 +90,6 @@ The downloaded files may be further deleted with::
 
 By default the script downloads most recent versions of these packages directly
 from source repositories (git/hg).
-
-PER-TASK LIST OF REQUIRED PACKAGES
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This is a list of prerequisites for particular tasks. 
-
-TO BUILD DOCUMENTS
-``````````````````
-
-Note, that all the following dependencies may be downloaded with single command::
-
-   python bin/downloads.py
-
-Particular dependencies downloaded by the script are listed below
-
-- `SCons texas tool`_ (download it with ``python bin/downloads.py scons-texas``),
-- `SCons dvipdfm tool`_ (download it with ``python bin/downloads.py scons-dvipdfm``),
-- `SCons gnuplot tool`_ (download it with ``python bin/downloads.py scons-gnuplot``).
-
-TO RUN TESTS
-````````````
-The following software is necessary to run tests
-
-- `scons test framework`_ to run any test (download it with ``python bin/downloads.py scons-test``),
-
-Note: currently there are no test, but may be added in future.
-
-TO GENERATE API DOCUMENTATION
-`````````````````````````````
-
-- `epydoc`_,
-- `python-docutils`_,
-- `python-pygments`_.
-
-TO GENERATE USER DOCUMENTATION
-``````````````````````````````
-
-- `docbook-xml`_,
-- `xsltproc`_,
-- `SCons docbook tool`_ (download it with ``bin/download-docbook-tool.sh``).
 
 GENERATING DOCUMENTATION
 ------------------------

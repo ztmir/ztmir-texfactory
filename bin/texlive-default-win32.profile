@@ -1,12 +1,12 @@
 # Default texlive.profile for Win32-based CI
 selected_scheme scheme-small
-TEXDIR ${USERPROFILE}/TeXLive2015
-TEXMFCONFIG ~/.texlive2015/texmf-config
+TEXDIR ${USERPROFILE}/texlive
+TEXMFCONFIG ~/.texlive/texmf-config
 TEXMFHOME ~/texmf
-TEXMFLOCAL ${USERPROFILE}/TeXLive2015/texmf-local
-TEXMFSYSCONFIG ${USERPROFILE}/TeXLive2015/texmf-config
-TEXMFSYSVAR ${USERPROFILE}/TeXLive2015/texmf-var
-TEXMFVAR ~/.texlive2015/texmf-var
+TEXMFLOCAL ${USERPROFILE}/texlive/texmf-local
+TEXMFSYSCONFIG ${USERPROFILE}/texlive/texmf-config
+TEXMFSYSVAR ${USERPROFILE}/texlive/texmf-var
+TEXMFVAR ~/.texlive/texmf-var
 binary_win32 1
 ##collection-basic 1
 ##collection-bibtexextra 1
@@ -44,7 +44,7 @@ collection-latex 1
 collection-latexextra 1
 collection-latexrecommended 1
 ##collection-luatex 1
-collection-mathextra 1
+collection-mathscience 1
 ##collection-metapost 1
 ##collection-music 0
 ##collection-omega 0
@@ -55,7 +55,6 @@ collection-mathextra 1
 ##collection-science 1
 ##collection-texworks 0
 ##collection-xetex 0
-in_place 0
 option_adjustrepo 1
 option_autobackup 1
 option_backupdir tlpkg/backups
@@ -64,7 +63,6 @@ option_doc 1
 option_file_assocs 0
 option_fmt 1
 option_letter 0
-option_menu_integration 1
 option_path 1
 option_post_code 1
 option_src 1
