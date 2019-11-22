@@ -1,4 +1,418 @@
 \section{Czas w systemie QNX Neutrino. Oprogramowanie timerów i zdarzeń}
 
+\subsection{Wprowadzenie}
+
+W tym rozdziale zostaną przedstawione podstawowe informacje dotyczące pomiaru czasu w systemie operacyjnym czasu rzeczywistego QNX Neutrino. Omówione zostaną timery i zdarzenia. Timery, czyli programowalne liczniki czasu, pozwalają na jednorazowe, bądź cykliczne wywoływanie określonych akcji systemu w ustalonym czasie. Do sygnalizacji takich operacji służą zdarzenia. W końcowej części rozdziału podane zostaną przykłady kodów źródłowych aplikacji typu klient-serwer, w których zaprogramowano cykliczne zdarzenia wyzwalane przez timer. 
+
+\subsection{Czas systemowy}
+
+System QNX Neutrino zapewnia wiele usług związanych z pomiarem czasu systemowego. Procedury pomiaru czasu wiążą się z~konstrukcją sprzętową rozpatrywanego urządzenia wbudowanego. W typowym komputerze PC do pomiaru czasu służą podtrzymywane baterią układy zegara czasu rzeczywistego (na ogół rozdzielczość $1s$) lub układ oparty na generatorze kwarcowym, licznikach i systemie przerwań (rozdzielczość w zakresie $1$-$10ms$). W systemie QNX Neutrino mikrojądro dokonuje pomiaru czasu w~jednostkach zwanych taktami (\emph{tick}). Takt jest wyrażony w milisekundach. Początkowa długość taktu jest określana na podstawie częstotliwości pracy procesora. Jeśli ta częstotliwość jest większa niż 40MHz to długość trwania taktu wynosi 1ms, natomiast dla wolniejszych procesorów długość taktu jest równa 10ms. Czas w systemie QNX jest zachowany w postaci 64-bitowej liczby nanosekund, która upłynęła od $1970$ roku. 
+
+W standardzie POSIX, jak i systemie QNX Neutrino założono, że czas będzie zapisywany w strukturze \lstinline[style=MyCStyle]{timespec} postaci: 
+
+\begin{lstlisting}[style=MyCStyle]
+#include <time.h>
+struct timespec {
+   time_t   tv_sec;
+   long     tv_nsec;
+}
+\end{lstlisting}
+
+\noindent 
+gdzie \lstinline[style=MyCStyle]{tv_sec} jest liczbą sekund, jaka upłynęła od 1970 roku, natomiast \lstinline[style=MyCStyle]{tv_nsec} to liczba nanosekund, która upłynęła od początku bieżącej sekundy. Bieżący czas urządzenia jest ustalany podczas startu systemu. Data i czas mogą być pobrane np. z zegara podtrzymywanego baterią, bądź dostarczone przez sieć. Do pobrania czasu służą funkcje z rodziny POSIX, jak również funkcje dostarczane przez mikrojądro, np.:
+
+\begin{lstlisting}[style=MyCStyle]
+#include <time.h>
+int clock_gettime( clockid_t clock_id, struct timespec *tp );
+\end{lstlisting}
+
+\noindent 
+gdzie 
+
+\begin{myitemize}
+\item[] \lstinline[style=MyCStyle]{clock_id} - identyfikator typu zegara; dostępny typ to: \lstinline[style=MyCStyle]{CLOCK_REALTIME}.
+\item[] \lstinline[style=MyCStyle]{tp} - wskaźnik do struktury \lstinline[style=MyCStyle]{timespec}, gdzie przechowywany jest pobrany przez funkcję czas.
+\end{myitemize}
+
+Funkcja zwraca wartość \lstinline[style=MyCStyle]{0}, gdy sukes, a \lstinline[style=MyCStyle]{-1} gdy wystąpi błąd.
+
+
+\begin{example}{[Pomiar czasu]} Przykład ilustruje pomiar czasu wykonania operacji  za pomocą funkcji \lstinline[style=MyCStyle]{clock_gettime()}. Uruchomić poniższy przykład podając jako pierwszy argument wywołania dowolną nazwę procesu, np. \lstinline[style=MyCStyle]{./zegar1 pwd}.
+\lstinputlisting[caption=Pomiar czasu,style=MyCStyle,label=src:clockgettime]{src/lab9/clockgettime.c}
+\end{example} 
+
+Funkcja \lstinline[style=MyCStyle]{clock_getres()} pozwala na uzyskanie rozdzielczości zegara systemowego i~zachowanie jej w~strukturze typu \lstinline[style=MyCStyle]{timespec}. Funkcja posiada następującą sygnaturę: 
+
+\begin{lstlisting}[style=MyCStyle]
+#include <time.h>
+int clock_getres( clockid_t clock_id, struct timespec* res );
+\end{lstlisting}
+
+Argumenty wywołania funkcji są takie same, jak w przypadku funkcji \lstinline[style=MyCStyle]{clock_gettime()}. 
+
+\begin{example}{[Pomiar rozdzielczości zegara]} 
+Uzupełnić przykład~\ref{src:clockgettime} o~możliwość pomiaru rozdzielczości zegara systemowego. Jaka jest rozdzielczość zegara systemowego w milisekundach?
+\end{example} 
+
+Oprócz operacji pobierania czasu systemowego i~wyznaczania rozdzielczości zegara istnieje funkcja, która pozwala ustawiać czas systemowy: 
+
+\begin{lstlisting}[style=MyCStyle]
+#include <time.h>
+int clock_settime( clockid_t id, const struct timespec* tp );
+\end{lstlisting}
+
+gdzie parametry \lstinline[style=MyCStyle]{id} oraz \lstinline[style=MyCStyle]{tp} są identyczne z~parametrami funkcji \lstinline[style=MyCStyle]{clock_gettime()}. Funkcja \lstinline[style=MyCStyle]{clock_settime()} ustawia zegar systemowy \lstinline[style=MyCStyle]{id} na wartość przechowywaną w strukturze \lstinline[style=MyCStyle]{tp}. Poniższy przykład ilustruje zastosowanie funkcji \lstinline[style=MyCStyle]{clock_settime()}. 
+
+\begin{example}{[Zmiana czasu zegara]} Zmiana czasu zegara systemowego (uwaga: mogą być wymagane uprawnienia administratora).
+\lstinputlisting[caption=Zmiana czasu zegara,style=MyCStyle,label=src:clocksettime]{src/lab9/clocksettime.c}
+\end{example} 
+
+Funkcje analogiczne do wywołań POSIX-owych \lstinline[style=MyCStyle]{clock_gettime()}, \lstinline[style=MyCStyle]{clock_settime()} oraz \lstinline[style=MyCStyle]{clock_getres()} można znaleźć wśród funkcji mikrojądra QNX. Należą do nich odpowiednio funkcje: \lstinline[style=MyCStyle]{ClockTime()} oraz \lstinline[style=MyCStyle]{ClockPeriod()}. Sygnatury tych funkcji można znaleźć w stosownych dokumentacjach.  Do operacji związanych z obsługą czasu należy m.in. funkcja: 
+
+\begin{lstlisting}[style=MyCStyle]
+#include <sys/neutrino.h>
+#include <inttypes.h>
+uint64_t ClockCycles( void );
+\end{lstlisting}
+
+Funkcja \lstinline[style=MyCStyle]{ClockCycles()} odczytuje licznik cykli procesora. Przy starcie systemu licznik ten jest ustawiany na \lstinline[style=MyCStyle]{0}, a następnie zwiększany o \lstinline[style=MyCStyle]{1}, co każdy cykl procesora. Poniższy przykład ilustruje zastosowanie funkcji \lstinline[style=MyCStyle]{ClockCycles()} do określenia liczby cykli na sekundę. Dane te są pobierane przez makroinstrukcję: \lstinline[style=MyCStyle]{SYSPAGE_ENTRY(qtime)->cycles_per_sec}. 
+
+\begin{example}{[Cykle procesora]} Odczyt licznika cykli procesora.
+\lstinputlisting[caption=Cykle procesora,style=MyCStyle,label=src:cycles]{src/lab9/cycles.c}
+\end{example} 
+
+Istnieje grupa funkcji, która pozwala pobierać i ustawiać bieżącą datę w systemie. Do pobierania takich informacji służy funkcja: 
+
+\begin{lstlisting}[style=MyCStyle]
+#include <time.h>
+time_t time( time_t* tloc );
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{tloc} to wskaźnik do typu \lstinline[style=MyCStyle]{time_t}, gdzie przechowana zostanie data bądź \lstinline[style=MyCStyle]{NULL}. Funkcja \lstinline[style=MyCStyle]{time()} zwraca czas kalendarzowy w sekundach od 1 stycznia 1970. Jeśli \lstinline[style=MyCStyle]{tloc} jest różne od \lstinline[style=MyCStyle]{NULL} to czas kalendarzowy jest również zapisywany w miejsce wskazywane przez \lstinline[style=MyCStyle]{tloc}. 
+
+\begin{example}{[Pobranie daty]} Uruchomić program w konsoli.
+\lstinputlisting[caption=Pobranie daty,style=MyCStyle,label=src:date]{src/lab9/date.c}
+\end{example} 
+
+W przykładzie~\ref{src:date} użyto funkcji \lstinline[style=MyCStyle]{char* ctime( const time_t* timer )}, która pozwala na zamianę czasu sekundowego na datę w postaci tekstu. W nagłówku \lstinline[style=MyCStyle]{time.h} zdefiniowano także strukturę \lstinline[style=MyCStyle]{tm}, która opisuje czas kalendarzowy. Szczegóły dotyczące pól struktury można znaleźć pod adresem: \url{http://www.qnx.com/developers/docs/6.4.1/neutrino/lib_ref/t/tm.html}. Istnieją funkcje, które pozwalają dokonywać konwersji czasu kalendarzowego ze struktury \lstinline[style=MyCStyle]{tm} do czasu sekundowego (\lstinline[style=MyCStyle]{mktime()}), bądź na łańcuch tekstowy (\lstinline[style=MyCStyle]{asctime()}). 
+
+\subsection{Opóźnienia}
+
+W systemach czasu rzeczywistego RTOS często zachodzi potrzeba odmierzania odcinków czasu i okresowego wykonania pewnych operacji. Najprostszym sposobem osiągnięcia tego celu jest zastosowanie funkcji pozwalających na osiągnięcie opóźnień. Do grupy takich funkcji należą m.in: 
+
+\begin{myitemize}
+\item[$\bullet$] \lstinline[style=MyCStyle]{unsigned int sleep( unsigned int seconds );}
+\item[$\bullet$] \lstinline[style=MyCStyle]{int nanosleep( const struct timespec* rqtp, struct timespec* rmtp );}
+\item[$\bullet$] \lstinline[style=MyCStyle]{unsigned int delay( unsigned int duration );}
+\end{myitemize}
+
+Wykonanie tych funkcji powoduje zawieszenie procesu (wątku), do momentu, aż minie określony w argumentach funkcji czas lub proces (wątek) otrzyma sygnał o jego zakończeniu. Czas zawieszenia procesu (wątku) jest na ogół dłuższy niż założony ze względu na strategie szeregowania, priorytet procesu, ale również ze względu na błędy pomiaru czasu. Poniższy przykład ilustruje błędny pomiar czasu za pomocą funkcji \lstinline[style=MyCStyle]{delay()}. 
+
+\begin{example}{[Błędny pomiar czasu]} Uruchomić poniższy przykład z konsoli wpisując polecenie: \lstinline[style=MyCStyle]{time ./pomiar1}, które zmierzy rzeczywisty czas wykonania programu.
+\lstinputlisting[caption=Błędny pomiar czasu za pomocą funkcji delay,style=MyCStyle,label=src:delay]{src/lab9/delay.c}
+\end{example} 
+
+Czas wykonania powyższego przykładu jest znacznie większy niż założone 1000ms. Skąd ta różnica? Błędy pomiaru czasu w~przykładzie i~we wspomnianych wcześniej funkcjach pochodzą z różnego rodzaju źródeł. Omówione zostaną dwa: błędy akumulacji i błędy odwzorowania czasu w komputerze. 
+
+Pierwszym źródłem jest błąd popełniany z każdym wywołaniem funkcji \lstinline[style=MyCStyle]{delay()}. W standardzie POSIX (i rozszerzeniach czasu rzeczywistego) zakłada się, że opóźnienia związane z działaniem funkcji są dopuszczalne. Niepożądane jest przedwczesne zwrócenie sterowania z funkcji \lstinline[style=MyCStyle]{delay()}. Funkcja \lstinline[style=MyCStyle]{delay()} oraz przerwania zegarowe są wywoływane asynchronicznie. Aby zapewnić, że czas opóźnienia zakładany w funkcji \lstinline[style=MyCStyle]{delay()} rzeczywiście upłynął, jądro systemu dodaje do tego czasu jeden takt (\lstinline[style=MyCStyle]{tick}). Gdyby dodatkowy takt nie został dodany, opóźnienie w funkcji \lstinline[style=MyCStyle]{delay()} trwałoby krócej, niż czas który założono. 
+
+Drugie źródło błędów popełnianych w pomiarze czasu pochodzi z niedokładności odwzorowania jednostek czasu przez sprzętowe układy pomiaru czasu. Zaprogramowane opóźnienie \lstinline[style=MyCStyle]{1ms} jest w rzeczywistości czasem mniejszym, ale najbliższym założonej wartości. Dla komputera klasy IBM PC jest to wartość równa \lstinline[style=MyCStyle]{0.999847ms}. 
+
+Opisanymi błędami mogą być obarczone też inne funkcje, takie jak: \lstinline[style=MyCStyle]{select()}, \lstinline[style=MyCStyle]{alarm()}, \lstinline[style=MyCStyle]{nanospin()}, oraz rodzina funkcji \lstinline[style=MyCStyle]{timer_*()}.
+
+\begin{example}{[Usprawniony pomiar czasu]} Należy napisać program \lstinline[style=MyCStyle]{pomiar2}, w~którym pętla z przykładu~\ref{src:delay} będzie uruchamiana 100 razy, a czas opóźnienia będzie równy 10ms. Uruchomić przykład z~konsoli wpisując polecenie: \lstinline[style=MyCStyle]{time ./pomiar2}. 
+\end{example} 
+
+\subsection{Oprogramowanie timerów}
+
+System QNX Neutrino dostarcza pełnej funkcjonalności timerów, zgodnych ze standardem POSIX. Timery są obiektami, które pozwalają na generowanie zdarzeń, które w ustalonym czasie mają uruchomić określone operacje systemu. Zastosowanie timera wymaga przeprowadzenia kilku operacji, które mogą być wykonane za pomocą funkcji dostarczanych przez QNX Neutrino. Aby użyć timer należy: 
+
+\begin{myitemize}
+\item[$\bullet$] Określić rodzaj generowanych przez timer zdarzeń (impulsy, sygnały, utworzenie nowego wątku). 
+\item[$\bullet$] Utworzyć timer. 
+\item[$\bullet$] Określić sposób pomiaru czasu (absolutny lub względny) i tryb pracy timera (jednorazowy lub cykliczny). 
+\item[$\bullet$] Uruchomić timer. 
+\end{myitemize}
+
+\subsubsection{Zdarzenia}
+
+Zdarzenie w systemie QNX Neutrino może być jednym z występujących w Neutrino zawiadomień: impulsem, sygnałem albo zdarzeniem, polegającym na utworzeniu wątku. We wszystkich typach zawiadomień używa się zdefiniowanej w nagłówku \lstinline[style=MyCStyle]{#include <sys/siginfo.h>} struktury: 
+
+\begin{lstlisting}[style=MyCStyle]
+struct sigevent {
+int sigev_notify;
+union {
+	int sigev_signo;
+	int sigev_coid;
+	int sigev_id;
+	void (*sigev_notify_function) (union sigval);
+};
+union sigval sigev_value;
+union {
+	struct {
+	short sigev_code;
+	short sigev_priority;
+};
+pthread_attr_t *sigev_notify_attributes;
+};
+\end{lstlisting}
+
+Pole \lstinline[style=MyCStyle]{sigev_notify} określa znaczenie zawiadomienia, które zostało wysłane.  
+
+\begin{table}[h!]
+\centering
+\caption{Znaczenie pola  \lstinline[style=MyCStyle]{sigev_notify} w strukturze  \lstinline[style=MyCStyle]{sigevent}}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ |p{0.3\textwidth}|p{0.5\textwidth}|}
+\hline \rowcolor{gray}
+\textbf{Pole} & \textbf{Znaczenie} \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_PULSE}} & Wysyłanie impulsu \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_SIGNAL}} & Wysyłanie do procesu sygnału \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_SIGNAL_CODE}} & Wysyłanie do procesu sygnału z 8-bitowym kodem \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_SIGNAL_THREAD}} & Wysyłanie do wątku sygnału z 8-bitowym kodem \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_UNBLOCK}} & Odblokowanie przeterminowanego wątku \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_INTR}} & Używane w przerwaniach \\ \hline
+\mbox{\lstinline[style=MyCStyle]{SIGEV_THREAD}} & Utworzenie wątku \\ \hline
+\end{tabular}
+\label{tab:sigevent}
+\end{table}
+
+\noindent 
+\textbf{Wysyłanie impulsu}
+
+W przypadku wysyłania impulsów pole \lstinline[style=MyCStyle]{sigev_notify} przybiera wartość \lstinline[style=MyCStyle]{SIGEV_PULSE}. Pozostałe pola struktury sigevent przyjmują wartość z~tabeli~\ref{tab:sigevent2}. 
+
+\begin{table}[h!]
+\centering
+\caption{Znaczenie pola  \lstinline[style=MyCStyle]{sigevent} w przypadku zawiadomień impulsem}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ |p{0.3\textwidth}|p{0.5\textwidth}|}
+\hline \rowcolor{gray}
+\textbf{Pole} & \textbf{Znaczenie} \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_coid}} & Identyfikator COID do którego ma być wysłany impuls \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_value}} & 32-bitowa wartość związana z impulsem \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_code}} & 8-bitowy kod związany z impulsem \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_priority}} & Priorytet impulsu; wartość zero jest niedopuszczalna \\ \hline
+\end{tabular}
+\label{tab:sigevent2}
+\end{table}
+
+Struktura \lstinline[style=MyCStyle]{sigevent} może zostać zainicjalizowana przez następujące makro:
+
+\begin{lstlisting}[style=MyCStyle] 
+SIGEV_PULSE_INIT( &event, coid, priority, code, value ) 
+\end{lstlisting}
+
+
+\noindent 
+\textbf{Wysyłanie sygnałów}
+
+W przypadku wysyłania sygnałów pole \lstinline[style=MyCStyle]{sigev_notify} przybiera jedną z~wartości \lstinline[style=MyCStyle]{SIGEV_SIGNAL}, \lstinline[style=MyCStyle]{SIGEV_SIGNAL_CODE} lub \lstinline[style=MyCStyle]{SIGEV_SIGNAL_THREAD}. Pole struktury dla tego przypadku przedstawiono w tabeli~\ref{tab:sigevent3}. 
+
+
+\begin{table}[h!]
+\centering
+\caption{Znaczenie pola  \lstinline[style=MyCStyle]{sigevent} w przypadku zawiadomień sygnałów}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ |p{0.3\textwidth}|p{0.5\textwidth}|}
+\hline \rowcolor{gray}
+\textbf{Pole} & \textbf{Znaczenie} \\ \hline
+\mbox{\lstinline[style=MyCStyle]{int sigev_signo}} & Numer wysyłanego sygnału \\ \hline
+\mbox{\lstinline[style=MyCStyle]{short sigev_code}} & 8-bitowy kod związany z sygnałem \\ \hline
+\end{tabular}
+\label{tab:sigevent3}
+\end{table}
+
+Struktura \lstinline[style=MyCStyle]{sigevent} może zostać zainicjalizowana przez następujące makro: 
+
+\begin{lstlisting}[style=MyCStyle] 
+SIGEV_SIGNAL_INIT( &event, signal )
+\end{lstlisting}
+
+Parametr \lstinline[style=MyCStyle]{signal} to numer wysyłanego sygnału. W przypadku gdy wysyłany ma być sygnał z~kodem używane jest makro: 
+
+\begin{lstlisting}[style=MyCStyle] 
+SIGEV_SIGNAL_CODE_INIT( &event, signal, value, code ) 
+\end{lstlisting}
+
+Parametr \lstinline[style=MyCStyle]{value} jest interpretowany przez procedurę obsługi sygnału. Parametr code jest 8-bitowym kodem związanym z sygnałem. Jeśli sygnał ma być wysłany do określonego wątku, to do inicjacji struktury używa się następującego makra: 
+
+\begin{lstlisting}[style=MyCStyle] 
+SIGEV_SIGNAL_THREAD_INIT( &event, signal, value, code )
+\end{lstlisting}
+
+\noindent 
+\textbf{Utworzenie wątków}
+
+W przypadku gdy pole \lstinline[style=MyCStyle]{sigev_notify} przybiera wartość \lstinline[style=MyCStyle]{SIGEV_THREAD}, to zdarzenie będzie polegało na utworzeniu nowego wątku. W takim przypadku należy określić pola zdefiniowane w~tabeli~\ref{tab:sigevent4}.  
+
+\begin{table}[h!]
+\centering
+\caption{Znaczenie pola  \lstinline[style=MyCStyle]{sigevent} w przypadku utworzenia wątków}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ |p{0.3\textwidth}|p{0.5\textwidth}|}
+\hline \rowcolor{gray}
+\textbf{Pole} & \textbf{Znaczenie} \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_notify_function}} & Adres funkcji (void *)func(void *value), która będzie wywołana w nowo utworzonym wątku \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_value}} & Parametr value przekazywany do funkcji func \\ \hline
+\mbox{\lstinline[style=MyCStyle]{sigev_notify_attributes}} & Struktura atrybutów wątku, który ma być utworzony \\ \hline
+\end{tabular}
+\label{tab:sigevent4}
+\end{table}
+
+W tym przypadku do inicjalizacji struktury służy makro: 
+
+\begin{lstlisting}[style=MyCStyle] 
+SIGEV_THREAD_INIT( &event, func, value, attributes )
+\end{lstlisting}
+
+\subsubsection{Funkcje obsługi timera}
+
+Do podstawowych funkcji operujących na timerach służą funkcje tworzenia, nastawiania, usuwania i pobierania informacji o~ustawieniach obiektu. Aby utworzyć timer należy wywołać funkcję: 
+
+\begin{lstlisting}[style=MyCStyle] 
+#include <signal.h>
+#include <time.h>
+int timer_create( clockid_t clock_id,
+	struct sigevent* evp,
+	timer_t* timerid );
+\end{lstlisting}
+
+\noindent 
+gdzie 
+
+\begin{myitemize}
+\item[] \lstinline[style=MyCStyle]{clock_id } - identyfikator typu zegara; dostępny typ to: \lstinline[style=MyCStyle]{CLOCK_REALTIME}.
+\item[] \lstinline[style=MyCStyle]{evp} - struktura typu \lstinline[style=MyCStyle]{sigevent} zawierająca specyfikację generowanego zdarzenia.
+\item[] \lstinline[style=MyCStyle]{timerid} - wskaźnik do obiektu \lstinline[style=MyCStyle]{timer_t}, w~którym jest przechowywany nowy timer.
+\end{myitemize}
+
+Funkcja \lstinline[style=MyCStyle]{timer_create()} zwraca \lstinline[style=MyCStyle]{0}, gdy sukces, a \lstinline[style=MyCStyle]{-1}, jeśli wystąpi błąd. Utworzony w ten sposób timer jest w stanie nieaktywnym, aż do momentu, gdy wywołana zostanie funkcja \lstinline[style=MyCStyle]{timer_settime()}. Do zainicjowania struktury sigevent używa się makr systemowych: \lstinline[style=MyCStyle]{SIGEV_SIGNAL}, \lstinline[style=MyCStyle]{SIGEV_SIGNAL_CODE}, \lstinline[style=MyCStyle]{SIGEV_SIGNAL_THREAD}, \lstinline[style=MyCStyle]{SIGEV_PULSE}. 
+
+Po utworzeniu timera należy zdecydować o podstawowych parametrach obiektu, takich jak rodzaju czasu wyzwolenia zdarzenia (absolutny, względny) i tryb wyzwolenia (jednorazowy, periodyczny). Do ustawianie timera służy funkcja: 
+
+\begin{lstlisting}[style=MyCStyle] 
+#include <time.h>
+int timer_settime( timer_t timerid,
+	int flags,
+	struct itimerspec* value,
+	struct itimerspec* ovalue );
+\end{lstlisting}
+
+\noindent 
+gdzie 
+
+\begin{myitemize}
+\item[] \lstinline[style=MyCStyle]{timerid} - identyfikatora timera zainicjowany przez funkcję \lstinline[style=MyCStyle]{timer_create()}.
+\item[] \lstinline[style=MyCStyle]{flags} - sposób odmierzania czasu; \lstinline[style=MyCStyle]{TIMER_ABSTIME} - to czas absolutny; jeśli flaga zostanie ustawiona na \lstinline[style=MyCStyle]{0}, to określony czas jest względny.
+\item[] \lstinline[style=MyCStyle]{value} - określenie nowego czasu aktywacji we wskaźniku do struktury \lstinline[style=MyCStyle]{itimerspec}.
+\item[] \lstinline[style=MyCStyle]{ovalue} - określenie poprzedniego czasu aktywacji we wskaźniku do struktury \lstinline[style=MyCStyle]{itimerspec}.
+\end{myitemize}
+
+Pierwszy parametr \lstinline[style=MyCStyle]{timerid} powinien być zainicjalizowany przez funkcję \lstinline[style=MyCStyle]{timer_create()}. Drugi parametr zawiera ustawienia dotyczące sposobu odmierzania czasu: absolutny, czy względny. Jeśli przekazany zostanie parametr \lstinline[style=MyCStyle]{TIMER_ABSTIME}, to timer zostanie wyzwolony w ściśle określonym momencie. W przypadku gdy \lstinline[style=MyCStyle]{flags} jest równy \lstinline[style=MyCStyle]{0}, to czas aktywacji timera jest względny i określa się go względem bieżącej chwili. Trzeci parametr jest strukturą o następującej postaci: 
+
+\begin{lstlisting}[style=MyCStyle] 
+struct itimerspec {
+struct timespec it_value;
+struct timespec it_interval;
+};
+\end{lstlisting}
+
+\noindent 
+gdzie
+ 
+\begin{lstlisting}[style=MyCStyle] 
+struct timespec {
+	time_t tv_sec;
+	long tv_nsec;
+}
+\end{lstlisting}
+
+W strukturze \lstinline[style=MyCStyle]{itimerspec} występują dwa pola. Wartość \lstinline[style=MyCStyle]{it_value} określa jak długo timer względny powinien działać lub kiedy timer absolutny powinien się wyłączyć. Ustawienie wartości \lstinline[style=MyCStyle]{it_value} na zero dezaktywizuje timer. Parametr \lstinline[style=MyCStyle]{it_interval} określa wartość cyklicznego wywołania timera. W przypadku gdy wartość \lstinline[style=MyCStyle]{it_interval} jest równa \lstinline[style=MyCStyle]{0} to timer jest jednorazowy. Timer cykliczny otrzymuje się ustawiając wartość \lstinline[style=MyCStyle]{it_value} równą \lstinline[style=MyCStyle]{it_interval} i różną od zera. 
+
+Jeśli wartość \lstinline[style=MyCStyle]{ovalue} jest różna od \lstinline[style=MyCStyle]{NULL}, to funkcja \lstinline[style=MyCStyle]{timer_setttime()} zawiera wartości poprzedniego czasu aktywacji lub zero jeśli timer został wyłączony. 
+
+\begin{example}{[Timer jednorazowy, względny]}
+Przykład timera jednorazowego, względnego, który zostanie aktywowany za $5.5$ sekundy. 
+\begin{lstlisting}[style=MyCStyle] 
+it_value.tv_sec = 5;
+it_value.tv_nsec = 500000000;
+it_interval.tv_sec = 0;
+it_interval.tv_nsec = 0;
+\end{lstlisting}
+\end{example}
+
+\begin{example}{[Timer jednorazowy, absolutny]}
+Timer jednorazowy, absolutny, który został aktywowany $987654321$ sekund po $1$ stycznia $1970$, czyli w czwartek, $19$ kwietnia $2001$ roku o godzinie 00:25:21.
+\begin{lstlisting}[style=MyCStyle] 
+it_value.tv_sec = 987654321;
+it_value.tv_nsec = 0;
+it_interval.tv_sec = 0;
+it_interval.tv_nsec = 0;
+\end{lstlisting}
+\end{example}
+
+\begin{example}{[Timer cykliczny]}
+Timer cykliczny, który po upływie $1$ sekundy będzie generował zdarzenia cyklicznie co $0.5$ sekundy. 
+\begin{lstlisting}[style=MyCStyle] 
+it_value.tv_sec = 1;
+it_value.tv_nsec = 0;
+it_interval.tv_sec = 0;
+it_interval.tv_nsec = 500000000;
+\end{lstlisting}
+\end{example}
+
+W celu uzyskania informacji dotyczących czasu wyzwolenia timera można zastosować następującą funkcję: 
+
+\begin{lstlisting}[style=MyCStyle] 
+#include <time.h>
+int timer_gettime( timer_t timerid,
+                   struct itimerspec *value );
+\end{lstlisting}
+
+\noindent 
+gdzie 
+
+\begin{myitemize}
+\item[] \lstinline[style=MyCStyle]{timerid} - identyfikator timera zainicjowany przez funkcję \lstinline[style=MyCStyle]{timer_create()}.
+\item[] \lstinline[style=MyCStyle]{value} - wskaźnik do struktury \lstinline[style=MyCStyle]{itimerspec}, w~której przechowywany będzie wynik. Element \lstinline[style=MyCStyle]{it_value} zawiera czas pozostały do wyzwolenia timera, a element \lstinline[style=MyCStyle]{it_interval} zawiera wartość czasu cyklicznego wyzwalania timera. 
+\end{myitemize}
+
+Ostatnią funkcją służącą do obsługi timerów jest operacja kasowania timera: 
+
+\begin{lstlisting}[style=MyCStyle] 
+#include <time.h>
+int timer_delete( timer_t timerid );
+\end{lstlisting}
+
+gdzie \lstinline[style=MyCStyle]{timerid} jest obiektem zwracanym przez funkcję \lstinline[style=MyCStyle]{timer_create()}.  Skasowany timer wraca do puli wolnych timerów i może być użyty ponownie. Często jednak istotne jest, aby anulować timer bez jego kasowania. Operację taką można przeprowadzić ustawiając wartości \lstinline[style=MyCStyle]{it_value.tv_sec=0} oraz \lstinline[style=MyCStyle]{it_value.tv_nsec=0}. Ponowne uzbrojenie timera osiąga się przez wywołanie funkcji \lstinline[style=MyCStyle]{timer_settime()}, po uprzednim ustawieniu różnych od zera czasów wyzwolenia timera. 
+
+
+\begin{example}{[Serwer pobudzany impulsami z timera i odbierający komunikaty]} Uruchomić program \lstinline[style=MyCStyle]{client} i \lstinline[style=MyCStyle]{serwer1}. W kodzie źródłowym serwera zaprogramowano timer względny, uruchomiony pierwszy raz po \lstinline[style=MyCStyle]{4} sekundach i wyzwalany cyklicznie co \lstinline[style=MyCStyle]{2} sekundy. Oprócz impulsów z~timera, serwer jednocześnie otrzymuje wiadomości od klienta. 
+\lstinputlisting[caption=Program klienta,style=MyCStyle,label=src:client]{src/lab9/client.c}
+\lstinputlisting[caption=Program serwera nr 1,style=MyCStyle,label=src:server1]{src/lab9/server1.c}
+\label{ex:serwerimpuls}
+\end{example} 
+
+\begin{example}{[Timer cyklicznie tworzący wątki]} Uruchomić program \lstinline[style=MyCStyle]{serwer2}. Kod źródłowy klienta pozostaje taki sam, jak kod~\ref{src:client}. 
+\lstinputlisting[caption=Program serwera nr 2,style=MyCStyle,label=src:server2]{src/lab9/server2.c}
+\label{ex:timercykliczny}
+\end{example} 
+
+
+\subsection{Ćwiczenia}
+
+\begin{myenumerate}
+\item Uzupełnić przykład~\ref{ex:serwerimpuls} o możliwość odpowiedzi do klienta, która będzie potwierdzać otrzymanie impulsu od timera oraz pobrać czas, który pozostał do wyzwolenia timera za pomocą funkcji \lstinline[style=MyCStyle]{timer_gettime (timerID, &timeLeft)}.
+\item Uzupełnić przykład~\ref{ex:timercykliczny} o możliwość przeprowadzenia dodatkowych operacji w wątku cyklicznie wyzwalanym przez timer. Umożliwić przekazanie do wątku parametru \lstinline[style=MyCStyle]{chid} i \lstinline[style=MyCStyle]{coid}. Zapisać dane dotyczące licznika w pliku. 
+\end{myenumerate}
 
 \cleardoublepage
