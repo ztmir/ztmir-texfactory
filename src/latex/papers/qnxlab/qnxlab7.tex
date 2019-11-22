@@ -4,7 +4,7 @@
 Współpracujące procesy i wątki mogą komunikować się ze sobą poprzez
 zastosowanie mechanizmów komunikacji międzyprocesowej IPC (ang. Inter-Process
 Communication). System operacyjny QNX Neutrino oferuje następujące mechanizmy
-komunikacji: 
+komunikacji:
 \begin{myitemize}
   \item potoki (łącza) nienazwane (pipes) i nazwane (kolejki FIFO),
   \item komunikaty (message passing) i impulsy (pulses) – specyficzne dla QNX,
@@ -505,9 +505,9 @@ ilustruje sposób tworzenia, otwierania i~zamykania pliku FIFO.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Następny przykład jest ilustracją zastosowania potoków nazwanych do
-implementacji bardzo prostej aplikacji typu klient-serwer. W~przykładzie mamy
-proces-serwer, który akceptuje żądania klienta, przetwarza je, a następnie
-zwraca do klienta. Programy tworzą szkielet prostego systemu buforowania.
+implementacji bardzo prostego jednokierunkowgo komunikatora. W~przykładzie mamy
+proces-serwer, który odbiera komunikaty od klienta i wyprowadza je na
+standardowe wyjście. Programy tworzą szkielet prostego systemu buforowania.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{example}{[Prosty system buforowania na~bazie potoków nazwanych]}
   Skompilować, uruchomić i~przeanalizować działanie klienta i serwera.
@@ -522,7 +522,7 @@ zwraca do klienta. Programy tworzą szkielet prostego systemu buforowania.
 \begin{myenumerate}
   \item Napisać program, który otwiera plik podany jako argument wywołania i
     zlicza liczbę znaków występujących w pliku. Przetestować program na małym
-    pliku z kilkoma liniami tekstu. 
+    pliku z kilkoma liniami tekstu.
   \item Napisać następujące programy:
     \begin{myenumerate}
       \item Program tylko pisze do potoku w pętli nieskończonej po jednym
@@ -538,14 +538,14 @@ zwraca do klienta. Programy tworzą szkielet prostego systemu buforowania.
         \texttt{fcntl(fd,F\_GETFL,O\_NONBLOCK);} Stan procesów w przypadku a. i
         b. można zmienić poprzez ustawienie flagi \texttt{O\_NONBLOCK}
         wywołaniem: \texttt{fcntl(fd,F\_SETFL,O\_NONBLOCK);} Jak się
-        zachowują oba programy ? 
+        zachowują oba programy ?
     \end{myenumerate}
     \item Napisać dwa programy p1 i p2. Pierwszy z nich ma wypisywać na
       standardowe wyjście napis (funkcja \texttt{fprintf (stdout, "Tekst1")}).
       Drugi program ma czytać ze standardowego wejścia (funkcja \texttt{fscanf
       (stdin, \&zmienna)}) i wyświetlać przetworzony tekst. Wywołać i przetestować
       programy pojedynczo. Wywołać programy przez potok (p1 | p2). Zastosować
-      funkcję \texttt{join()} do połączenia obu programów. 
+      funkcję \texttt{join()} do połączenia obu programów.
     \item Programy \textbf{klient.c} i \textbf{serwer.c} tworzą prosty system
       wymiany komunikatów. Zaimplementować program, w którym klient wysyła do
       serwera nazwę pliku do utworzenia oraz dane, a serwer tworzy plik i
