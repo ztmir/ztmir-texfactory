@@ -38,7 +38,7 @@ deps = env.Glob('img/*') + env.Glob('img/*/*')
 #                KPSVARIABLES = {'TEXMFHOME' : '../../../../share/texmf:'} )
 
 name = 'qnxlab'
-version = '0.2'
+version = '0.3'
 
 pdf = env.TeXASPDF(name, '%s.tex' % name, deps = deps, version = version)
 
