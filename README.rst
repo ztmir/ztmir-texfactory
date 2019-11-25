@@ -40,7 +40,8 @@ is present in software repositories for easy/quick installation:
 - `bibclean`_ (optional) to sanity check **BibTeX** databases,
 - `jabref`_ to manage **BibTeX** databases,
 - `gnuplot`_ to generate plots from numerical data,
-- `tar`_ to generate tarballs with documents sources.
+- `tar`_ to generate tarballs with documents sources,
+- `inkscape`_ as some documents use it to convert ``*.svg`` to other formats.
 
 INITIALIZING PYTHON VIRTUALENV
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -271,3 +272,4 @@ SOFTWARE
 .. _docbook-xml: http://www.oasis-open.org/docbook/xml/
 .. _xsltproc: http://xmlsoft.org/libxslt/
 .. _gnuplot: http://www.gnuplot.info/
+.. _inkscape: https://inkscape.org/

@@ -20,8 +20,7 @@
 # SOFTWARE
 
 Import('env')
-subdirs = [ 'papers', 'labs' ]
-scripts = [ '%s/SConscript' % s for s in subdirs ]
+scripts = env.Glob('*/SConscript')
 SConscript( scripts, exports = ['env'] )
 
 # Local Variables:

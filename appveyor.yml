@@ -2,14 +2,19 @@ environment:
 
   matrix:
     - PYTHON: "C:\\Python37"
+      PYTHON_VERSION: "3.7"
 
 install:
-
-  - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install -r requirements.txt
   - python bin\downloads.py
-  - python bin\install-tex.py --repository="http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
+  - SET "PATH=C:\\Program Files\\Inkscape;%PATH%"
   - SET "PATH=%USERPROFILE%\\texlive\\bin\\win32;%PATH%"
+  - SET "PATH=C:\\Program Files\\gnuplot\\bin;%PATH%"
+  - choco install inkscape
+  - choco install gnuplot
+  - IF NOT EXIST "%USERPROFILE%\\TeXLive2017\\bin\\win32" python bin\install-tex.py --repository="http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
+  - SET "PATH=%USERPROFILE%\\TeXLive2017\\bin\\win32;%PATH%"
+  - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
 # Sorry, but our cache would exceed 500MB, and appveyor treats caching
 # failures as errors. At some point, however, it would be beneficial to have

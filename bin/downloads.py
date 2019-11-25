@@ -30,6 +30,7 @@ import tarfile
 import re
 import io
 import shutil
+import ssl
 
 try:
     # Python 3
@@ -99,7 +100,8 @@ def untar(tar, **kw):
 
 def urluntar(url, **kw):
     # Download the tar file
-    tar = tarfile.open(fileobj = io.BytesIO(urlopen(url).read()))
+    ctx = ssl.create_default_context()
+    tar = tarfile.open(fileobj = io.BytesIO(urlopen(url,context=ctx).read()))
     untar(tar, **kw)
     tar.close()
 
@@ -139,7 +141,12 @@ def dload_scons_test(**kw):
                     os.remove(ff)
         return 0
 
-    url = "https://bitbucket.org/scons/scons/get/%s.tar.gz" % ver
+    # url = "https://bitbucket.org/scons/scons/get/%s.tar.gz" % ver
+    if re.match(r'^[0-9]+\.[0-9]+.[0-9]$',ver):
+        ref = 'rel_%s' % ver;
+    else:
+        ref = ver;
+    url = "https://github.com/scons/scons/archive/%s.tar.gz" % ref
     info("downloading '%s' -> '%s'" % (url, destdir))
     member_name_filter = lambda s : re.match('(?:^runtest\.py$|QMTest/)', s)
     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
@@ -319,7 +326,7 @@ _all_packages = [ 'scons-test',
                  ]
 
 # scons
-_scons_versions = ['tip',
+_scons_versions = ['master',
                    '3.1.1',
                    '3.1.0',
                    '3.0.5',
