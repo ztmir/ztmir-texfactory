@@ -4,7 +4,7 @@
 
 Podczas rozwoju oprogramowania, np. czasu rzeczywistego, wbudowanego, graficznego, często zachodzi potrzeba przetwarzania współbieżnego, bądź równoległego, w przypadku implementacji na komputerach równoległych z~pamięcią wspólną. Współbieżność (równoległość) tę można osiągnąć poprzez używanie wątków POSIX (biblioteka \lstinline[style=MyBashStyle]{pthread}), zaimplementowanych w~systemie QNX i~opartych na standardzie \lstinline[style=MyBashStyle]{IEEE POSIX 1003.1c}.
 
-Dotyczczas zajmowaliśmy się procesami mającymi po jednym wątku. Pojęcie procesu można rozszerzyć do istnienia wielu wątków sterowania i~rozpatrywać proces jako zbiór wątków i zasobów. Wątek w~tym przypadku będzie traktowany jako elementarna, niezależna jednostka, podlegająca szeregowaniu (scheduling). Część zasobów procesu jest wspólna dla jego wszystkich wątków. Należą do nich:
+Dotychczas zajmowaliśmy się procesami mającymi po jednym wątku. Pojęcie procesu można rozszerzyć do istnienia wielu wątków sterowania i~rozpatrywać proces jako zbiór wątków i zasobów. Wątek w~tym przypadku będzie traktowany jako elementarna, niezależna jednostka, podlegająca szeregowaniu (scheduling). Część zasobów procesu jest wspólna dla jego wszystkich wątków. Należą do nich:
 
 \begin{myitemize}
 \item Wspólna przestrzeń adresowa, w~szczególności zmienne statyczne i sterta.
@@ -47,7 +47,7 @@ Biblioteka \lstinline[style=MyBashStyle]{pthread} zawiera ponad 60 procedur, zde
 \subsection{Zarządzanie wątkami}
 \subsubsection{Tworzenie wątków}
 
-Funkcja \lstinline[style=MyCStyle]{main()} posiada jeden wątek (domyślny). Dodatkowe wątki w~obrębie procesu muszę być jawnie utworzone przez programistę. Funkcja \lstinline[style=MyCStyle]{pthread_create()} służy utworzeniu nowego wątku. Prototyp funkcji wygląda następująco:
+Funkcja \lstinline[style=MyCStyle]{main()} posiada jeden wątek (domyślny). Dodatkowe wątki w~obrębie procesu muszą być jawnie utworzone przez programistę. Funkcja \lstinline[style=MyCStyle]{pthread_create()} służy utworzeniu nowego wątku. Prototyp funkcji wygląda następująco:
 
 
 \begin{lstlisting}[style=MyCStyle]
