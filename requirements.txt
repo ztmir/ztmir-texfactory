@@ -1,5 +1,5 @@
 wheel
-scons>=3.1.1
+scons>=3.1.2
 scons-tool-loader>=0.1.10
 scons-tool-dvipdfm>=0.1.1
 scons-tool-gnuplot>=0.7.0
