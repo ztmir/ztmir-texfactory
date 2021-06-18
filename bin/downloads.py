@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 
 #
 # Copyright (c) 2015 by Pawel Tomulik
@@ -49,12 +49,6 @@ def scons_version_string(s):
 def scons_test_version_string(s):
     if not s in _scons_test_versions:
         supported = ', '.join(["'%s'" % v for v in  _scons_test_versions])
-        raise argparse.ArgumentTypeError('wrong version %r, supported versions are: %s' % (s, supported))
-    return s
-
-def scons_docbook_version_string(s):
-    if not s in _scons_docbook_versions:
-        supported = ', '.join(["'%s'" % v for v in  _scons_docbook_versions])
         raise argparse.ArgumentTypeError('wrong version %r, supported versions are: %s' % (s, supported))
     return s
 
@@ -149,33 +143,6 @@ def dload_scons_test(**kw):
     url = "https://github.com/scons/scons/archive/%s.tar.gz" % ref
     info("downloading '%s' -> '%s'" % (url, destdir))
     member_name_filter = lambda s : re.match('(?:^runtest\.py$|QMTest/)', s)
-    urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
-    return 0
-
-def dload_scons_docbook(**kw):
-    try: ver = kw['scons_docbook_version']
-    except KeyError: ver = _default_scons_docbook_version
-
-    clean = False
-    try: clean = kw['clean']
-    except KeyError: pass
-
-    destdir = os.path.join(_topsrcdir, 'site_scons', 'site_tools', 'docbook')
-
-    if clean:
-        info("cleaning scons-docbook", **kw)
-        if os.path.exists(destdir):
-            info("removing '%s'" % destdir, **kw)
-            shutil.rmtree(destdir)
-        return 0
-
-    if not os.path.exists(destdir):
-        info("creating '%s'" % destdir, **kw)
-        os.makedirs(destdir)
-
-    url = "https://bitbucket.org/dirkbaechle/scons_docbook/get/%s.tar.gz" % ver
-    info("downloading '%s' -> '%s'" % (url, destdir))
-    member_name_filter = lambda s : re.match('(?:^__init__\.py$|utils/|docbook-xsl-[^/]+/)', s)
     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
     return 0
 
@@ -318,7 +285,6 @@ _scriptdir = os.path.dirname(_scriptabs)
 _topsrcdir = os.path.realpath(os.path.join(_scriptdir, '..'))
 
 _all_packages = [ 'scons-test',
-                  'scons-docbook',
 ##                  'scons-dvipdfm',
 ##                  'scons-gnuplot',
 ##                  'scons-kpsewhich',
@@ -353,10 +319,6 @@ _default_scons_version = _scons_versions[0]
 # scons-test
 _scons_test_versions = _scons_versions
 _default_scons_test_version = _scons_test_versions[0]
-
-# scons-docbook
-_scons_docbook_versions = [ 'tip' ]
-_default_scons_docbook_version = _scons_docbook_versions[0]
 
 ### scons-dvipdfm
 ##_scons_dvipdfm_versions = [ 'master' ]
@@ -401,11 +363,6 @@ _parser.add_argument('--scons-test-version',
                       default=_default_scons_test_version,
                       metavar='VER',
                       help='version of SCons test framework to be downloaded')
-_parser.add_argument('--scons-docbook-version',
-                      type=scons_docbook_version_string,
-                      default=_default_scons_docbook_version,
-                      metavar='VER',
-                      help='version of SCons docbook tool to be downloaded')
 ##_parser.add_argument('--scons-dvipdfm-version',
 ##                      type=scons_dvipdfm_version_string,
 ##                      default=_default_scons_dvipdfm_version,
@@ -438,8 +395,6 @@ _args = _parser.parse_args()
 for pkg in _args.packages:
     if pkg.lower() == 'scons-test':
         dload_scons_test(**vars(_args))
-    elif pkg.lower() == 'scons-docbook':
-        dload_scons_docbook(**vars(_args))
 ##     elif pkg.lower() == 'scons-dvipdfm':
 ##         dload_scons_dvipdfm(**vars(_args))
 ##     elif pkg.lower() == 'scons-gnuplot':
