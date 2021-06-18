@@ -76,7 +76,7 @@ labs = {
 }
 
 # common deps
-deps =  [ 'tmmlab.cls', 'titlepage.svg' ]
+deps =  [ 'tmmlab.cls' ]
 
 
 for name, lab in labs.items():
