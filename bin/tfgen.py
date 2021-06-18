@@ -1,21 +1,21 @@
 """`tfgen`
 
-Functions used by scripts generating projects from templates. 
+Functions used by scripts generating projects from templates.
 """
 
 #
 # Copyright (c) 2013 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,22 +30,22 @@ def add_cli_args(argparser, input_dir, output_dir, default_template):
 
     argparser.add_argument('-q','--quiet', action = "store_false",
             dest = 'verbose', help = "don't print status messages to stdout")
-    argparser.add_argument('-i','--input-dir', type = str, 
+    argparser.add_argument('-i','--input-dir', type = str,
                            metavar = 'input_dir', action = 'store',
-                           dest = 'input_dir', 
-                           default = input_dir, 
+                           dest = 'input_dir',
+                           default = input_dir,
                            help = 'input (template) directory (%s)' % input_dir)
-    argparser.add_argument('-o','--output-dir', type = str, 
+    argparser.add_argument('-o','--output-dir', type = str,
                            metavar = 'output_dir', action = 'store',
-                           dest = 'output_dir', 
-                           default = output_dir, 
+                           dest = 'output_dir',
+                           default = output_dir,
                            help = 'output directory (%s)' % output_dir)
-    argparser.add_argument('-t','--template', type = str, metavar = 'template', 
+    argparser.add_argument('-t','--template', type = str, metavar = 'template',
                            default = default_template, action = 'store',
                            dest = 'template',
                            help = 'project template to use (%s)'
                            % default_template)
-    argparser.add_argument('project_name', metavar = 'name', action = 'store', 
+    argparser.add_argument('project_name', metavar = 'name', action = 'store',
                            help = 'project name, for example paper-96')
 
 def generate_project(args, **subst):
@@ -68,7 +68,7 @@ def generate_project(args, **subst):
 
     if args.verbose:
         stdout.write("info: preparing to generate project %r\n" % args.project_name)
-    
+
     tpl_path = path.join(args.input_dir, args.template)
     out_path = path.join(args.output_dir, args.project_name)
     manifest = path.join(tpl_path, 'MANIFEST')
@@ -84,7 +84,7 @@ def generate_project(args, **subst):
         error = 1
     if path.exists(out_path):
         stderr.write("error: %r: already exists, won't override\n" % out_path)
-        error = 1 
+        error = 1
 
     if not error:
         subst ['NAME'] = args.project_name
@@ -98,7 +98,7 @@ def generate_project(args, **subst):
             stdout.write("info: reading %r ... " % manifest)
         try:
             fh = open(manifest, 'rt')
-        except IOError, e:
+        except IOError as e:
             if args.verbose:
                 stdout.write("error\n")
             stderr.write("%s\n" % e)
@@ -115,7 +115,7 @@ def generate_project(args, **subst):
             for f in files:
                 m = _re_split.match(f)
                 if not m.group(1): continue
-                ifi = path.join(tpl_path, *tuple(m.group(1).split('/'))) 
+                ifi = path.join(tpl_path, *tuple(m.group(1).split('/')))
                 if m.group(2):
                     ofi = path.join(out_path, *tuple(m.group(2).split('/')))
                 else:
@@ -123,18 +123,18 @@ def generate_project(args, **subst):
                 ifi = string.Template(ifi).substitute(subst)
                 ofi = string.Template(ofi).substitute(subst)
                 filemap[ifi] = ofi
-                
+
     if not error:
         if args.verbose:
             stdout.write("info: creating directory %r ... " % out_path)
         try:
             makedirs(out_path)
-        except os.error, e:
+        except os.error as e:
             if args.verbose:
                 stdout.write("error\n")
             stderr.write("%s\n", e)
             error = 1
-        else:    
+        else:
             if args.verbose:
                 stdout.write("done\n")
 
@@ -146,7 +146,7 @@ def generate_project(args, **subst):
                 stdout.write("info: read %r ... " % ifi)
             try:
                 contents = open(ifi,'rt').read()
-            except IOError, e:
+            except IOError as e:
                 if args.verbose:
                     stdout.write("error\n")
                 stderr.write("%s\n" % e)
@@ -162,7 +162,7 @@ def generate_project(args, **subst):
                 stdout.write("info: write %r ... " % ofi)
             try:
                 open(ofi,'wt').write(contents)
-            except IOError, e:
+            except IOError as e:
                 if args.verbose:
                     stdout.write("error\n")
                 stderr.write("%s\n" % e)
