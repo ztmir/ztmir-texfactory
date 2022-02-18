@@ -51,24 +51,12 @@ except KeyError:
     })
 
 # TODO: If you wish to import files from our local TeX Directory Structure
-# deps += env.TeXASImport( ['tmmlab.cls'], progname = 'latex',
+# deps += env.TeXASImport( ['lpas.cls'], progname = 'latex',
 #                KPSVARIABLES = {'TEXMFHOME' : '../../../../share/texmf:'} )
 
 labs = {
-  'tmmlab11' : {
-    'version' : '0.1.4',
-    'svgs'    : [ 'lab11/strugarka.svg',
-                  'lab11/strugarka-schemat.svg',
-                  'lab11/strugarka-zwrotniki.svg',
-                  'lab11/korbowodzik-asymetryczny.svg' ],
-    'gplots'  : [['lab11/srednia.gp', {'gp_extoutputs' : 'lab11/srednia.eps'}],
-                 ['lab11/sredsin.gp', {'gp_extoutputs' : 'lab11/sredsin.eps',
-                                       'gp_inputs'     : 'lab11/sredsin.csv'}],
-                 ['lab11/erf.gp', {'gp_extoutputs' : 'lab11/erf.eps' }]]
-#    'deps'    : [],
-  },
-  'tmmlab12' : {
-    'version' : '0.2.4',
+  'lpas4' : {
+    'version' : '1.0.0',
     'svgs'    : [],
     'gplots'  : [],
 #    'deps'    : [],
@@ -76,7 +64,7 @@ labs = {
 }
 
 # common deps
-deps =  [ 'tmmlab.cls' ]
+deps =  [ 'lpas.cls' ]
 
 
 for name, lab in labs.items():
@@ -109,8 +97,8 @@ for name, lab in labs.items():
     env.Alias(name, pdf + tgz)
     env.AlwaysBuild(name)
 
-env.Alias('tmmlab', labs.keys())
-env.AlwaysBuild('tmmlab')
+env.Alias('lpas', labs.keys())
+env.AlwaysBuild('lpas')
 
 # Local Variables:
 # # tab-width:4
