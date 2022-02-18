@@ -1,0 +1,1338 @@
+\documentclass[paper=a4,DIV=12]{lpas}
+
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{courier}
+\usepackage{tgtermes,newtxtext,newtxmath}
+\usepackage[]{hyperref}
+\usepackage{natbib}
+
+%%\everymath{\displaystyle}
+
+\usepackage{bm}
+\usepackage{amsmath,amsfonts}
+\usepackage{mathtools}
+\usepackage[pdftex]{graphicx}
+\usepackage[titletoc,title]{appendix}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows,3d,patterns,calc}
+
+\newcommand{\brm}[1]{\bm{\mathrm{#1}}}
+\renewcommand{\arraystretch}{1.2}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% commath provides \od, but the package is not available on my travis-ci setup
+\newcommand{\od}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\odn}[3]{\frac{\mathrm{d}^{#1}#2}{\mathrm{d}{#3}^{#1}}}
+\newcommand{\tod}[2]{\tfrac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\todn}[3]{\tfrac{\mathrm{d}^{#1}#2}{\mathrm{d}{#3}^{#1}}}
+% gensymb provides \degree command, but whole package for just one symbol?
+\newcommand{\degree}{^{\circ}}
+
+\lstset{%
+  basicstyle=\footnotesize\ttfamily\selectfont,
+  language=Matlab,
+  inputencoding=utf8,
+  extendedchars=true,
+  frame=trBL
+}
+
+\newfloat{lstfloat}{htbp}{lop}
+\floatname{lstfloat}{Listing}
+
+\setcitestyle{numbers,square,comma}
+
+\begin{document}
+
+
+\serietitle{\\{\ }\\{\ }\\Laboratorium pomiarów, automatyki i~sterowania~I}
+
+\title{\Large{Ćwiczenie nr 4}}
+
+\subtitle{\huge{Analiza kinematyczna układu o dwóch stopniach swobody}}
+
+\author{\\Paweł Tomulik\\ Zakład Teorii Maszyn i Robotów\\ ITLiMS, MEIL, PW}
+\date{}
+\maketitle
+\thispagestyle{empty}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\begin{abstract}
+\section{Streszczenie}
+\noindent Wyznaczanie współrzędnych układu mechanicznego z~użyciem czujników znajduje
+  wiele zastosowań. Jednym z~nich są systemy odometrii używane m.in. w~robotach
+  mobilnych. Typowe zadanie odometrii polega na estymacji położenia
+  i~orientacji kątowej robota poprzez analizę danych zebranych z~różnych
+  czujników (np. czujniki przyspieszenia, enkodery, czujniki odległości, układy
+  wizyjne). W~niniejszym ćwiczeniu podejmuje się próbę wyznaczenia przebiegów
+  przyspieszeń, położeń i~prędkości układu o~dwu stopniach swobody na podstawie
+  danych zebranych z~czujników przyspieszenia i~położenia. Przedstawiony
+  przykład jest pouczający, pozwala zaobserwować typowe problemy wynikające
+  z~nakładania się na siebie błędów metody pomiarowej oraz użytych metod
+  obliczeniowych (całkowanie czy różniczkowanie numeryczne).
+\end{abstract}
+
+\section{Wprowadzenie}
+\label{sec:BP9CM}
+
+Obiektem badanym jest wahadło umocowane w~jednym końcu za pomocą przegubu
+Cardana. Schemat kinematyczny układu pokazano na rysunku~\ref{fig:7YP7N}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[%
+      scale=1.0,%
+      axis/.style={thin,->},%
+      zxplane/.style={canvas is zx plane at y=#1},%
+      yxplane/.style={canvas is yx plane at z=#1},%
+      yzplane/.style={canvas is yz plane at x=#1},%
+  ]
+    \coordinate (O) at (0,0,0);
+
+    \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+      \draw[axis] (0.0, 0.0, 0.0) -- (2,0,0) node [left] {$x$};
+      \draw[axis] (0.0, 0.0, 0,0) -- (0,2,0) node [right] {$y$};
+      \draw[axis] (0.0, 0.0, 0.0) -- (0,0,2) node [right] {$z$};
+      \draw[axis,yzplane=1.8] (0,0) ++ (-120:.3) arc(-120:120:.3) node [above] {$\varphi_x$};
+      \begin{scope}[rotate around x=10]
+        % axis "1" (rotation alpha_x)
+        \draw[thick] (-1.05, 0, 0) -- (1.05, 0, 0);
+
+        % details "1"
+        \draw[thick] (-1, 0, 0.1) -- (-0.7, 0, 0.1);
+        \draw[thick] (-1, 0,-0.1) -- (-0.7, 0,-0.1);
+        \draw[thick] (-1.05, 0,-0.2) -- (-1.05, 0, 0.2);
+        \draw[thick] (-0.65, 0,-0.2) -- (-0.65, 0, 0.2);
+
+        \draw[thick] ( 1, 0, 0.1) -- ( 0.7, 0, 0.1);
+        \draw[thick] ( 1, 0,-0.1) -- ( 0.7, 0,-0.1);
+        \draw[thick] ( 1.05, 0,-0.2) -- ( 1.05, 0, 0.2);
+        \draw[thick] ( 0.65, 0,-0.2) -- ( 0.65, 0, 0.2);
+
+        \draw[draw=none,fill=black,zxplane=0] ( 0.1,-1) rectangle ( 0.2,-0.7);
+        \draw[draw=none,fill=black,zxplane=0] (-0.1,-1) rectangle (-0.2,-0.7);
+        \draw[draw=none,fill=black,zxplane=0] ( 0.1, 1) rectangle ( 0.2, 0.7);
+        \draw[draw=none,fill=black,zxplane=0] (-0.1, 1) rectangle (-0.2, 0.7);
+
+        \draw[axis,zxplane=1.8] (0,0) ++ (-120:.3) arc(-120:120:.3) node [midway, above] {$\varphi_y$};
+
+        \begin{scope}[rotate around y=20]
+          % axis "2" (rotation alpha_y)
+          \draw[thick](0,-1.05, 0) -- (0, 1.05, 0);
+
+          % details "2"
+          \draw[thick](0,-1,-0.1) -- (0,-0.7,-0.1);
+          \draw[thick](0,-1, 0.1) -- (0,-0.7, 0.1);
+          \draw[thick](0,-1.05,-0.2) -- (0,-1.05, 0.2);
+          \draw[thick](0,-0.65,-0.2) -- (0,-0.65, 0.2);
+
+          \draw[thick](0, 1,-0.1) -- (0, 0.7,-0.1);
+          \draw[thick](0, 1, 0.1) -- (0, 0.7, 0.1);
+          \draw[thick](0, 1.05,-0.2) -- (0, 1.05, 0.2);
+          \draw[thick](0, 0.65,-0.2) -- (0, 0.65, 0.2);
+
+          \draw[thick](0,-0.85,-0.1) -- (0,-0.85,-0.3) -- (0,0.85,-0.3) -- (0,0.85,-0.1);
+
+          \draw[very thick,-*](0, 0, -0.3) -- (0, 0, -6.0) node [right] {$r$};
+
+          \draw[axis] ( 0.0, 0.0, 0.0) -- (2,0,0) node [left] {$x^{\prime}$};
+          \draw[axis] ( 0.0, 0.0, 0,0) -- (0,2,0) node [right] {$y^{\prime}$};
+          \draw[axis] ( 0.0, 0.0, 0.0) -- (0,0,2) node [right] {$z^{\prime}$};
+        \end{scope}
+      \end{scope}
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Schemat kinematyczny wahadła.}
+  \label{fig:7YP7N}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Na schemacie zaznaczono dwa układy współrzędnych:
+\begin{itemize}
+  \item nieruchomy układ $x,y,z$ ze środkiem w~centrum przegubu Cardana, osie
+        $x$ i~$y$ biegną poziomo, przy czym oś $x$ jest równoległa do ściany
+        laboratorium a~oś $y$ jest prostopadła do ściany (grot skierowany
+        w~kierunku sali), oś $z$ skierowana jest pionowo w~górę,
+  \item ruchomy układ $x^{\prime}, y^{\prime}, z^{\prime}$, ze środkiem w~centrum przegubu
+        Cardana, układ jest przytwierdzony do drążka wahadła (ruchoma część)
+        tak, że oś $z^{\prime}$ pokrywa się z~linią drążka wahadła, zaś oś $y^{\prime}$
+        biegnie wzdłuż osi pary obrotowej krzyżak-drążek.
+\end{itemize}
+W~położeniu swobodnym (nieodchylonym, $\varphi_x = \varphi_y=0$) układ
+ruchomy pokrywa się z~nieruchomym.
+
+Punkt na końcówce drążka wahadła oznaczono jako $r$. Jednocześnie
+$r$ będzie oznaczać długość wahadła ($r = 0.66m$).
+
+
+\section{Układ pomiarowy}
+\label{sec:Z2CJY}
+
+W~osiach $x$ i~$y^{\prime}$ zamocowane są potencjometry umożliwiające pomiar
+(pośredni) wychyleń kątowych $\varphi_x$ i~$\varphi_y$ zaznaczonych na
+rysunku~\ref{fig:7YP7N}. Zmierzone potencjometrami wartości kątowe będziemy
+oznaczali symbolami $\bar{\varphi}_x$, $\bar{\varphi}_y$ Na~końcówce drążka
+wahadła zamocowany jest akcelerometr, który umożliwia pomiar (pośredni)
+chwilowych przyspieszeń liniowych końcówki wahadła (we wszystkich trzech
+osiach, $x^{\prime},y^{\prime},z^{\prime}$). Przyspieszenia wskazywane przez
+akcelerometr oznaczymy symbolem $\hat{\brm{a}}^{\prime} = \begin{bmatrix}
+\hat{a}_x^{\prime} & \hat{a}_y^{\prime} & \hat{a}_z^{\prime} \end{bmatrix}^T$.
+Dedykowany program komputerowy, wraz z~kartą pomiarową, umożliwiają zebranie
+pomiarów w~krótkich odstępach czasowych i~zapisanie przebiegów do pliku.
+
+Wahadło jest też wyposażone w~kątomierze umożliwiające odczyt wizualny wychyleń
+kątowych $\varphi_x$ i $\varphi_y$ w~warunkach statycznych. Zakres kątomierzy
+$\mp 30^{\circ}$.
+
+\section{Skalowanie czujników}
+\label{eq:NC01F}
+
+{\em Przed przystąpieniem do skalowania czujników należy włączyć układ
+pomiarowy i~uruchomić program komputerowy (program do skalowania czujników)}.
+
+Dane zebrane z~czujników są dostarczone w~postaci napięć wyrażonych w Voltach.
+Przed przy\-stą\-pie\-niem do~obliczeń należy je przeliczyć na wielkości
+w~odpowiednich jednostkach -- radianach dla odchyleń kątowych oraz
+$\tfrac{m}{s^2}$ dla przyspieszeń. Zakłada się, że czujniki mają
+charakterystyki liniowe. Dla określenia charakterystyki danego czujnika
+powinno więc wystarczyć znalezienie dwóch jej punktów\footnote{W~rzeczywistości
+należałoby jednak zrobić pomiar w~wielu punktach i~zastosować regresję
+liniową. W~przypadku akcelerometru, wymaga to zastosowania specjalnego
+stanowiska do kalibracji.}.
+
+\subsection{Skalowanie czujników wychylenia (potencjometry)}
+\label{eq:460IS}
+
+Dla każdego potencjometru należy zmierzyć
+napięcie wyjściowe w~położeniach wahadła $-30^{\circ}$, $0^{\circ}$
+i~$+30^{\circ}$, oznaczone dalej jako $U_{\bullet}^{-30^{\circ}}$,
+$U_{\bullet}^{0^{\circ}}$, $U_{\bullet}^{+30^{\circ}}$ ($\bullet=x$ dla kanału
+$\varphi_x$ oraz $y$ dla $\varphi_y$). Odczytane wartości należy zebrać
+w~tabeli, np. takiej jak tablica~\ref{tab:KM4WU}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+  \caption{Skalowanie czujników położenia (potencjometrów).}
+  \label{tab:KM4WU}
+  \centering
+  \begin{tabular}{|l|c|c|c|}
+    \hline
+                                  & Kanał $x$ & Kanał $y$ \\ \hline
+      $U_{\bullet}^{0^{\circ}}$   &           &           \\ \hline
+      $U_{\bullet}^{-30^{\circ}}$ &           &           \\ \hline
+      $U_{\bullet}^{+30^{\circ}}$ &           &           \\ \hline
+      $C_{\bullet}$               &           &           \\ \hline
+  \end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Nachylenia charakterystyk potencjometrów (oś $x$ i~$y^{\prime}$) wyrazimy poprzez
+współczynniki
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  & C_x = \frac{\pi/3}{U_x^{+30^{\circ}} - U_x^{-30^{\circ}}}, &
+  & C_y = \frac{\pi/3}{U_y^{+30^{\circ}} - U_y^{-30^{\circ}}}. &
+  \label{eq:XIRR2}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Zmierzone wartości wychyleń kątowych wyrażone w~radianach będziemy zatem liczyli jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  &\bar{\varphi}_x = C_x \left(U_x - U_x^{0^{\circ}}\right),&
+  &\bar{\varphi}_y = C_y \left(U_y - U_y^{0^{\circ}}\right),&
+  \label{eq:547XS}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $U_x$ i~$U_y$ są chwilowymi wartościami napięć zmierzonych
+na~potencjometrach. Można też próbować używać użyć w~charakterze
+$U_{\bullet}^{0^{\circ}}$ wartości średniej $U_{\bullet}^{0^{\circ}} =
+\tfrac{1}{2}\left(U_{\bullet}^{-30^{\circ}} + U_{\bullet}^{+30^{\circ}}\right)$
+jak również zastosować regresję liniową wg trzech punktów $-30^{\circ},
+0^{\circ}, +30^{\circ}$ do wyznaczenia współczynników charakterystyki.
+
+\subsection{Skalowanie akcelerometru}
+\label{sec:DHEMO}
+
+Skalowanie akcelerometru można przeprowadzić na kilka sposobów. Dwa z~nich
+przedstawiono w~podrozdziałach \ref{sec:CT4YN} i~\ref{sec:BDRBE}. W~pierwszej
+metodzie odpowiednie czynności wykonuje się poza wahadłem. Wymontowany
+akcelerometr ustawia się w~położeniach~$\mp 1g$, tzn.  ustawia się kolejne jego
+osie pionowo raz w~dół raz w~górę mierząc odpowiadające tym położeniom wartości
+napięć generowanych przez akcelerometr.  W~drugiej metodzie akcelerometr jest
+zamontowany na końcówce wahadła. Odczytuje się wartości wskazywane przez
+akcelerometr w~dwóch różnych położeniach wahadła (w~bezruchu). Skalowanie można
+przeprowadzić przed właściwym eksperymentem, jak również można wykonać
+,,post-factum'' na podstawie pomiarów z~eksperymentu, przy spełnieniu
+odpowiednich warunków.
+
+\subsubsection{Skalowanie metodą $\mp 1g$}
+\label{sec:CT4YN}
+
+W~celu wyskalowania akcelerometru należy go zdemontować z~końcówki wahadła.
+Swobodnym, aczkolwiek podłączonym do~układu pomiarowego akcelerometrem
+obracamy ,,w~powietrzu'' starając się ustawić go w~położeniach przedstawionych
+na rysunku~\ref{fig:ZDELS}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[%
+      scale=1.0,%
+      axis/.style={thin,->},%
+      zxplane/.style={canvas is zx plane at y=#1},%
+      yxplane/.style={canvas is yx plane at z=#1},%
+      yzplane/.style={canvas is yz plane at x=#1},%
+  ]
+    % gravity
+    \draw[very thick,->] (-2.8,-2) -- + (0, -1) node [left] {$\brm{g}$};
+    \draw[very thick,->] (-2.6,-2) -- + (0, -1);
+    \draw[very thick,->] (-2.4,-2) -- + (0, -1);
+
+    \node[draw=none] at (0,1.75) {$V_x^{0g}, V_y^{0g}, V_z^{+1g}$};
+
+    \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+      \draw[very thick,fill=gray,yxplane=0] (-1,-1) rectangle (1,1);
+      \draw[axis] (0,0,0) -- +(2,0,0) node [left] {$x^{\prime}$};
+      \draw[axis] (0,0,0) -- +(0,2,0) node [above] {$y^{\prime}$};
+      \draw[axis] (0,0,0) -- +(0,0,1) node [right] {$z^{\prime}$};
+    \end{scope}
+
+    \begin{scope}[shift={(5,0)}]
+      \node[draw=none] at (0,1.75) {$V_x^{-1g}, V_y^{0g}, V_z^{0g}$};
+      \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+        \begin{scope}[rotate around y=90]
+          \draw[very thick,fill=gray,yxplane=0] (-1,-1) rectangle (1,1);
+          \draw[axis] (0,0,0) -- +(2,0,0) node [left] {$x^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,2,0) node [above] {$y^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,0,1) node [above] {$z^{\prime}$};
+        \end{scope}
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[shift={(10,0)}]
+      \node[draw=none] at (1.25,1.75) {$V_x^{+1g}, V_y^{0g}, V_z^{0g}$};
+      \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+        \begin{scope}[rotate around y=-90]
+          \draw[very thick,fill=gray,yxplane=0] (-1,-1) rectangle (1,1);
+          \draw[axis] (0,0,0) -- +(2,0,0) node [left] {$x^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,2,0) node [above] {$y^{\prime}$};
+          \draw[axis,dashed] (0,0,0) -- +(0,0,1) node [above] {$z^{\prime}$};
+        \end{scope}
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[shift={(0,-5)}]
+      \node[draw=none] at (-0.75,1.5) {$V_x^{0g}, V_y^{-1g}, V_z^{0g}$};
+      \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+        \begin{scope}[rotate around x=-90]
+          \draw[very thick,fill=gray,yxplane=0] (-1,-1) rectangle (1,1);
+          \draw[axis] (0,0,0) -- +(2,0,0) node [left] {$x^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,2,0) node [right] {$y^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,0,2) node [above] {$z^{\prime}$};
+        \end{scope}
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[shift={(5,-5)}]
+      \node[draw=none] at (-1.25,1.5) {$V_x^{0g}, V_y^{+1g}, V_z^{0g}$};
+      \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+        \begin{scope}[rotate around x=90]
+          \draw[axis] (0,0,0) -- +(0,0,2) node [above] {$z^{\prime}$};
+          \draw[very thick,fill=gray,yxplane=0] (-1,-1) rectangle (1,1);
+          \draw[axis] (0,0,0) -- +(2,0,0) node [left] {$x^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,2,0) node [right] {$y^{\prime}$};
+        \end{scope}
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[shift={(10,-5)}]
+      \node[draw=none] at (-0.5,1.5) {$V_x^{0g}, V_y^{0g}, V_z^{-1g}$};
+      \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
+        \begin{scope}[rotate around y=180]
+          \draw[axis] (0,0,0) -- +(0,0,2) node [right] {$z^{\prime}$};
+          \draw[very thick, fill=gray, yxplane=0] (-1,-1) rectangle (1,1);
+          \draw[axis] (0,0,0) -- +(2,0,0) node [left] {$x^{\prime}$};
+          \draw[axis] (0,0,0) -- +(0,2,0) node [right] {$y^{\prime}$};
+        \end{scope}
+      \end{scope}
+    \end{scope}
+
+  \end{tikzpicture}
+  \caption{Pozycjonowanie akcelerometru przy skalowaniu.}
+  \label{fig:ZDELS}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Podczas pozycjonowania należy zebrać wartości napięć $V_x$, $V_y$ i~$V_z$
+zmierzone w~przedstawionych na rysunku~\ref{fig:ZDELS} położeniach
+ekstremalnych. Zebrane wartości można zestawić w~tabeli, np. takiej jak
+tablica~\ref{tab:Q31HW}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+  \centering
+  \caption{Tabela pomiarowa do skalowania akcelerometru}
+  \label{tab:Q31HW}
+  \begin{tabular}{|l|c|c|c|c|}
+    \hline
+                        & Kanał $x$ & Kanał $y$ & Kanał $z$ \\ \hline
+    $V_{\bullet}^{0g}$  &           &           &           \\ \hline
+    $V_{\bullet}^{-1g}$ &           &           &           \\ \hline
+    $V_{\bullet}^{+1g}$ &           &           &           \\ \hline
+    $D_{\bullet}$       &           &           &           \\ \hline
+  \end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Nachylenia charakterystyk akcelerometru w~poszczególnych kanałach (oś $x^{\prime}$,
+$y^{\prime}$ i~$z^{\prime}$) wyrazimy poprzez współczynniki
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  & D_x = \frac{2 g}{V_x^{+1g} - V_x^{-1g}}, &
+  & D_y = \frac{2 g}{V_y^{+1g} - V_y^{-1g}}, &
+  & D_z = \frac{2 g}{V_y^{+1g} - V_y^{-1g}}. &
+  \label{eq:TUSWM}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Wartości zmierzonych przyspieszeń wyrażone w~$\tfrac{m}{s^2}$ będziemy zatem
+liczyli jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  &{\hat{a}_x}^{\prime}= D_x \left(V_x - V_x^{0g}\right),&
+  &{\hat{a}_y}^{\prime}= D_y \left(V_y - V_y^{0g}\right),&
+  &{\hat{a}_z}^{\prime}= D_z \left(V_z - V_z^{0g}\right),&
+  \label{eq:HM7PF}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $V_x$, $V_y$ i~$V_z$ są chwilowymi wartościami napięć zmierzonych
+w~kanałach $x$,$y$,$z$ akcelerometru.
+
+\subsubsection{Skalowanie wg dwóch różnych położeń wahadła}
+\label{sec:BDRBE}
+
+W~metodzie tej akcelerometr jest zamontowany na końcówce wahadła tak jak
+podczas właściwego eksperymentu. Rejestrujemy wskazania akcelerometru
+oraz wartości wychyleń kątowych $\bar{\varphi}_x$, $\bar{\varphi}_y$ w~dwóch
+położeniach wahadła -- $A$ i $B$ (za każdym razem wahadło powinno być
+nieruchome w~danym położeniu). Ważne jest, aby $\bar{\varphi}_{\bullet}^A$
+różniło się istotnie od $\bar{\varphi}_{\bullet}^B$ zarówno dla kanału $x$ jak
+i~$y$.
+
+Dane z~obu pomiarów możemy zanotować w~tabeli, np.~takiej jak
+Tablica~\ref{tab:22DGI}. Wartości kątowe $\bar{\varphi}_x$, $\bar{\varphi}_y$
+mogą pochodzić z~kątomierza (jeśli kalibrację robi się niezależnie od
+eksperymentu właściwego), bądź mogą być wyznaczone z~napięć $U_x$, $U_y$
+(zmierzonych specjalnie w~celu kalibracji, bądź pochodzących z~właściwego
+eksperymentu). W~przypadku użycia $U_x$, $U_y$ trzeba zadbać przed obliczeniem
+$\bar{\varphi}_x$, $\bar{\varphi}_y$, aby potencjometry były prawidłowo
+wyskalowane.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+  \caption{Skalowanie akcelerometru wg dwóch różnych położeń wahadła}
+  \label{tab:22DGI}
+  \begin{tabular}{c|c|c|c|c|c|c|c|}
+    \cline{2-8}
+    & \multicolumn{3}{|c|}{$V_{\bullet}$}
+    & \multicolumn{2}{|c|}{$U_{\bullet}$}
+    & \multicolumn{2}{|c|}{$\bar{\varphi}_{\bullet}$}
+    \\
+    \cline{2-8}
+    & Kanał $V_{x}$ & Kanał $V_{y}$ & Kanał $V_{z}$
+    & Kanał $U_{x}$ & Kanał $U_{y}$
+    & Kanał $\bar{\varphi}_{x}$ & Kanał $\bar{\varphi}_{y}$
+    \\
+    \hline
+    \multicolumn{1}{|c|}{A} & & & & & & & \\ \hline
+    \multicolumn{1}{|c|}{B} & & & & & & & \\ \hline
+    \multicolumn{1}{|c|}{$V_{\bullet}^{0g}$}  & & & & \multicolumn{4}{|c}{} \\ \cline{1-4}
+    \multicolumn{1}{|c|}{$D_{\bullet}$}  & & & & \multicolumn{4}{|c}{} \\ \cline{1-4}
+  \end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Nieznane współczynniki skali $D_{\bullet}$, $V_{\bullet}^{0g}$ wyznacza się
+poprzez zapisanie równań \eqref{eq:EUIQU} dla~$\brm{a}^{\prime} = \brm{0}$
+w~punktach $A$ i~$B$ i~rozwiązanie tak powstałego układu równań. W~efekcie
+otrzymujemy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{subequations}
+  \label{eq:GN30K}
+  \begin{align}
+    & D_x = -g \frac{ \cos{\bar{\varphi}_x^A}\sin{\bar{\varphi}_y^A} -\cos{\bar{\varphi}_x^B}\sin{\bar{\varphi}_y^B} }
+                    { V_x^A - V_x^B }, &
+    & V_x^{0g} = V_x^A +\frac{g}{D_x} \cos{\bar{\varphi}_x^A}\sin{\bar{\varphi}_y^A}, &
+    \label{eq:L8MQV}
+    \\
+    & D_y = g \frac{ \sin{\bar{\varphi}_x^A} - \sin{\bar{\varphi}_x^B} }
+                   { V_y^A - V_y^B }, &
+    & V_y^{0g} = V_y^A - \frac{g}{D_y}\sin{\bar{\varphi}_x^A}, &
+    \label{eq:OAGGF}
+    \\
+    & D_z = g \frac{ \cos{\bar{\varphi}_x^A}\cos{\bar{\varphi}_y^A} -\cos{\bar{\varphi}_x^B}\cos{\bar{\varphi}_y^B} }
+                    { V_z^A - V_z^B }, &
+    & V_z^{0g} = V_z^A - \frac{g}{D_z} \cos{\bar{\varphi}_x^A}\cos{\bar{\varphi}_y^A}, &
+    \label{eq:JZ38T}
+  \end{align}
+\end{subequations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Tak wyznaczone współczynniki mogą być użyte do przeliczania wartości
+napięciowych z~akcelerometru na~przyspieszenia $\hat{\brm{a}}^{\prime}$ 
+wg wzoru \eqref{eq:HM7PF}.
+
+\section{Pomiar}
+\label{sec:CKUHT}
+
+Do przeprowadzenia pomiaru potrzebne są dwie osoby -- jedna przy komputerze,
+druga przy wahadle.
+\begin{itemize}
+  \item Wahadło ustawić {\em nieruchomo} w~wybranym położeniu początkowym.
+  \item Uruchomić pomiar na komputerze.
+  \item Po około sekundzie wprawić wahadło w~ruch.
+  \item Po upływie $32\dots33$ sekund rozpocząć wyhamowywanie wahadła (jeśli się porusza).
+  \item Przed $34$ sekundą wahadło powinno być już nieruchome.
+  \item Po upływie $36$-tej sekundy zakończyć rejestrację pomiarów.
+\end{itemize}
+Wynik zapisany przez program pomiarowy w~postaci arkusza Excel będzie zawierał
+5 kolumn
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item \textbf{Untitled}, \textbf{Untitled 1}, \textbf{Untitled 2}: $V_x$, $V_y$, $V_z$,
+  \item \textbf{Untitled 3}, \textbf{Untitled 4}: $U_x$, $U_y$.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Obliczenia}
+\label{sec:ZCIBX}
+
+Podczas pomiaru z~czujników zbierane są wartości napięć $U_{x,k}$, $U_{y,k}$
+(potencjometry), oraz $V_{x,k}$, $V_{y,k}$, $V_{z,k}$ (akcelerometr)
+w~dyskretnych chwilach czasowych $t_k$, gdzie $k$ jest numerem próbki: $k = 0,
+1, \dots, K$. Zapisane w~pliku wynikowym liczby są wyrażone w~Voltach.
+
+\subsection{Konwersja zmierzonych wartości}
+\label{sec:O9JWA}
+
+W~pierwszej kolejności należy dokonać konwersji wartości uzyskanych z~układu
+pomiarowego (wyrażonych w Voltach) do postaci liczb wyrażonych w~jednostkach
+docelowych (radiany, $\tfrac{m}{s^2}$):
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item z~napięć $U_{\bullet,k}$, wyznaczyć
+        wychylenia kątowe $\bar{\varphi}_{\bullet,k}$ (w~radianach) stosując
+        wzory~\eqref{eq:547XS}, $\bullet \in \left\{x,y\right\}$,
+  \item z~napięć $V_{\bullet,k}$ wyznaczyć przyspieszenia
+        ,,brutto'' ${\hat{a}_{\bullet,k}}^{\prime}$ (w~$\tfrac{m}{s^2}$)
+        stosując wzory \eqref{eq:HM7PF}, $\bullet \in \left\{x,y,z\right\}$,
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dla $k=0,1,\dots,K$.
+
+\subsection{Całkowanie numeryczne przyspieszeń}
+\label{sec:OKCY5}
+
+Przebiegi ${\hat{a}_{x,k}}^{\prime}$, ${\hat{a}_{y,k}}^{\prime}$ zmierzonych
+przyspieszeń mogą być użyte do wyznaczenia przybliżonych przebiegów wychylenia
+kątowego $\widetilde{\varphi}_{x,k}$, $\widetilde{\varphi}_{y,k}$ wahadła.
+W~tym celu należy zastosować procedurę całkującą do rozwiązania odpowiednio
+postawionego zagadnienia początkowego dla równań różniczkowych~\eqref{eq:ROGUO}.
+
+\paragraph{Implementacja procedury całkującej.}
+Aby móc stosować procedury numerycznego całkowania, równania \eqref{eq:ROGUO}
+należy przekształcić do postaci równoważnego układu równań pierwszego rzędu
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \dot{\brm{y}}\left(t\right) = \brm{f}\left(t,\brm{y}\left(t\right)\right),
+  \label{eq:DOHJE}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+jak to zaproponowano w~dodatku~\ref{sec:WKKBB}. Prawą stronę $\brm{f}$
+takiego równoważnego układu równań (zob.~\eqref{eq:S8LTL}) zapiszemy w~wersji
+dyskretnej następująco
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{f}_k \coloneqq \brm{f}\left(t_k, \brm{y}_k\right) = \begin{bmatrix}
+    y_{3,k} \\
+    y_{4,k} \\
+    r^{-1} \left( {\hat{a}_{y,k}}^{\prime} - g \sin{y_{1,k}} \right)  \\
+    r^{-1} \left(-{\hat{a}_{x,k}}^{\prime} - g \cos{y_{1,k}}\sin{y_{2,k}} \right)
+  \end{bmatrix},
+  \label{eq:ETMGP}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \begin{bmatrix}
+    y_{1,k} & y_{2,k} & y_{3,k} & y_{4,k}
+  \end{bmatrix}^T \coloneqq \begin{bmatrix}
+    \widetilde{\varphi}_{x,k} &
+    \widetilde{\varphi}_{y,k} &
+    \dot{\widetilde{\varphi}}_{x,k} &
+    \dot{\widetilde{\varphi}}_{y,k}
+  \end{bmatrix}^T
+  \label{eq:VF0ZM}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+jest wektorem algebraicznym niewiadomych zapisanych w~dyskretnej chwili
+czasowej $t_k$. Symboli zdefiniowanych wzorami~\eqref{eq:ETMGP}
+i~\eqref{eq:VF0ZM} możemy użyć wprost do zaimplementowania dowolnego
+(stało-krokowego) schematu całkowania, np. schematu jawnego Eulera (zobacz
+dodatek~\ref{sec:VNLHT}). W~ten sposób można dość łatwo zaimplementować metodę
+całkującą, np. w~arkuszu kalkulacyjnym Excel.
+
+\paragraph{Warunki początkowe.}
+Jako warunków początkowych w~procesie całkowania można użyć
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_0 = \begin{bmatrix}
+    \bar{\varphi}_{x,0} & \bar{\varphi}_{y,0} & 0 & 0
+  \end{bmatrix}^T,
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $\bar{\varphi}_{x,0}$, $\bar{\varphi}_{y,0}$ są odchyleniami kątowymi
+odczytanymi z~potencjometrów w~chwili czasowej $t_0$, a~zera w~miejscu
+$y_{3,0}$ i~$y_{4,0}$ wynikają ze~sposobu przeprowadzenia eksperymentu
+(w~chwili początkowej wahadło miało zerową prędkość). Jeśli w~chwili
+początkowej wahadło poruszało się z~niezerową prędkością, prędkość początkową
+można spróbować aproksymować wzorami różnicowymi na podstawie kilku
+początkowych próbek $\bar{\varphi}_{\bullet,k}$.
+
+\subsection{Opis szablonu arkusza kalkulacyjnego do obliczeń}
+\label{sec:CS7OJ}
+
+Aby ułatwić przygotowanie sprawozdania, udostępnia się studentom szablon
+arkusza kalkulacyjnego do uzupełnienia. Arkusz kalkulacyjny
+\texttt{wahadlo-clean.xlsx} zawiera następujące zakładki
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item \texttt{PAR} -- parametry eksperymentu,
+  \item \texttt{POM} -- miejsce na wstawienie zebranych danych pomiarowych,
+  \item \texttt{EULF} -- arkusz do całkowania numerycznego metodą jawną Eulera,
+  \item \texttt{EULB} -- arkusz do całkowania numerycznego metodą niejawną Eulera.
+  \item \texttt{TRAP} -- arkusz do całkowania numerycznego metodą trapezów.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Arkusz \texttt{POM} jest przygotowany na przyjęcie $3500$ próbek pomiarowych,
+co przy okresie próbkowania $10$~ms daje $35$~sekund. Uzupełnianie arkusza,
+krok po kroku, wyjaśniono poniżej.
+
+\paragraph{Uwagi ogólne dotyczące uzupełniania arkusza.} Treść należy
+,,wklejać specjalnie'' (\texttt{Ctl+Shift+V}), tak aby nie nadpisać
+skonfigurowanego odpowiednio formatowania komórek (format liczb, wyświetlanie
+jednostek miar itp.). Komórki z~szarym tłem nie wymagają uzupełniania, zwykle
+są tam z~góry znane parametry bądź formuły. Komórki bez tła (defaultowo białe)
+wymagają wpisania bądź wklejenia wartości (liczbowych). Komórki w~kolorze
+żółtym wymagają wpisania odpowiednich formuł.
+
+\paragraph{Zakładka \texttt{PAR}.} Zakładkę z~parametrami eksperymentu
+uzupełnia się następująco
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item W~tabeli \texttt{PAR-POT} należy wpisać napięcia zebrane podczas
+    skalowania potencjometrów. Opcjonalnie, można też poprawić figurujące tam
+    zakresy kątów na kątomierzu ($-\#^{\circ}$, $+\#^{\circ}$), jeśli
+    skalowania dokonano w~innym zakresie kątów.
+  \item Do~tabeli \texttt{PAR-ACC-1G} wpisać napięcia zmierzone przy
+    skalowaniu akcelerometru metodą $\mp 1g$.
+  \item Do~tabeli \texttt{PAR-ACC-AB} wpisać napięcia zmierzone przy skalowaniu
+    akcelerometru wg~dwóch różnych położeń wahadła
+    (podrozdział~\ref{sec:BDRBE}). Jeśli wychylenie wahadła przy skalowaniu
+    akcelerometru zmierzono kątomierzami, w~szarych polach należy podać
+    zmierzone kąty. W~innym przypadku wpisać wartości napięć na potencjometrach
+    w~odpowiednie komórki tabeli.
+  \item Do~tabeli \texttt{PAR-ACC} wkleić wyliczone współczynniki skali
+    akcelerometru bądź to z~\texttt{PAR-ACC-1G}, bądź z~\texttt{PAR-ACC-AB},
+    w~zależności od tego, który zestaw współczynników ma być użyty przy
+    wyznaczaniu przyspieszeń w~arkuszu \texttt{POM}.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\paragraph{Zakładka \texttt{POM}.} Zakładkę z~pomiarami uzupełnia się
+następująco
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item z~pliku źródłowego przygotować zakres danych obejmujący $3500$ próbek,
+  \item wkleić odpowiednie serie przygotowanych danych w~puste pola kolumn
+    \texttt{Vx}, \texttt{Vy}, \texttt{Vz}, \texttt{Ux}, \texttt{Uz}.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+W~zakładce \texttt{POM} automatycznie wyliczane są przyspieszenia
+$\hat{\brm{a}}^{\prime}$ (przyspieszenia ,,brutto'' mierzone akcelerometrem),
+wychylenia kątowe $\bar{\varphi}_x$, $\bar{\varphi}_x$ mierzone potencjometrami
+oraz moduł $\left|\hat{\brm{a}}^{\prime}\right|$ mierzonego przyspieszenia
+(do celów diagnostycznych).
+
+\paragraph{Zakładki \texttt{EULF}, \texttt{EULB} i~\texttt{TRAP}.} Zakładki
+służą do całkowania przyspieszeń. W~żółtych komórkach kolumn \texttt{f1}, ...,
+\texttt{f4} oraz \texttt{y1}, ..., \texttt{y4} należy zaimplementować
+odpowiednią metodę całkowania. Kolumny \texttt{y1}, ..., \texttt{y4}
+przewidziane są dla kolejnych współrzędnych wektora niewiadomych $\brm{y}$, zaś
+\texttt{f1}, ..., \texttt{f4} powinny zawierać kolejne składowe funkcji
+$\brm{f}$ (patrz rozdział~\ref{sec:OKCY5}).
+
+\section{Przygotowanie sprawozdania}
+\label{sec:GO0AP}
+
+Przygotowane sprawozdanie powinno zawierać
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item krótkie wprowadzenie do prezentowanego eksperymentu (nie dłuższe niż
+    pół strony),
+  \item uzupełnioną tabelę uzyskaną przy skalowaniu potencjometrów
+    (Tablica~\ref{tab:KM4WU}, podrozdział~\ref{eq:460IS}) oraz tabele
+    ze~skalowania akcelerometru metodą $\mp 1g$ (Tablica~\ref{tab:Q31HW},
+    podrozdział~\ref{sec:CT4YN}) i~metodą wg~dwóch różnych położeń wahadła
+    (Tablica~\ref{tab:22DGI}, podrozdział \ref{sec:BDRBE}),
+  \item przebiegi $\tilde{\varphi}_x$, $\tilde{\varphi}_y$ wynikające
+    z~całkowania przyspieszeń akcelerometru metodami (cały eksperyment, oraz
+    pierwsze $15$ sekund)
+    \begin{itemize}
+      \item jawna metoda Eulera,
+      \item niejawna metoda Eulera,
+      \item metoda trapezów,
+    \end{itemize}
+    w~wariantach
+    \begin{itemize}
+      \item akcelerometry wyskalowane metodą $\pm 1g$,
+      \item akcelerometry wyskalowane metodą wg~dwu położeń wahadła;
+    \end{itemize}
+    przebiegi mają być przedstawione w~postaci wykresów (na osi poziomej czas
+    $t$, na osi pionowej wychylenie kątowe); na każdym wykresie powinien być
+    również naniesiony (dla porównania) odpowiedni przebieg
+    $\bar{\varphi}_{\bullet}$ uzyskany z~pomiarów czujnikiem położenia
+    (potencjometrem),
+  \item wnioski; należy zwrócić uwagę jakie czynniki wpływają istotnie na
+    uzyskane wyniki całkowania oraz czy ta metoda nadaje się do estymacji
+    położeń na długich przedziałach czasowych.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{appendices}
+\section{Kinematyka wahadła z~przegubem Cardana}
+\label{sec:4XR18}
+
+W~poniższej sekcji wyprowadzono równania opisujące ruch modelu kinematycznego
+badanego wahadła. Celem jest uzyskanie formuł, które wiązałyby ze sobą
+przyspieszenia $\hat{\brm{a}}^{\prime}$ zmierzone przy pomocy akcelerometru
+z~drugimi pochodnymi $\ddot{\varphi}_x$, $\ddot{\varphi}_y$ wychyleń kątowych
+w~przegubie Cardana. Zastosowanie metod numerycznego całkowania, czy
+różniczkowania, umożliwi nam następnie porównanie trajektorii uzyskanych
+różnymi sposobami.
+
+\subsection{Oddziaływanie przyspieszenia grawitacyjnego na akcelerometry}
+\label{sec:LIIHL}
+
+W~obecności pola grawitacyjnego, wartości przyspieszeń odczytanych
+z~akcelerometru, oprócz obserwowanego przyspieszenia kinematycznego (ruchu),
+będą zawierały jeszcze składowe od przyspieszenia grawitacyjnego. Poniższa
+dyskusja objaśnia istotę tego zjawiska i~wprowadza technikę eliminacji
+składowych grawitacyjnych.
+
+\subsubsection{Przykłady kanoniczne}
+\label{sec:YFBVX}
+
+\paragraph{Nieruchomy akcelerometr.}
+{\em Nieruchomy} akcelerometr będzie wskazywał wzdłuż wybranej osi  zerowe
+przyspieszenie tylko wtedy, gdy ustawimy tę oś idealnie w~płaszczyźnie
+poziomej (prostopadłej do wektora grawitacji). W~skrajnie odmiennej sytuacji,
+tj. jeśli skierujemy oś nieruchomego akcelerometru idealnie wzdłuż wektora
+grawitacji $\brm{g}$, wskazanie na tej osi powinno wynieść $+1g$ bądź $-1g$.
+Przyjmijmy, że jeśli akcelerometr porusza się z~dodatnim przyspieszeniem wzdłuż
+dowolnej swojej osi, np. $z^{\prime}$, to odczytana z~tego kanału wartość
+przyspieszenia powinna być dodatnia. Przy takiej konwencji, oś {\em
+nieruchomego} akcelerometru skierowana pionowo w~górę (przeciwnie do wektora
+grawitacji), da odczyt $+1g$ (dodatni). Wynika to z~zależności
+\eqref{eq:QDX8V} poniżej, gdzie dla nieruchomego akcelerometru należy
+przyjąć $\brm{a} = \brm{0}$. Powyższe obserwacje można wykorzystać np.~do
+skalowania akcelerometru, tj. do określenia współczynników jego
+charakterystyki.
+
+\paragraph{Swobodne spadanie.}
+Aby wskazanie wzdłuż pionowo ustawionej osi akcelerometru było zerowe,
+należałoby mu pozwolić swobodnie opadać pod wpływem pola grawitacyjnego.
+Jeśli oś (np.~$z^{\prime}$)  akcelerometru ustawimy idealnie pionowo w~górę
+(zgodnie z~wektorem grawitacji) i~uwolnimy akcelerometr od więzów,
+pozwalając mu swobodnie spadać, wskazanie wzdłuż tej osi będzie zerowe, tzn.
+$\hat{a}_z =0$. Wiemy jednak, że względem nieruchomego układu współrzędnych
+akcelerometr porusza się z~przyspieszeniem $a_z = -g$. A~więc faktyczne
+przyspieszenie kinematyczne jest $a_z = \hat{a}_z - g$. W~ogólności
+zapisalibyśmy to w~nieruchomym układzie współrzędnych jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{a} = \hat{\brm{a}} + \brm{g},
+  \label{eq:QDX8V}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{g} = \begin{bmatrix} 0 & 0 & -g \end{bmatrix}^T, \;\; g \approx 9.81 \frac{m}{s^2}
+  \label{eq:PWKKB}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+jest wektorem przyspieszenia ziemskiego, oraz
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  & \brm{a} = \begin{bmatrix}
+    a_x & a_y & a_z
+  \end{bmatrix}^T, &
+  & \hat{\brm{a}} = \begin{bmatrix}
+    \hat{a}_x & \hat{a}_y & \hat{a}_z
+  \end{bmatrix}^T &
+  \label{eq:0JPXH}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+są wektorami algebraicznymi przyspieszeń ,,netto'' i ,,brutto'' akcelerometru
+wyrażonymi w~nieruchomym układzie współrzędnych.
+
+\subsubsection{Oddziaływanie na akcelerometr zamocowany na wahadle}
+\label{sec:JO17Z}
+
+Oczywiście, fizyka oddziaływania pola grawitacyjnego na akcelerometr nie zmieni
+się w~wyniku jego zamontowaniu na końcówce wahadła. Celem niniejszego
+podrozdziału jest jedynie określenie składowych wektora grawitacji
+pojawiających się na osiach akcelerometru w~zależności od~wychyleń kątowych
+wahadła (a~więc wypracowanie odpowiednich transformacji geometrycznych).
+Dotychczasowe nasze rozważania przeprowadzono w~nieruchomym układzie
+współrzędnych $x,y,z$ jednak w~eksperymencie mamy do czynienia
+z~przyspieszeniami wyrażonymi w~układzie
+ruchomym~$x^{\prime},y^{\prime},z^{\prime}$ (osie akcelerometru są w~każdej
+chwili równoległe do osi układu ruchomego $x^{\prime},y^{\prime},z^{\prime}$).
+
+Rysunek~\ref{fig:AFKVE} pokazuje w~dwóch rzutach wahadło w~położeniu określonym
+przez kąty~$\varphi_x$, $\varphi_y$. W~prawej części rysunku pokazano rzut
+na płaszczyznę $y-z$, w~której odbywa się obrót $\varphi_x$. Grot osi $x$
+skierowany jest w~stronę obserwatora. W~lewej części rysunku pokazano rzut na
+płaszczyznę~$z^{\prime\prime}, x^{\prime\prime}$, w~której odbywa się
+obrót~$\varphi_y$ (tak jak to widzi oko obserwatora z~prawego rysunku).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[%
+      scale=0.85,%
+      axis/.style={very thin,->},%
+      rodr/.style={thick,double distance=0.25cm,cap=round},%
+      rodr2/.style={thick,double distance=0.35cm,cap=round},%
+      rodh/.style={thick,double distance=0.25cm,cap=rect},%
+      rodh2/.style={thick,double distance=0.35cm,cap=rect},%
+      zxplane/.style={canvas is zx plane at y=#1},%
+      yxplane/.style={canvas is yx plane at z=#1},%
+      yzplane/.style={canvas is yz plane at x=#1},%
+  ]
+
+    \begin{scope}[x={(0,0)},y={(1cm,0)},z={(0,1cm)}]
+
+      \coordinate (r) at (0,0,-4);
+
+      \draw[dashdotted] (0,0,0) -- ++(0,0,-3.5);
+      \begin{scope}[rotate around x=30]
+        %eye
+        \pgfmathsetmacro{\eyeSize}{1}
+        \pgfmathsetmacro{\ex}{4}
+        \pgfmathsetmacro{\ey}{-2.5}
+        \pgfmathsetmacro{\eRot}{-180}
+        \pgfmathsetmacro{\eAp}{-55}
+        \draw[yzplane=0,rotate around={\eRot:(\ex,\ey)}] (\ex,\ey) -- ++(-.5*\eAp:\eyeSize)
+             (\ex,\ey) -- ++(.5*\eAp:\eyeSize);
+        \draw[yzplane=0] (\ex,\ey) ++(\eRot+\eAp:.75*\eyeSize) arc (\eRot+\eAp:\eRot-\eAp:.75*\eyeSize);
+
+        % IRIS
+        \draw[yzplane=0,fill=gray] (\ex,\ey) ++(\eRot+\eAp/3:.75*\eyeSize) % start point
+          arc (\eRot+180-\eAp:\eRot+180+\eAp:.28*\eyeSize);
+
+        %PUPIL, a filled arc
+        \draw[yzplane=0,fill=black] (\ex,\ey) ++(\eRot+\eAp/3:.75*\eyeSize) % start point
+          arc (\eRot+\eAp/3:\eRot-\eAp/3:.75*\eyeSize);
+        %
+        \draw[draw=lightgray,thin,dashed,->] (0,3,-2.5) -- ++ (0,-2.5,0);
+        %
+        \draw[rodh](0,0,-0.50)-- (0,0,-4) node[above=0.20cm,right=0.20cm] {$r$};
+        \draw[rodh](0,-0.85,0) -- (0,0.85,0);
+        \draw[rodh2](0,-0.75,0.1) -- (0,-0.75,-0.50) -- (0,0.75,-0.50) -- (0,0.75,0.1);
+        \draw[thin,dashdotted] (0,0,0) -- ++ (0,0,-4);
+        % x''-y''-z'' coordinate system
+        \draw[dashed,axis] (0,0,0) -- ++(0,2,0) node[right] {$y^{\prime\prime},y^{\prime}$};
+        \draw[dashed,axis] (0,0,0) -- ++(0,0,2) node[above] {$z^{\prime\prime},z^{\prime}$};
+
+        \begin{scope}[shift={(30:-4cm)}]
+          \draw[thin,dashed] (0,0,-5.5) -- (0,0,3);
+        \end{scope}
+
+        \begin{scope}[shift={(30:-8cm)}]
+          \begin{scope}[rotate around z=-90]
+            \draw[rodh] (-0.85,0,0) -- (0.85,0,0);
+            % base
+            \draw[rodh2](-0.75,0,0.75) -- (-0.75,0,-0.1);
+            \draw[rodh2](0.75,0,-0.1) -- (0.75,0,0.75);
+            \draw[zxplane=0,fill=white,postaction={pattern=north east lines}] (0.75,-1) rectangle (1.25,1);
+            \draw[dashdotted] (0,0,0) -- ++(0,0,-3.5);
+            % pendulum
+            \begin{scope}[rotate around y=30]
+              \draw[rodh](0,0,0) -- ++(0,0,{-4/cos(30)}) node[above=0.30cm,right=0.05cm] {$r$};
+              \draw[rodr2](0,0,{-0.35/cos(30)}) -- (0,0,0);
+              \draw[zxplane=0] (0,0,0) circle (0.125);
+              \draw[thin,dashdotted,cap=round] (0,0,0) -- ++ (0,0,{-4/cos(30)});
+              % x'-y'-z' coordinate system
+              \draw[axis] (0,0,0) -- ++(2,0,0) node[right] {$x^{\prime}$};
+              \draw[axis] (0,0,0) -- ++(0,0,2) node[above] {$z^{\prime}$};
+            \end{scope}
+            % angle \varphi_y
+            \draw[axis,zxplane=0] (0,0) ++ (180:2) arc(180:210:2) node [below=0.25cm] {$\varphi_y$};
+            % gravity
+            \draw[thick,->,zxplane=0] (-150:{4/cos(30)}) -- ++ (-{2*cos(30)},0) node[below] {$g\cos{\varphi_x}$};
+            \draw[thick,->,zxplane=0] (-150:{4/cos(30)}) -- ++ (-150:{2*cos(30)*cos(30)}) node[below=0.25cm,right] {$g\cos{\varphi_x}\cos{\varphi_y}$};
+            \draw[thick,->,zxplane=0] (-150:{4/cos(30)}) -- ++ (-240:{2*cos(30)*sin(30)}) node[below=0.25cm,left] {$g\cos{\varphi_x}\sin{\varphi_y}$};
+            % x''-y''-z'' coordinate system
+            \draw[dashed,axis] (0,0,0) -- ++(2,0,0) node[left] {$x^{\prime\prime}$};
+            \draw[dashed,axis] (0,0,0) -- ++(0,0,2) node[above] {$z^{\prime\prime},z$};
+          \end{scope}
+        \end{scope}
+
+      \end{scope}
+      \draw[axis,yzplane=0] (0,0) ++ (-90:2) arc(-90:-60:2) node [midway, below] {$\varphi_x$};
+
+      \draw[rodr2] (0,0,0) -- (0,0,0.75);
+      \draw[yzplane=0,fill=white,postaction={pattern=north east lines}] (-1,0.75) rectangle (1,1.25);
+      \draw[yzplane=0] (0,0,0) circle (0.125);
+
+      % gravity
+      \draw[thick,->,yzplane=0] (-60:4) -- ++ (0,-2) node[below] {$g$};
+      \draw[thick,->,yzplane=0] (-60:4) -- ++ ( -60:{2*cos(30)}) node[below right] {$g\cos{\varphi_x}$};
+      \draw[thick,->,yzplane=0] (-60:4) -- ++ (-150:{2*sin(30)}) node[left] {$g\sin{\varphi_x}$};
+      % gravity helper lines
+      \draw[thin,draw=lightgray,dashed,yzplane=0] {(-60:4)+(-150:{2*sin(30)})} -- ++ (-150:6);
+      \draw[thin,draw=lightgray,dashed,yzplane=0] {(-60:{4+2*cos(30)})} -- ++ (-150:6);
+
+      % x-y-z coordinate system
+      \draw[axis] (0,0,0) -- ++(0,2,0) node[right] {$y$};
+      \draw[axis] (0,0,0) -- ++(0,0,2) node[above] {$z$};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Oddziaływanie przyspieszenia ziemskiego na końcówkę wahadła}
+  \label{fig:AFKVE}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Zakładając, że osie akcelerometru są zgodne z~osiami układu ruchomego
+$x^{\prime},y^{\prime},z^{\prime}$ wnioskujemy na podstawie rysunku oraz
+wcześniejszych rozważań, że przyspieszenie kinematyczne $\brm{a}^{\prime}$
+(,,netto'') będzie związane ze~wskazywanym przez akcelerometr przyspieszeniem
+(,,brutto'')~$\hat{\brm{a}}^{\prime}$ w~następujący sposób
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  {\brm{a}^{\prime}} = \hat{\brm{a}}^{\prime}
+  -
+  g \cdot
+  \begin{bmatrix}
+              -\cos{\varphi_x} \sin{\varphi_y}  \\
+                      \sin{\varphi_x}          \\
+    \phantom{-}\cos{\varphi_x} \cos{\varphi_y}
+  \end{bmatrix},
+  \label{eq:EUIQU}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+przy czym
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  & \brm{a}^{\prime} = \begin{bmatrix}
+    a_x^{\prime}  & a_y^{\prime}  & a_z^{\prime}
+  \end{bmatrix}^T, &
+  & \hat{\brm{a}}^{\prime}  = \begin{bmatrix}
+    \hat{a}_x^{\prime}  & \hat{a}_y^{\prime}  & \hat{a}_z^{\prime}
+  \end{bmatrix}^T &
+  \label{eq:NL9I0}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+są przyspieszeniami ,,netto'' i~,,brutto'' akcelerometru wyrażonymi w~układzie
+ruchomym $x^{\prime},y^{\prime},z^{\prime}$.
+
+\subsection{Związek między przyspieszeniami liniowymi i~kątowymi}
+\label{sec:QTVP6}
+
+Przyspieszenie ,,netto'' $\brm{a}^{\prime}$ odzwierciedla liniowe
+przyspieszenie kinematyczne końcówki wahadła wyrażone w~układzie ruchomym.
+Jeśliby przyjąć, że wynikające z~pomiarów przyspieszenia $\brm{a}^{\prime}$
+odpowiadają dokładnie faktycznym przyspieszeniom kinematycznym końcówki
+(perfekcyjny eksperyment) to przyspieszenia kątowe $\ddot{\varphi_x}$
+i~$\ddot{\varphi_y}$ będą wynikały wprost z~przyspieszeń $\brm{a}^{\prime}$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{subequations}
+  \label{eq:9HDQE}
+  \begin{align}
+    \ddot{\varphi}_x &=\phantom{-}r^{-1} a_y^{\prime},
+    \label{eq:UIQUR}
+    \\
+    \ddot{\varphi}_y &=         - r^{-1} a_x^{\prime},
+    \label{eq:ZBLRS}
+  \end{align}
+\end{subequations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+($r$ jest długością wahadła). Równania \eqref{eq:9HDQE} stanowią
+układ równań różniczkowych zwyczajnych drugiego rzędu z~niewiadomymi funkcjami
+$\varphi_x(t)$, $\varphi_y(t)$ oraz dobrze zdefiniowanymi prawymi stronami
+$r^{-1}a_x^{\prime}(t,\varphi_x,\varphi_y)$, $r^{-1}a_y^{\prime}(t,\varphi_x)$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{subequations}
+  \label{eq:ROGUO}
+  \begin{align}
+    \ddot{\varphi}_x & = \phantom{-} r^{-1} \left(
+      \hat{a}_y^{\prime}\left(t\right) - g \sin{\varphi_x}
+    \right),
+    \label{eq:HRYMM}
+    \\
+    \ddot{\varphi}_y & = - r^{-1} \left(
+        \hat{a}_x^{\prime}\left(t\right) + g \cos{\varphi_x} \sin{\varphi_y}
+    \right).
+    \label{eq:D4N2B}
+  \end{align}
+\end{subequations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Równania takie, po opatrzeniu odpowiednimi warunkami początkowymi, można
+rozwiązywać np.~przy użyciu procedur całkowania numerycznego. W~naszym
+przypadku, użycie tego typu metody do danych pomiarowych umożliwiłoby
+wyznaczenie przybliżonych przebiegów wychyleń wahadła $\varphi_x$, $\varphi_y$
+na podstawie przyspieszeń zebranych z~akcelerometrów.
+
+\subsection{Redukcja równań różniczkowych II rzędu do postaci równań I rzędu}
+\label{sec:WKKBB}
+
+Aby zastosować procedurę całkowania numerycznego, problem powinien być
+sformułowany jako zagadnienie początkowe z~układem równań różniczkowych
+pierwszego rzędu, czyli w~postaci~\eqref{eq:L8KAD}. W~przypadku
+równań~\eqref{eq:ROGUO} można to osiągnąć poprzez zastosowanie następującego
+zestawu zmiennych
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y} = \begin{bmatrix}
+    y_1 & y_2 & y_3 & y_4
+  \end{bmatrix}^T \coloneqq \begin{bmatrix}
+    \varphi_x & \varphi_y & \dot{\varphi}_x & \dot{\varphi}_y
+  \end{bmatrix}^T.
+  \label{eq:U09S6}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Teraz, w~celu wyrażenia równań~\eqref{eq:ROGUO} w~postaci~\eqref{eq:R7M37}
+wystarczy zdefiniować funkcję $\brm{f}$ jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{f}\left(t,\brm{y}\right) \coloneqq \begin{bmatrix}
+    y_3 \\
+    y_4 \\
+    r^{-1} \left( {\hat{a}_y}^{\prime}\left(t\right) - g \sin{y_1} \right)  \\
+    r^{-1} \left(-{\hat{a}_x}^{\prime}\left(t\right) - g \cos{y_1}\sin{y_2} \right)
+  \end{bmatrix}.
+  \label{eq:S8LTL}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Jako $\brm{y}_0$ w~warunkach początkowych \eqref{eq:5DFP4} należy oczywiście
+użyć
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_0 = \begin{bmatrix}
+    \varphi_{x,0} & \varphi_{y,0} & \dot{\varphi}_{x,0} & \dot{\varphi}_{y,0}
+  \end{bmatrix}^T.
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Metody całkowania numerycznego}
+\label{sec:VNLHT}
+
+Współczesna numeryka oferuje cały wachlarz metod obliczeniowych umożliwiających
+przybliżone rozwiązywanie zagadnień różniczkowych. Poszczególne metody
+numerycznego całkowania równań różniczkowych różnią się między sobą m.in.
+takimi właściwościami, jak rząd dokładności, obszar stabilności, tłumienie
+numeryczne~\cite{asher&petzold:1998:computer-methods}.
+
+Tradycyjne metody numerycznego całkowania równań różniczkowych zwyczajnych
+umożliwiają rozwiązanie zagadnienia początkowego sformułowanego jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{subequations}
+\label{eq:L8KAD}
+\begin{align}
+  \dot{\brm{y}}\left(t\right) &= \brm{f}\left(t, \brm{y}(t)\right),
+  \label{eq:R7M37}
+  \\
+  \brm{y}\left(0\right) &= \brm{y}_0 \in \mathbb{R}^n,
+  \label{eq:5DFP4}
+\end{align}
+\end{subequations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $\brm{y}: \mathbb{R} \mapsto \mathbb{R}^n$ jest poszukiwaną funkcją.
+Równanie \eqref{eq:R7M37} jest równaniem różniczkowym zwyczajnym (pierwszego
+rzędu), zaś \eqref{eq:5DFP4} definiuje warunki początkowe dla zagadnienia.
+
+Klasyfikacji metod numerycznego całkowania dokonuje się wg rozmaitych
+kryteriów. Pod względem konstrukcji schematu różnicowego, możemy wyodrębnić
+podział na metody jedno i~wielokrokowe, a~w~każdej z~tych kategorii będą
+występować schematy jawne i~niejawne. Przy ocenie dokładności rozwiązania
+uzyskiwanego daną metodą zwykle mówi się o~rzędzie metody (mówi się, że metoda
+jest rzędu $p$ jeśli błąd uzyskiwanego przybliżenia numerycznego jest $d =
+O(h^{p+1})$, gdzie $h$ jest krokiem całkowania). Na potrzeby laboratorium
+wprowadzimy kilka znanych metod całkowania.
+
+\subsection{Metody jednokrokowe}
+\label{sec:5BIFZ}
+
+\subsubsection{Metody Eulera}
+\label{sec:AN1EA}
+
+Znane i stosowane są dwa warianty metody Eulera -- jawna i niejawna. Metody
+Eulera są metodami pierwszego rzędu. Różnią się między sobą obszarem
+stabilności.
+
+\paragraph{Jawna metoda Eulera.}
+W~metodzie jawnej Eulera używa się następującego schematu różnicowego do
+przybliżenia pochodnej $\dot{\brm{y}}$ (schemat różnicowy ,,w~przód'')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \dot{\brm{y}}_{k-1} = \frac{\brm{y}_{k} - \brm{y}_{k-1}}{h},
+  \label{eq:IHSVX}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $\brm{y}_{l} \approx \brm{y}\left(t_l\right)$ jest przybliżeniem wartości
+poszukiwanej funkcji w~punkcie $t_l$ a~$\dot{\brm{y}}_{l} \approx
+\dot{\brm{y}}(t_l)$ przybliżeniem pochodnej. W~wyniku prostego przekształcenia,
+otrzymuje się jawną metodę Eulera
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \brm{y}_{k-1} + h \cdot \brm{f}_{k-1},\;\;k = 1,\dots,K,
+ \label{eq:3PVVU}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+w~której $\brm{f}_l = \brm{f}\left(t_l, \brm{y}_l\right)$. Zauważmy, że dla
+$k=1$ mamy po prawej stronie $\brm{y}_0$ znane z~warunków początkowych, więc
+możemy od razu wyliczyć $\brm{y}_1$ i~dalej, krok po kroku, $\brm{y}_2$,
+$\brm{y}_3$, itd..
+
+\paragraph{Niejawna metoda Eulera.}
+W~niejawnej metodzie Eulera, pochodną aproksymuje się następującym schematem
+różnicowym (wsteczna różnica skończona)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \dot{\brm{y}}_k = \frac{\brm{y}_{k} - \brm{y}_{k-1}}{h}.
+  \label{eq:YNJO9}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Uzyskana metoda całkowania ma więc postać
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \brm{y}_{k-1} + h \cdot \brm{f}_{k},\;\;k = 1,\dots,K.
+  \label{eq:R8JE3}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Należy zaznaczyć, że równanie \eqref{eq:R8JE3} jest nieliniowym równaniem
+uwikłanym, ponieważ niewiadome~$\brm{y}_k$ są uwikłane w~definicji nieliniowej
+funkcji $\brm{f}_k = \brm{f}(t_k,\brm{y}_k)$. W~każdym kroku całkowania należy
+więc zastosować odpowiednią (iteracyjną) metodę rozwiązywania równań
+nieliniowych (np.~metodę punktu stałego, bądź metodę Newtona).
+
+\subsection{Metody wielokrokowe}
+\label{sec:QS6QT}
+
+Ogólny przepis na (liniową) metodę wielokrokową jest następujący
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \sum_{j=0}^J \alpha_j \brm{y}_{k-j} = h \sum_{j=0}^J \beta_j \brm{f}_{k-j}.
+  \label{eq:2AOXP}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Konkretne metody całkowania konstruuje się poprzez zastosowanie pewnych
+(znanych) zestawów współczynników $\alpha_j$ i $\beta_j$. Zakłada się przy tym,
+że $\alpha_0 \neq 0$ (w~wyśmienitej większości metod $\alpha_0 = 1$).
+Liczba~$J$ definiuje liczbę kroków metody. Mówi ona ile kroków wstecz dana
+metoda spogląda aby wyznaczyć bieżącą wartość $\brm{y}_k$. W~grupie metod
+wielo-krokowych będą występować {\em metody jawne} ($\beta_0 = 0$) i~{\em
+metody niejawne} ($\beta_0 \neq 0$).
+
+Przyjmując, zgodnie z~wcześniejszą uwagą, $\alpha_0 = 1$, wzór \eqref{eq:2AOXP}
+można przekształcić do postaci
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \sum_{j=1}^J \alpha_j \brm{y}_{k-j} + h \sum_{j=0}^J \beta_j \brm{f}_{k-j}
+  \label{eq:NN23A}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Dla $k>=J$ wszystkie wielkości po prawej stronie (oprócz nieznanego
+$\brm{f}_k$) są określone, toteż można próbować rozwiązać
+równanie~\eqref{eq:NN23A} względem $\brm{y}_k$. W~przypadku $k < J$ (np. $k=1$
+dla metody dwu-krokowej) należy zastosować w~danym punkcie $k$ metodę niższego
+rzędu (co najwyżej $k$-krokową). Mówi się wtedy potocznie o~użyciu metody
+startującej naszą metodę. Zadaniem takiego ,,startera'' jest wyznaczenie $J-1$
+wartości początkowych $\brm{y}_1, \dots \brm{y}_{J-1}$ na~początku procesu
+całkowania.
+
+Dla metod jawnych ($\beta_0 = 0$) wzór \eqref{eq:NN23A} przybiera szczególną
+postać
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \sum_{j=1}^J \alpha_j \brm{y}_{k-j} + h \sum_{j=1}^J \beta_j \brm{f}_{k-j}
+  \label{eq:EQ0F7}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tzn. znika z~niego wyrażenie $\beta_0 \brm{f}_k$ i~po prawej stronie zostają
+tylko wielkości z~poprzednich kroków.
+
+Do popularnych metod wielokrokowych należą metody Adamsa (jawne i~niejawne).
+W~metodach tych $\alpha_0=1$, $\alpha_1=-1$ i~$\alpha_j = 0$ dla $j > 1$.
+
+\subsubsection{Jawne metody Adamsa (metody Adamsa-Bashfortha)}
+\label{sec:JVLO6}
+
+Wszystkie metody Adamsa-Bashfortha działają wg poniższej formuły liniowej
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \brm{y}_{k-1} + h \sum_{j=1}^J \beta_j \brm{f}_{k-j}.
+  \label{eq:DUQAC}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Istnieje cała rodzina metod Adamsa-Bashforta różniących się rzędem metody.
+Najczęściej stosowane są metody rzędu $p$ od $1$ do $6$, dla których
+współczynniki $\beta_j$ przedstawiono w~tablicy~\ref{tab:OWS53}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+  \caption{Metody Adamsa-Bashfortha dla $p=1,\dots6$}
+  \label{tab:OWS53}
+  \centering
+  \begin{tabular}{|c|c|r|r|r|r|r|r|r|}
+    \hline
+    $p$ & $J$ & $j \rightarrow$ &    1 &    2 &    3 &    4 & 5    & 6    \\ \hline
+     1  &  1  &   $\beta_j$     &    1 &      &      &      &      &      \\
+     2  &  2  &   $2\beta_j$    &    3 &   -1 &      &      &      &      \\
+     3  &  3  &  $12\beta_j$    &   23 &  -16 &    5 &      &      &      \\
+     4  &  4  &  $24\beta_j$    &   55 &  -59 &   37 &   -9 &      &      \\
+     5  &  5  & $720\beta_j$    & 1901 &-2774 & 2616 & 1274 &  251 &      \\
+     6  &  6  &$1440\beta_j$    & 4277 &-7923 & 9982 &-7298 & 2877 & -475 \\ \hline
+  \end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Przykładowo, zastosowanie współczynników dla $p=3$ generuje metodę 3-krokową
+($J=3$) jak poniżej
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_{k} =  \brm{y}_{k-1} + \frac{h}{12} \left(23\,\brm{f}_{k-1} - 16\,\brm{f}_{k-2} + 5\,\brm{f}_{k-3} \right).
+  \label{eq:IYF96}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Należy zauważyć, że metoda Adamsa-Bashfortha pierwszego rzędu jest w~zasadzie
+metodą jednokrokową i~jest tożsama z~jawną metodą Eulera.
+
+
+\subsubsection{Niejawne metody Adamsa (metody Adamsa-Moultona)}
+\label{sec:FYDDW}
+
+Niejawne metody Adamsa-Moultona mają postać ogólną
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \brm{y}_{k-1} + h \sum_{j=0}^J \beta_j \brm{f}_{k-j}.
+  \label{eq:YCGME}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Podobnie jak w~przypadku jawnych metod Adamsa, dla każdego $p=1,2,\dots,6$
+opracowano unikalny zestaw współczynników $\beta_j$ definiujący metodę
+Adamsa-Moultona rzędu $p$. Współczynniki te zebrano w~tablicy~\ref{tab:06769}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+  \caption{Metody Adamsa-Moultona dla $p=1,\dots6$}
+  \label{tab:06769}
+  \centering
+  \begin{tabular}{|c|c|r|r|r|r|r|r|r|}
+    \hline
+    $p$ & $J$ & $j \rightarrow$ &    0 &    1 &    2 &    3 &    4 &    5 \\ \hline
+     1  &  1  &   $\beta_j$     &    1 &      &      &      &      &      \\
+     2  &  1  &   $2\beta_j$    &    1 &    1 &      &      &      &      \\
+     3  &  2  &  $12\beta_j$    &    5 &    8 &   -1 &      &      &      \\
+     4  &  3  &  $24\beta_j$    &    9 &   19 &   -5 &    1 &      &      \\
+     5  &  4  & $720\beta_j$    &  251 &  646 & -264 &  106 &  -19 &      \\
+     6  &  5  &$1440\beta_j$    &  475 & 1427 & -798 &  482 & -173 &   27 \\ \hline
+  \end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Przykładowo, metodę Adamsa-Moultona rzędu $p=3$ zapiszemy, zgodnie z~tablicą,
+jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \brm{y}_k = \brm{y}_{k-1} + \frac{h}{12}\left(
+    5 \brm{f}_k + 8 \brm{f}_{k-1} - 1 \brm{f}_{k-2}
+  \right)
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Należy zauważyć, że istnieją dwie różne jedno-krokowe metody Adamsa-Moultona,
+jedna rzędu $1$, druga rzędu $2$. Ponadto dostrzeżemy, że
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{itemize}
+  \item wariant $J=1$ z~$\beta_1 = 0$ (metoda $p=1$) jest w~istocie niejawną
+        metodą Eulera,
+  \item wariant $J=1$ z~$\beta_1 \neq 0$ (metoda $p=2$) jest znana skądinąd jako
+        niejawna metoda trapezów
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \begin{equation}
+          \brm{y}_k = \brm{y}_{k-1} + \frac{h}{2} \left(\brm{f}_{k} + \brm{f}_{k-1}\right).
+          \label{eq:GY62E}
+        \end{equation}
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{appendices}
+
+\bibliographystyle{unsrtnat}
+\bibliography{lpas}
+
+\end{document}
+%% \label{??:PUZKT}
+%% \label{??:S4682}
+%% \label{??:KUPE1}
+%% \label{??:3H14E}
+%% \label{??:BZ9QQ}
+%% \label{??:9FO7L}
+%% \label{??:7N0I0}
+%% \label{??:83G4K}
+%% \label{??:9GKIQ}
+%% \label{??:BLRSY}
+%% \label{??:FBVXJ}
+%% \label{??:O17ZL}
+%% \label{??:IIHLA}
+%% \label{??:FKVED}
+%% \label{??:OHJEV}
+%% \label{??:F0ZME}
+%% \label{??:TMGPW}
+%% \label{??:KKBBU}
+%% \label{??:09S6S}
+%% \label{??:8LTLJ}
+%% \label{??:FRP5U}
+%% \label{??:153BN}
+%% \label{??:N23AQ}
+%% \label{??:DX8VZ}
+%% \label{??:CIBXT}
+%% \label{??:USWMH}
+%% \label{??:M7PFQ}
+%% \label{??:TVP6Q}
+%% \label{??:C1YQ4}
+%% \label{??:XR18W}
+%% \label{??:WNDWC}
+%% \label{??:KUHTK}
+%% \label{??:M4WUQ}
+%% \label{??:31HWD}
+%% \label{??:HEMOZ}
+%% \label{??:DELSO}
+%% \label{??:9JWAO}
+%% \label{??:KCY55}
+%% \label{??:47XSX}
+%% \label{??:IRR24}
+%% \label{??:60ISN}
+%% \label{??:C01FZ}
+%% \label{??:2CJY7}
+%% \label{??:YP7NM}
+%% \label{??:6T5VY}
+
+% vim: set syntax=tex tabstop=2 shiftwidth=2 expandtab spell spelllang=pl:
