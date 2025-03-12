@@ -1,8 +1,8 @@
-% tmmlab.cls
+% lpas.cls
 % Materials for Lab on Theory of Machines and Mechanisms.
 %
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{tmmlab}[2016/11/25 Laboratory on Theory of Machnies and Mechanisms]
+\ProvidesClass{lpas}[2016/11/25 Laboratory on Theory of Machnies and Mechanisms]
 \LoadClassWithOptions{scrartcl}
 
 

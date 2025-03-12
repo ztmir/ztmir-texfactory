@@ -1,0 +1,630 @@
+\documentclass[paper=a4,DIV=12]{lpas}
+
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{courier}
+\usepackage{tgtermes,newtxtext,newtxmath}
+\usepackage[]{hyperref}
+\usepackage{natbib}
+
+%%\everymath{\displaystyle}
+
+\usepackage{bm}
+\usepackage{amsmath,amsfonts}
+\usepackage{mathtools}
+\usepackage[pdftex]{graphicx}
+\usepackage[titletoc,title]{appendix}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{arrows.meta,3d,patterns,calc,shapes.geometric}
+
+\newcommand{\brm}[1]{\bm{\mathrm{#1}}}
+\renewcommand{\arraystretch}{1.2}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% commath provides \od, but the package is not available on my travis-ci setup
+\newcommand{\od}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\odn}[3]{\frac{\mathrm{d}^{#1}#2}{\mathrm{d}{#3}^{#1}}}
+\newcommand{\tod}[2]{\tfrac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\todn}[3]{\tfrac{\mathrm{d}^{#1}#2}{\mathrm{d}{#3}^{#1}}}
+% gensymb provides \degree command, but whole package for just one symbol?
+\newcommand{\degree}{^{\circ}}
+
+\lstset{%
+  basicstyle=\footnotesize\ttfamily\selectfont,
+  language=Matlab,
+  inputencoding=utf8,
+  extendedchars=true,
+  frame=trBL
+}
+
+\newfloat{lstfloat}{htbp}{lop}
+\floatname{lstfloat}{Listing}
+
+\setcitestyle{numbers,square,comma}
+
+\begin{document}
+
+
+\serietitle{\\{\ }\\{\ }\\Laboratorium pomiarów, automatyki i~sterowania~I}
+
+\title{\Large{Repetytorium}}
+
+\subtitle{\huge{Modele układów liniowych, transmitancja operatorowa i~widmowa}}
+
+\author{\\Paweł Tomulik\\ Zakład Teorii Maszyn i Robotów\\ ITLiMS, MEIL, PW}
+\date{}
+\maketitle
+\thispagestyle{empty}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\begin{abstract}
+\section{Streszczenie}
+  \noindent Niniejszy dokument zawiera przypomnienie podstawowych informacji
+  dotyczących rozwiązania zagadnienia początkowego z~równaniem różniczkowym
+  liniowym o~stałych współczynnikach. W~ramach niniejszego ,,repetytorium''
+  przywołane są pojęcia odpowiedzi ustalonej i~nieustalonej (przejściowej),
+  stabilności asymptotycznej, oraz objaśnione są konsekwencje istnienia
+  pierwiastków wielokrotnych równania charakterystycznego. W~rozdziale
+  \ref{sec:2N6W7} pojawi się również pojęcie transmitancji operatorowej
+  i~widmowej w~kontekście rozwiązania równania różniczkowego przedstawionego
+  w~tym rozdziale.
+\end{abstract}
+
+
+\section{Rozwiązanie równania różniczkowego zwyczajnego o~stałych
+         współczynnikach}
+\label{sec:BVHF3}
+
+
+Matematyczny model układu LUS\footnote{LUS - Liniowy Układ Stacjonarny,
+określenie odnosi się do układów liniowych, których parametry nie zmieniają
+się w~czasie, często też zwane układami LTI -- Linear Time-Invariant.} można
+zapisać w~postaci równania różniczkowego zwyczajnego (RRZ) rzędu $N$
+o~stałych współczynnikach rzeczywistych $a_k$, $b_k$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \sum_{k = 0}^{N} a_k \odn{k}{y}{t} = \sum_{k = 0}^{M} b_k \odn{k}{u}{t},
+  \;\; a_k, b_k \in \mathbb{R}, \;\; a_N \neq 0, \;\; N \ge M.
+  \label{eq:ZV86M}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Prawa strona równania \eqref{eq:ZV86M}, którą oznaczymy jako $r(t)$:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  r(t) = \sum_{k = 0}^{M} b_k \odn{k}{u}{t},
+  \label{eq:D11SS}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+jest wymuszeniem wynikającym jednoznacznie z~przyłożonego sygnału wejściowego
+$u(t)$. Równanie~\eqref{eq:ZV86M} możemy więc zapisać, używając
+oznaczenia~$r(t)$, jako:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \sum_{k = 0}^{N} a_k \odn{k}{y}{t} = r(t).
+  \label{eq:41PZG}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Rozwiązanie $y(t)$ równania~\eqref{eq:ZV86M}, przy zadanych warunkach
+początkowych~\eqref{eq:U5Y0U}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \left.\odn{i}{y}{t}\right|_{t=0} = y^{(i)}_0, \;\; i = 0, \dots, N-1,
+  \label{eq:U5Y0U}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+konstruuje się zwyczajowo jako superpozycję dwu składowych
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y(t) = y_P(t) + y_U(t).
+  \label{eq:V92W6}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Składowe te, to rozwiązanie $y_P(t)$ równania jednorodnego \eqref{eq:BHP9M},
+uzyskanego przez przyjęcie $r(t) \equiv 0$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \sum_{k = 0}^{N} a_k \odn{k}{y}{t} = 0
+  \label{eq:BHP9M}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+i~rozwiązanie $y_U(t)$ równania niejednorodnego~\eqref{eq:ZV86M}. Rozwiązanie
+$y_P(t)$, zwane całką ogólną równania jednorodnego, wynika jedynie z~warunków
+początkowych i~ma charakter przejściowy (dla układów stabilnych zanika
+z~czasem) -- wykazano to w~rozdziale \ref{sec:ZFKPA}. Rozwiązanie $y_U(t)$,
+zwane całką szczególną równania niejednorodnego, wynika z~przyłożonego
+wymuszenia i~ma charakter ustalony (np. funkcja okresowa o~ustalonych
+parametrach) -- wykazano to w~rozdziale~\ref{sec:JITWY}.
+
+\subsection{Rozwiązanie równania jednorodnego -- odpowiedź przejściowa}
+\label{sec:ZFKPA}
+
+%%  Zapiszmy równanie jednorodne \eqref{eq:BHP9M} używając notacji macierzowej
+%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  \begin{equation}
+%%    \mathbf{a}^T \mathbf{y}(t) = 0,
+%%    \label{eq:1BYA0}
+%%  \end{equation}
+%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  gdzie
+%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  \begin{equation}
+%%    \begin{aligned}
+%%      &
+%%      \mathbf{a} = \begin{bmatrix}
+%%        a_0 & a_1 & \dots & a_N
+%%      \end{bmatrix}^T,
+%%      & &
+%%      \mathbf{y}(t) = \begin{bmatrix}
+%%        y(t) & \od{y}{t}(t) & \dots & \odn{N}{y}{t}(t)
+%%      \end{bmatrix}^T.
+%%      &
+%%    \end{aligned}
+%%    \label{eq:C3UCS}
+%%  \end{equation}
+%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  Lewa strona równania \eqref{eq:1BYA0} jest iloczynem skalarnym wektorów
+%%  $\mathbf{a}$ i~$\mathbf{y}$ należących do $N+1$-wymiarowych przestrzeni.
+%%  Samo równanie należy więc interpretować jako wymóg ortogonalności wektorów
+%%  $\mathbf{a}$ i~$\mathbf{y}$ dla każdej ustalonej wartości $t$. Ogólnym
+%%  rozwiązaniem równania~\eqref{eq:1BYA0} będzie więc cała $N$-wymiarowa
+%%  podprzestrzeń oryginalnej przestrzeni $N+1$-wymiarowej złożona ze wszystkich
+%%  wektorów~$\mathbf{y}$ ortogonalnych do~$\mathbf{a}$. Taką podprzestrzeń
+%%  zwykło się definiować podając $N$ liniowo niezależnych wektorów
+%%  rozpinających. Przykładowo, dla przestrzeni 3-wymiarowej, podprzestrzeń
+%%  wektorów ortogonalnych do wektora~$\mathbf{a}$ jest jednoznacznie określona
+%%  przez dowolne dwa liniowo niezależne wektory $\mathbf{y}_1$, $\mathbf{y}_2$,
+%%  z~których każdy jest ortogonalny do $\mathbf{a}$. Podprzestrzeń {\em
+%%  wszystkich} wektorów ortogonalnych do $\mathbf{a}$ (rozwiązanie ogólne) jest
+%%  wtedy zdefiniowana jako $\mathbf{y} = c_1 \mathbf{y}_1 + c_2 \mathbf{y}_2$,
+%%  z~dowolnymi $c_1, c_2 \in \mathbb{R}$ (płaszczyzna prostopadła do $\mathbf{a}$).
+
+%%  W~świetle powyższego wnioskujemy, że
+
+Ogólne rozwiązanie $y_P(t)$ równania~\eqref{eq:BHP9M} jest określone przez
+dowolny zbiór $\left\lbrace y_1, y_2, \dots, y_N \right\rbrace$ {\em liniowo
+niezależnych} funkcji, z~których każda indywidualnie spełnia
+\eqref{eq:BHP9M}. Zbiór ten jest tzw. {\em fundamentalnym zbiorem rozwiązań}
+równania jednorodnego~\eqref{eq:BHP9M}. Rozwiązanie ogólne zapisuje się jako
+kombinację liniową funkcji ze zbioru fundamentalnego
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y_P(t) = \sum_{i = 1}^{N} c_i y_i(t),
+  \;\; c_i \in \mathbb{R},
+  \label{eq:M9LBE}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Rozwiązywanie równania jednorodnego zwyczajowo rozpoczyna się właśnie
+poszukiwaniem zbioru fundamentalnego rozwiązań. Tradycyjnym narzędziem,
+służącym do badania liniowej niezależności funkcji jest wyznacznik macierzy
+Wrońskiego (Wrońskian). Macierz Wrońskiego, zdefiniowana jest jako macierz
+$N \times N$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \mathbf{W}(t) = \begin{bmatrix}
+    f_1               & f_2               & \cdots  & f_N               \\
+    \od{f_1}{t}       & \od{f_2}{t}       & \cdots  & \od{f_N}{t}       \\
+    \vdots            & \ddots            &         &                   \\
+    \odn{N-1}{f_1}{t} & \odn{N-1}{f_2}{t} & \cdots  & \odn{N-1}{f_N}{t}
+  \end{bmatrix}
+  \label{eq:P191Z}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+i~ma tę własność, że jej wyznacznik $\det{\mathbf{W}(t)} \equiv 0$ jeśli $f_1, \dots,
+f_N$ są liniowo zależne. W~przeciwnym razie $\det{\mathbf{W}(t)} \neq 0$
+w~jakimś punkcie $t$.
+
+\subsubsection{Konstruowanie zbioru fundamentalnego rozwiązań}
+\label{sec:UV185}
+
+Zbiór fundamentalny rozwiązań równania~\eqref{eq:BHP9M} konstruuje się
+przyjmując roboczo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y_i(t) = e^{\lambda_i t}, \; \lambda_i \in \mathbb{C}.
+  \label{eq:JSZEN}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Aby każda z~funkcji $y_i$ była rozwiązaniem równania jednorodnego~\eqref{eq:BHP9M},
+musi zachodzić
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \left(\sum_{k = 0}^{N} a_k \lambda_i^k \right) e^{\lambda_i t} = 0,
+  \;\; i = 1, \dots, N.
+  \label{eq:RV0CU}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Ponieważ $e^{\lambda_i t} \neq 0$, to równanie~\eqref{eq:RV0CU} spełnione jest
+wtedy i~tylko wtedy, gdy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  H(\lambda_i) \coloneqq \sum_{k = 0}^{N} a_k \lambda_i^k = 0.
+  \label{eq:2YZX1}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$H\left(\lambda\right)$ jest {\em wielomianem charakterystycznym}
+równania~\eqref{eq:BHP9M} a~\eqref{eq:2YZX1} nazywamy {\em równaniem
+charakterystycznym}. Pierwiastki $\lambda_i: H\left(\lambda_i\right) = 0$
+wielomianu~$H$ generują rozwiązania o~postaci~$e^{\lambda_i t}$.
+
+\subsubsection{Pierwiastki wielokrotne a~niezależność liniowa zbioru fundamentalnego}
+\label{sec:XU35F}
+
+Wymaganą cechą zbioru fundamentalnego jest liniowa niezależność jego elementów.
+Narzędziem, którego można użyć do sprawdzania liniowej niezależności funkcji,
+jest wyznacznik macierzy Wrońskiego. Jeśli w~zbiorze $\left\lbrace y_i
+\right\rbrace$ istnieją funkcje liniowo zależne, to Wrońskian
+$\det{\left(\mathbf{W}\right)}$ jest tożsamościowo równy zeru
+($\det{\left(\mathbf{W}(t)\right)} \equiv 0, t \in \mathbb{R}$).
+
+W~kontekście przyjętej postaci rozwiązania~\eqref{eq:JSZEN}, macierz
+Wrońskiego będzie dana jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \mathbf{W}(t) = \begin{bmatrix}
+    e^{\lambda_1 t}                 & e^{\lambda_2 t}                 & \dots   & e^{\lambda_N t} \\
+    \lambda_1 e^{\lambda_1 t}       & \lambda_2 e^{\lambda_2 t}       & \dots   & \lambda_N e^{\lambda_N t} \\
+    \vdots         &                & \ddots                          & \vdots  &       \\
+    \lambda_1^{N-1} e^{\lambda_1 t} & \lambda_2^{N-1} e^{\lambda_2 t} & \dots   & \lambda_N^{N-1} e^{\lambda_N t}
+  \end{bmatrix} = \mathbf{V} \cdot \mathbf{E}(t),
+  \label{eq:SGIWG}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \begin{aligned}
+    & \mathbf{V} = \begin{bmatrix}
+      1               & 1               & \dots   & 1           \\
+      \lambda_1       & \lambda_2       & \dots   & \lambda_N   \\
+      \vdots          &                 & \ddots  & \vdots  &   \\
+      \lambda_1^{N-1} & \lambda_2^{N-1} & \dots   & \lambda_N^{N-1}
+    \end{bmatrix},
+    &
+    &
+    \mathbf{E}(t) = \begin{bmatrix}
+      e^{\lambda_1 t} & 0               & \dots  & 0      \\
+      0               & e^{\lambda_2 t} & \dots  & 0      \\
+      \vdots          &                 & \ddots & \vdots \\
+      0               & \dots           & 0      & e^{\lambda_N t}
+    \end{bmatrix}
+    &
+  \end{aligned}.
+  \label{eq:NHY93}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Wyznacznik macierzy $\mathbf{W}$ jest więc iloczynem
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \det{\left(\mathbf{W}(t)\right)} = \det{\left(\mathbf{V}\right)} \cdot \det{\left(\mathbf{E}(t)\right)}.
+  \label{eq:SHE6K}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Ponieważ $\det{\left(\mathbf{E}(t)\right)} \neq 0, \;\; t \in \mathbb{R}$,
+to istnienie liniowej zależności w~zbiorze funkcji
+$\left\lbrace e^{\lambda_i t} \right\rbrace$
+pociąga za sobą zerowanie się wyznacznika $\det{\left(\mathbf{V}\right)}$.
+
+Macierz $\mathbf{V}$ ma specjalną strukturę. Jest to tzw. macierz Vandermonda,
+dla której
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \det{\left(\mathbf{V}\right)} = \prod_{
+    \substack{k = 2 \dots N-1 \\ i = 1 \dots k-1}
+  }{\left(\lambda_k - \lambda_i\right)}.
+  \label{eq:KOD8D}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Wyznacznik $\det{\left(\mathbf{V}\right)}$ zeruje się więc wtedy i~tylko
+wtedy, gdy występują pierwiastki wielokrotne wielomianu charakterystycznego
+$H(\lambda)$. W~takich przypadkach konieczne jest specjalne postępowanie.
+
+Jeśli $\alpha$ jest pierwiastkiem {\em rzeczywistym} o~krotności $k$,
+tzn. $H(\lambda) = (\lambda - \alpha)^k q(\lambda)$, gdzie
+$q(\alpha) \neq 0$, to $k$ liniowo niezależnych rozwiązań odpowiadających
+temu pierwiastkowi obiera się jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  e^{\alpha t}, \; t e^{\alpha t},\; \dots,\; t^{k-1} e^{\alpha t}
+  \label{eq:Y77IL}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Jeśli natomiast $\alpha \pm j \beta$ są sprzężonymi pierwiastkami {\em
+zespolonymi}, każdy o~krotności $k$, tzn.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  H(\lambda) = (\lambda - \lambda_1)^k (\lambda - \overline{\lambda}_1)^k p(\lambda),
+  \label{eq:P0DR4}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $\lambda_1 = \alpha + j \beta$ i~$p(\lambda_1) \neq 0$, $p(\overline{\lambda}_1) \neq 0$,
+to $2k$ liniowo niezależnych rozwiązań odpowiadających tym pierwiastkom
+obiera się jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \begin{aligned}
+    & e^{\alpha t} \cos{\beta t}, \;
+    & t e^{\alpha t} \cos{\beta t}, \;
+    & \dots, \;
+    & t^{k-1} e^{\alpha t} \cos{\beta t}, \;
+    \\
+    & & \text{oraz} & &
+    \\
+    & e^{\alpha t} \sin{\beta t}, \;
+    & t e^{\alpha t} \sin{\beta t}, \;
+    & \dots, \;
+    & t^{k-1} e^{\alpha t} \sin{\beta t}. \;
+  \end{aligned}
+  \label{eq:0TFLL}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Przejściowy charakter rozwiązania równania jednorodnego}
+\label{sec:V185P}
+
+Jeśli przyjmiemy $\lambda_i = \sigma_i + j \omega_i$, gdzie $\sigma_i,
+\omega_i \in \mathbb{R}$ i~$j = \sqrt{-1}$, to, w~myśl
+równania~\eqref{eq:M9LBE}, rozwiązanie $y_P$ można zapisać
+jako\footnote{Zakładamy, że wielomian charakterystyczny ma tylko pierwiastki
+jednokrotne.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y_P(t) = \sum_{i = 1}^{N} c_i e^{\sigma_i t} e^{j \omega_i t}.
+  \label{eq:GS278}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Założywszy, że spełnione są warunki stabilności asymptotycznej układu:
+$\mathrm{Re}\left({\lambda_i}\right) = \sigma_i < 0, \; i = 1 \dots N$,
+zauważymy, że rozwiązanie $y_P(t)$ z~czasem zanika, tzn.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \forall_{i = 1 \dots N}{\mathrm{Re}\left(\lambda_i\right) < 0}
+  \implies
+  \lim_{t \to \infty}{y_P(t)} = 0,
+  \label{eq:AZ6A8}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ponieważ wszystkie czynniki $e^{\sigma_i t}$ dążą do zera. Rozwiązanie $y_P$
+jest zatem składową przejściową odpowiedzi układu (na zadane warunki
+początkowe).
+
+\subsection{Rozwiązanie równania niejednorodnego -- odpowiedź ustalona}
+\label{sec:JITWY}
+
+Rozwiązania szczególnego $y_U$ równania niejednorodnego można poszukiwać
+metodą przewidywań pośród funkcji odpowiadających zadanemu wymuszeniu $r(t)$.
+Jeśli przyjmiemy sygnał wejściowy o~przebiegu sinusoidalnym
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  u(t) = \left(\cos{\omega t} + j \sin{\omega t} \right)
+                  = e^{j \omega t},
+  \label{eq:HP9M8}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+to, zgodnie z~\eqref{eq:D11SS}, wymuszenie $r(t)$ jest następujące
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  r(t)
+  = \left( \sum_{k=0}^{N}{b_k \left(j\omega\right)^k} \right) e^{j \omega t}.
+  \label{eq:BXDQ8}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Dla takiego wymuszenia przewidujemy rozwiązanie $y_U$ równania
+niejednorodnego w~postaci
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y_U(t) = \tilde{G} e^{j \omega t},
+  \;\; \tilde{G} \in \mathbb{C}.
+  \label{eq:QYT6U}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Zauważmy od razu, że przyjmując taką postać rozwiązania, mamy jednocześnie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y_U(t) = \tilde{G} \, u(t),
+  \;\; \tilde{G} \in \mathbb{C}.
+  \label{eq:W4GQ5}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Symbol $\tilde{G}$ jest liczbą zespoloną wyrażającą amplitudę i~przesunięcie
+fazowe rozwiązania $y_U$ względem sygnału wejściowego $u$. Wstawiwszy
+\eqref{eq:QYT6U} i~\eqref{eq:BXDQ8} do równania
+niejednorodnego~\eqref{eq:41PZG} otrzymamy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \left(\sum_{k = 0}^{N} a_k \left({j \omega}\right)^{k}\right) \tilde{G} e^{j \omega t}
+  =
+  \left(\sum_{k = 0}^{M} b_k \left({j \omega}\right)^{k}\right) e^{j \omega t},
+  \label{eq:GZ5EX}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+co po prostych przekształceniach daje
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \tilde{G}\left(\omega\right) = \frac{
+    \sum_{k = 0}^{M} b_k \left({j \omega}\right)^{k}
+  } {
+    \sum_{k = 0}^{N} a_k \left({j \omega}\right)^{k}
+  }.
+  \label{eq:T8N4Z}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Funkcja $\tilde{G}\left(\omega\right)$ przyjmuje wartości zespolone, które
+można wyrazić jako
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \tilde{G}\left(\omega\right) = P\left(\omega\right) + j Q\left(\omega\right),
+  \;\; P\left(\omega\right), Q\left(\omega\right) \in \mathbb{R}
+  \label{eq:9B5N7}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lub
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \tilde{G}\left(\omega\right) = A\left(\omega\right) e^{j \varphi\left(\omega\right)},
+  \;\; A\left(\omega\right) \in \mathbb{R}, \varphi\left(\omega\right) \in \mathbb{R}
+  \label{eq:3LDB7}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+i~wtedy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  y_U(t)
+  = P\left(\omega\right) \tilde{U} e^{j \omega t}
+  + j Q\left(\omega\right) \tilde{U} e^{j \omega t}
+  = A\left(\omega\right) \cdot \tilde{U} e^{j \omega t + \varphi\left(\omega\right)}.
+  \label{eq:4IJQ6}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Jak widać, odpowiedź $y_U$ jest falą sinusoidalną o~tej samej pulsacji
+$\omega$ co sygnał wejściowy $u(t) = \tilde{U} e^{j \omega t}$. Sygnały
+różnią się jedynie amplitudą i~są względem siebie przesunięte w~fazie.
+
+\subsection{Wyznaczenie stałych w~rozwiązaniu równania jednorodnego}
+\label{sec:JHXCT}
+
+Na tym etapie możemy wyznaczyć współczynniki $c_i$ pojawiające się
+w~składowej przejściowej $y_P$ (wzór \eqref{eq:M9LBE}). Wartości
+współczynników wynikają z~warunków początkowych~\eqref{eq:U5Y0U}, które to
+warunki, po uwzględnieniu postaci rozwiązania~\eqref{eq:V92W6}, przyjmują
+postać
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \sum_{k = 1}^{N} \lambda_k^{i} c_k  = y_0^{(i)} - \tilde{G}\left(\omega\right) u_0^{(i)},
+  \;\; i = 0, \dots, N-1,
+  \label{eq:FVRCD}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $u_0^{(i)} = (j \omega)^i \tilde{U}$ jest wartością początkową
+$i$-tej pochodnej sygnału wejściowego $u(t)$.
+
+Układ $N$ równań liniowych~\eqref{eq:FVRCD} można zapisać w~postaci
+macierzowej $\mathbf{V} \mathbf{c} = \mathbf{d}$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \underbrace{\begin{bmatrix}
+    1               & 1               & 1               & \dots & 1               \\
+    \lambda_1       & \lambda_2       & \lambda_3       & \dots & \lambda_N       \\
+    \lambda_1^2     & \lambda_2^2     & \lambda_3^2     & \dots & \lambda_N^2     \\
+    \vdots          &                 &                 & \ddots& \vdots          \\
+    \lambda_1^{N-1} & \lambda_2^{N-1} & \lambda_3^{N-1} & \dots & \lambda_N^{N-1} \\
+  \end{bmatrix}}_{\mathbf{V}}
+  \underbrace{\begin{bmatrix}
+    c_1 \\ c_2 \\ c_3 \\ \vdots \\ c_N
+  \end{bmatrix}}_{\mathbf{c}}
+  =
+  \underbrace{\begin{bmatrix}
+    d_1 \\ d_2 \\ d_3 \\ \vdots \\ d_N
+  \end{bmatrix}}_{\mathbf{d}},
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+gdzie $d_i = y_0^{(i)} - \tilde{G}\left(\omega\right) u_0^{(i)}$. W~myśl
+wcześniejszych rozważań, jeśli nie występują wielokrotne pierwiastki równania
+charakterystycznego, to macierz $\mathbf{V}$ jest odwracalna. Oznacza to, że
+współczynniki $c_i$ można wyznaczyć jednoznacznie. Odpowiedź przejściowa
+$y_P$ jest więc jednoznacznie określona przez warunki początkowe (w~tym
+wartości początkowe wymuszenia $u$ i~jego pochodnych) i~nie zależy od
+sygnału wejściowego $u(t)$ dla $t > 0$.
+
+\section{Transmitancja operatorowa i~widmowa}
+\label{sec:2N6W7}
+
+Transformata Laplace'a jest narzędziem matematycznym, które z~założenia ma
+ułatwić rozwiązywanie równań różniczkowych. W~przypadku RRZ o~stałych
+współczynnikach, transformata Laplace'a przekształca równania różniczkowe do
+postaci równań algebraicznych.
+
+W~wyniku zastosowania transformaty Laplace'a do obu stron równania
+różniczkowego \eqref{eq:ZV86M} otrzymujemy następujące równanie algebraiczne
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  \sum_{k = 0}^{N} a_k \left( s^k Y(s) - \sum_{i = 0}^{k-1} s^{k-1-i} \left.\odn{i}{y}{t}\right|_{t=0}\right)
+  =
+  \sum_{k = 0}^{M} b_k \left( s^k U(s) - \sum_{i = 0}^{k-1} s^{k-1-i} \left.\odn{i}{u}{t}\right|_{t=0}\right),
+  \label{eq:8P191}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+a~po przekształceniach, rozwiązanie równania w~dziedzinie Laplace'a
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  Y\left(s\right) = \underbrace{\frac{
+    \sum_{k = 0}^{M}{b_k s^k}
+  }{
+    \sum_{k = 0}^{N}{a_k s^k}
+  } \cdot U\left(s\right)}_{Y_U(s)}
+  +
+  \underbrace{\frac{
+    \sum_{k = 0}^{N}{ a_k \sum_{i = 0}^{k-1} s^{k-1-i} \left.\odn{i}{y}{t}\right|_{t=0} }
+    -
+    \sum_{k = 0}^{M}{ b_k \sum_{i = 0}^{k-1} s^{k-1-i} \left.\odn{i}{u}{t}\right|_{t=0} }
+  }{
+    \sum_{k = 0}^{N}{a_k s^k}
+  }}_{Y_P(s)}.
+  \label{eq:4QWXW}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Jeśli zaniedbamy odpowiedź przejściową $Y_P\left(s\right)$, która zależy
+tylko od warunków początkowych i~dąży z~czasem do zera (stabilność
+asymptotyczna), możemy zapisać
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  Y\left(s\right) = \underbrace{\frac{
+    \sum_{k = 0}^{M}{b_k s^k}
+  }{
+    \sum_{k = 0}^{N}{a_k s^k}
+  }}_{G(s)} \cdot U\left(s\right).
+  \label{eq:2O26C}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Należy zauważyć, że odpowiedź przejściowa $Y_P(s)$ nie występuje w~ogóle
+jeśli wszystkie warunki początkowe są zerowe (zarówno
+$\left.\odn{i}{y}{t}\right|_{t=0},\;i = 0, \dots, N$ jak
+i~$\left.\odn{i}{u}{t}\right|_{t=0},\;i = 0, \dots, M$).
+Możemy zatem przyjąć, że transmitancja operatorowa $G(s)$ ma bezpośrednie
+zastosowanie do opisu układów w~procesach z~zerowymi warunkami początkowymi.
+
+Transmitancja operatorowa $G\left(s\right)$ umożliwia wyznaczenie odpowiedzi
+ustalonej $Y_U(s)$ układu na zadane wymuszenie $U(s)$. Dla układu LUS
+transmitancja jest funkcją wymierną (iloraz wielomianów)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+  G\left(s\right) = \frac{
+    \sum_{k = 0}^{M}{b_k s^k}
+  }{
+    \sum_{k = 0}^{N}{a_k s^k}
+  }
+  \label{eq:X3KG0}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Zauważymy natychmiast, że $G(j\omega)$ jest tożsame z~$\tilde{G}(\omega)$ --
+funkcją, która pojawiła się już we~wzorze~\eqref{eq:T8N4Z}.
+
+%% \bibliographystyle{unsrtnat}
+%% \bibliography{lpas}
+
+\end{document}
+
+%\label{?:X6E21}
+%\label{?:TJ2HQ}
+%\label{?:0NZQS}
+%\label{?:A20W9}
+%\label{?:7M2JN}
+%\label{?:KSU5J}
+%\label{?:KRYUF}
+%\label{?:P2GUQ}
+
+% vim: set syntax=tex tabstop=2 shiftwidth=2 expandtab spell spelllang=pl:

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2017 by Pawel Tomulik <pawel.tomulik@pw.edu.pl>
+# Copyright (c) 2013-2024 by Pawel Tomulik <pawel.tomulik@pw.edu.pl>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -55,12 +55,39 @@ except KeyError:
 #                KPSVARIABLES = {'TEXMFHOME' : '../../../../share/texmf:'} )
 
 labs = {
-  'lpas4' : {
-    'version' : '1.0.0',
-    'svgs'    : [],
-    'gplots'  : [],
-#    'deps'    : [],
-  }
+    'lpas4' : {
+        'version' : '1.0.0',
+        'svgs'    : [],
+        'gplots'  : [],
+        #    'deps'    : [],
+    },
+
+    'lpas9' : {
+        'version' : '1.0.0',
+        'svgs'    : [],
+        'gplots'  : [[ 'lpas9/inert/nyquist.gp',     {'gp_extoutputs': 'lpas9/inert/nyquist.eps'}],
+                     [ 'lpas9/inert/bode.gp',        {'gp_extoutputs': 'lpas9/inert/bode.eps'}],
+                     [ 'lpas9/deriv/nyquist.gp',     {'gp_extoutputs': 'lpas9/deriv/nyquist.eps'}],
+                     [ 'lpas9/deriv/bode.gp',        {'gp_extoutputs': 'lpas9/deriv/bode.eps'}],
+                     [ 'lpas9/oscil/nyquist.gp',     {'gp_extoutputs': 'lpas9/oscil/nyquist.eps'}],
+                     [ 'lpas9/oscil/bode.gp',        {'gp_extoutputs': 'lpas9/oscil/bode.eps'}],
+                     [ 'lpas9/oscil/aw.gp',          {'gp_extoutputs': 'lpas9/oscil/aw.eps'}],
+                     [ 'lpas9/oscil/zar.gp',         {'gp_extoutputs': 'lpas9/oscil/zar.eps'}],
+                     [ 'lpas9/rlc/rough/nyquist.gp', {'gp_extoutputs': 'lpas9/rlc/rough/nyquist.eps', 'gp_inputs': ['lpas9/rlc/rough/experiment.csv']}],
+                     [ 'lpas9/rlc/rough/bode.gp',    {'gp_extoutputs': 'lpas9/rlc/rough/bode.eps', 'gp_inputs': ['lpas9/rlc/rough/experiment.csv']}],
+                     [ 'lpas9/rlc/rough/ampfreq.gp', {'gp_extoutputs': 'lpas9/rlc/rough/ampfreq.eps', 'gp_inputs': ['lpas9/rlc/rough/experiment.csv']}],
+                     [ 'lpas9/rc/rough/nyquist.gp',  {'gp_extoutputs': 'lpas9/rc/rough/nyquist.eps', 'gp_inputs': ['lpas9/rc/rough/experiment.csv']}],
+                     [ 'lpas9/rc/rough/bode.gp',     {'gp_extoutputs': 'lpas9/rc/rough/bode.eps', 'gp_inputs': ['lpas9/rc/rough/experiment.csv']}],
+                     [ 'lpas9/rc/rough/ampfreq.gp',  {'gp_extoutputs': 'lpas9/rc/rough/ampfreq.eps', 'gp_inputs': ['lpas9/rc/rough/experiment.csv']}]],
+        #    'deps'    : [],
+    },
+
+    'transfun' : {
+        'version' : '1.0.0',
+        'svgs'    : [],
+        'gplots'  : [],
+        #    'deps'    : [],
+    }
 }
 
 # common deps
