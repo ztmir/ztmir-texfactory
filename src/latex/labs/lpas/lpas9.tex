@@ -118,7 +118,7 @@ wymuszenia sinusoidalne o~różnych częstotliwościach.
 \subsection{Badane układy}
 \label{sec:ITWYS}
 
-Stanowisko laboratoryjne umożliwia badanie jednego trzech członów liniowych,
+Stanowisko laboratoryjne umożliwia badanie jednego z~trzech członów liniowych,
 zrealizowanych w~postaci elektronicznych obwodów RC/RLC (R -- rezystancja,
 L -- indukcyjność, C -- pojemność):
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -148,7 +148,7 @@ przeprowadzić raz, na początku zajęć.
 \subsection{Przygotowanie arkusza kalkulacyjnego}
 \label{sec:S5JXT}
 
-Studentom udostępniono arkusz kalkulacyjny \texttt{lpas9-template.ods},
+Studentom udostępniono arkusz kalkulacyjny \texttt{lpas9-template.xlsx},
 spełniający rolę protokołu pomiarowego. Przystosowany jest on
 do~przeprowadzenia jednego pełnego eksperymentu. W~przypadku badania następnego
 typu członu w~ramach jednych zajęć, należy rozpocząć pracę na nowej kopii.
@@ -180,9 +180,9 @@ ZERO R} i~\texttt{SET ZERO Q} przy odłączonym sygnale).
 \label{sec:XW8AC}
 
 Skalowanie przeprowadza się dla ustalonej amplitudy sygnału. Po~przeprowadzeniu
-skalowania \textbf{nie zmieniać amplitudy sygnału}. Z~powodu ograniczonej
-wydajności prądowej generatora, \textbf{nie ustawiać amplitudy powyżej $2.5V$}
-(proponuje się ustawienie amplitudy $\approx 2V$).
+skalowania \textbf{nie należy zmieniać amplitudy sygnału}. Z~powodu
+ograniczonej wydajności prądowej generatora, \textbf{nie ustawiać amplitudy
+powyżej $2.5V$} (proponuje się ustawienie amplitudy $\approx 2V$).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{enumerate}
   \item Ustawić amplitudę generowanego sygnału $\approx 2V$ a~częstotliwość
@@ -196,7 +196,7 @@ wydajności prądowej generatora, \textbf{nie ustawiać amplitudy powyżej $2.5V
 
 Skalowanie polega na ustaleniu współczynnika skali $\alpha$ umożliwiającego
 przeliczanie napięć $P_{mV}$, $Q_{mV}$, wskazywanych przez woltomierze, na
-wartości bezwymiarowe $P$, $Q$
+wartości bezwymiarowe $P$, $Q$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \begin{aligned}
@@ -205,7 +205,7 @@ wartości bezwymiarowe $P$, $Q$
   \label{eq:IP4D4}
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Współczynnik $\alpha$ ustala się w~powyższej metodzie wg pomysłu
+Współczynnik $\alpha$ ustala się w~powyższej metodzie wg zasady
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \alpha = \left.P_{mV}(\omega)\right|_{G(s) = 1},
@@ -218,13 +218,13 @@ urządzenia pomiarowego (kabel $\implies G(s) = 1$). Częstotliwość sygnału
 użytego przy skalowaniu, teoretycznie dowolna, powinna w~praktyce być dobrana
 rozsądnie. Zbyt niska może powodować falowanie wskazań woltomierzy. Zbyt wysoka
 może uwidocznić wpływ indukcyjności i~pojemności pasożytniczych. Proponuje się
-użycie częstotliwości z~zakresu $50\dots100\text{Hz}$.
+użycie częstotliwości z~zakresu $50\dots100~\text{Hz}$.
 
 \subsection{Wstępny pomiar}
 \label{sec:NU1XH}
 
 Wstępny pomiar ma na celu uzyskanie zarysu charakterystyk oraz rozpoznanie typu
-badanego elementu.
+badanego elementu. Należy go przeprowadzić wg poniższej procedury.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{enumerate}
   \item Włączyć badany układ w~tor pomiarowy.
@@ -293,7 +293,7 @@ odnalezioną powyższym algorytmem należy wpisać w~komórkę $\texttt{f}_\text
 Po uzupełnieniu pola $\texttt{f}_\texttt{s}$ w~sekcji \texttt{Identyfikacja}
 w~zakładce \texttt{IRz} pojawią się częstotliwości $\texttt{f}_\texttt{i}$
 dla pomiarów uzupełniających (sekcja \texttt{Dodatkowy pomiar}). Wartości
-generowane są wg~pomysłu opisanego w~dodatku~\ref{sec:2C7WK}
+generowane są wg~procedury opisanej w~dodatku~\ref{sec:2C7WK}
 (wzór~\eqref{eq:9R1WL}). Należy przeprowadzić pomiary $(P_{mV}, Q_{mV})$ dla
 tych częstotliwości, wpisując wyniki w~kolumnach $\texttt{P}_\texttt{mV}$,
 $\texttt{Q}_\texttt{mV}$. Proponuje się rozpocząć pomiary od~wiersza
@@ -332,14 +332,14 @@ Metodą bisekcji ustalić częstotliwość graniczną $f_0$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Częstotliwość $f_0$ odnalezioną powyższym algorytmem należy wpisać
-w~komórkę $\texttt{f}_\texttt{0}$ w~sekcji \texttt{"o - obliczenia wg
-($\omega_0$, A($\omega_0$))"}.
+w~komórkę $\texttt{f}_\texttt{0}$ w~sekcji \texttt{[o - obliczenia wg
+($\omega_0$, A($\omega_0$))]}.
 
 \subsubsection{Wyznaczenie współczynnika tłumienia $\zeta$}
 \label{eq:A20W9}
 
-W~komórce \texttt{A($\omega_0$)} sekcji \texttt{"o - obliczenia wg ($\omega_0$,
-A($\omega_0$))"} należy wpisać wartość obliczoną jako
+W~komórce \texttt{A($\omega_0$)} sekcji \texttt{[o - obliczenia wg ($\omega_0$,
+A($\omega_0$))]} należy wpisać wartość obliczoną jako
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   A(\omega_0) = \frac{|Q_{mV}(\omega_0)|}{\alpha},
@@ -357,7 +357,7 @@ w~ostatniej iteracji algorytmu bisekcji~\ref{sec:WM5KT}
 Po uzupełnieniu pól $\texttt{f}_\texttt{s}$ i $\zeta$ w~sekcji
 \texttt{Identyfikacja} w~zakładce \texttt{IIRz} pojawią się częstotliwości
 $\texttt{f}_\texttt{i}$ dla pomiarów uzupełniających (sekcja \texttt{Dodatkowy
-pomiar}). Wartości generowane są wg~pomysłu opisanego w~dodatku~\ref{sec:X9JYP}
+pomiar}). Wartości generowane są wg~procedury opisanej w~dodatku~\ref{sec:X9JYP}
 (wzór~\eqref{eq:1GXRP}). Należy przeprowadzić pomiary $(P_{mV}, Q_{mV})$ dla
 tych częstotliwości, wpisując wyniki w~kolumnach $\texttt{P}_\texttt{mV}$,
 $\texttt{Q}_\texttt{mV}$. Proponuje się rozpocząć pomiary od~wiersza
@@ -368,16 +368,16 @@ się w~górę i~w~dół tabeli.
 \label{sec:0NZQS}
 
 Jeśli na charakterystyce amplitudowej $A(\omega)$ widoczny jest szczyt
-rezonansowy, poleca się dodatkowo wyznaczyć $\omega_0$ i~$\zeta$ zgodnie
+rezonansowy, to poleca się dodatkowo wyznaczyć $\omega_0$ i~$\zeta$ zgodnie
 sugestią zawartą w~dodatku~\ref{sec:U6GVM}, tj. na podstawie wartości
-szczytowych:
+szczytowych. Można w~tym celu użyć arkusza obliczeniowego w~następujący sposób:
 
 \begin{enumerate}
   \item W~sekcji \texttt{Dodatkowy pomiar} zakładki \texttt{IIRz} odnaleźć
     szczytową (najwyższą) wartość amplitudy $A_r$ (kolumna \texttt{A($\omega_i$)})
     i~odpowiadającą jej częstotliwość $f_r$ (kolumna $\texttt{f}_{\texttt{i}}$).
   \item Wartości $f_r$ i $A_r$ wpisać do odpowiednich komórek w~sekcji
-    \texttt{"r - obliczenia wg ($\omega_r$, A($\omega_r$))"}.
+    \texttt{[r - obliczenia wg ($\omega_r$, A($\omega_r$))]}.
 \end{enumerate}
 Pulsacja drgań własnych $\omega_0$ i~współczynnik tłumienia $\zeta$ wyliczą się
 po~uzupełnieniu powyższych pól.
@@ -385,7 +385,8 @@ po~uzupełnieniu powyższych pól.
 \section{Przygotowanie sprawozdania}
 \label{sec:TFLLK}
 
-Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
+Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów,
+następujące elementy.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{enumerate}
   \item Wykresy charakterystyk z~pomiaru wstępnego (takie jak w~zakładce
@@ -394,7 +395,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \item Wyniki identyfikacji parametrycznej metodą bisekcji ($f_s$ lub $(f_0, \zeta)$ -- zależnie od przypadku).
   \item Znormalizowane wykresy charakterystyk Bodego oraz charakterystykę
     Nyquista, następująco\footnote{Wykresy tego typu są dostępne w~odpowiedniej
-    zakładce \texttt{IRz}$/$\texttt{IIRz} opracowanego na zajęciach arkusza.}
+    zakładce \texttt{IRz}$/$\texttt{IIRz} opracowanego na zajęciach arkusza.}:
     \begin{itemize}
       \item na każdym wykresie linią ciągłą wyrysowana charakterystyka
         modelowa, tj. wygenerowana ze wzorów na $G(j\omega)$, z~użyciem
@@ -447,7 +448,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
       \draw[{Stealth}-] (G.west) -- ++(-1cm, 0cm) node[left] {$U\left(s\right)$};
       \draw[-{Stealth}] (G.east) -- ++( 1cm, 0cm) node[right] {$Y\left(s\right)$};
     \end{tikzpicture}
-    \caption{Element badany, jego transmitancja $G(s)$, sygnały.}
+    \caption{Element badany, jego transmitancja $G(s)$, sygnały}
     \label{fig:6TEOB}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -518,7 +519,8 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
     \label{eq:S278F}
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  a~przesunięcie fazowe~$\varphi(\omega)$ można wyliczyć, używając funkcji
+  a~przesunięcie fazowe~$\varphi(\omega)$, wyrażone w~stopniach, można
+  wyliczyć, używając funkcji
   $\text{atan2}(y,x)$
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{equation}
@@ -539,7 +541,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   dwoma parametrami (np. stała czasowa $T$ i~wzmocnienie $k$). W~niniejszym
   opracowaniu zakłada się jednak $k=1$, co~jest cechą specyficzną czwórników RC
   użytych w~ćwiczeniu.}. Identyfikacja modelu sprowadza się więc do~wyznaczenia
-  jednego tylko parametru (np. pulsacji granicznej $\omega_s$).
+  jednego tylko parametru.
 
   Omawiane tutaj człony liniowe I-go rzędu mają pewne cechy charakterystyczne:
   \begin{enumerate}
@@ -555,7 +557,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
     \item Charakterystyka $M(\omega)$ zbiega się z~asymptotą o~nachyleniu
       $-20\text{ dB/dek}$ (człon inercyjny) lub $+20\text{ dB/dek}$ (człon
       różniczkujący rzeczywisty) przechodzącą przez punkt
-      $(\omega_s,0\text{dB})$.
+      $(\omega_s,0\text{ dB})$.
     \item Przy pulsacji granicznej $\omega_s$ występuje tzw. 3-decybelowy spadek
       modułu\footnote{Dokładna wartość to $M(\omega_s) = 20 \log{(\sqrt{2}/2)}
       \approx -3.0103\text{ dB}$.}: $M(\omega_s) \approx -3\text{ dB}$,
@@ -565,7 +567,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \end{enumerate}
   Są to cechy niezmienne, umożliwiające rozpoznanie członu liniowego I-go rzędu
   i~określenie parametru $\omega_s$ poprzez analizę charakterystyk
-  doświadczalnych.
+  doświadczalnych ($\omega_s$ i~$T$ można traktować zamiennie -- patrz \eqref{eq:3UCS1}).
 
   \subsubsection{Człon inercyjny pierwszego rzędu}
   \label{sec:A9C2X}
@@ -604,7 +606,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
         \end{aligned}$};
       \end{circuitikz}
     \end{center}
-    \caption{Czwórnik RC jako człon inercyjny pierwszego rzędu.}
+    \caption{Czwórnik RC jako człon inercyjny pierwszego rzędu}
     \label{fig:VHF3V}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -631,8 +633,8 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
     \label{eq:92W6D}
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  gdzie $R$ jest rezystancją opornika wyrażoną w~$\Omega$ (Ohm), $C$
-  pojemnością kondensatora w~$F$ (Farad), zaś~$T$ -- stałą czasową układu.
+  gdzie $R$ jest rezystancją opornika wyrażoną w~$\Omega$ (om), $C$
+  pojemnością kondensatora w~$F$ (farad), zaś~$T$ -- stałą czasową układu.
   Przez podstawienie $s=j\omega$ do~\eqref{eq:92W6D} otrzymujemy transmitancję
   widmową
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -651,7 +653,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/inert/nyquist.tex}
-    \caption{Charakterystyka amplitudowo-fazowa dla członu inercyjnego 1-go rzędu.}
+    \caption{Charakterystyka amplitudowo-fazowa dla członu inercyjnego 1-go rzędu}
     \label{fig:5Y0UB}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -661,7 +663,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/inert/bode.tex}
-    \caption{Charakterystyki Bodego dla członu inercyjnego 1-go rzędu.}
+    \caption{Charakterystyki Bodego dla członu inercyjnego 1-go rzędu}
     \label{fig:V0CUU}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -729,8 +731,8 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
     \label{eq:1PZGG}
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  gdzie $R$ jest rezystancją opornika wyrażoną w~$\Omega$ (Ohm), $C$
-  pojemnością kondensatora w~$F$ (Farad), zaś~$T$ -- stałą czasową układu.
+  gdzie $R$ jest rezystancją opornika wyrażoną w~$\Omega$ (om), $C$
+  pojemnością kondensatora w~$F$ (farad), zaś~$T$ -- stałą czasową układu.
   Przez podstawienie $s=j\omega$ do~\eqref{eq:1PZGG} otrzymujemy transmitancję
   widmową
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -749,7 +751,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/deriv/nyquist.tex}
-    \caption{Charakterystyka amplitudowo-fazowa dla członu różniczkującego rzeczywistego.}
+    \caption{Charakterystyka amplitudowo-fazowa dla członu różniczkującego rzeczywistego}
     \label{fig:4HNG2}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -759,7 +761,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/deriv/bode.tex}
-    \caption{Charakterystyki Bodego dla członu różniczkującego rzeczywistego.}
+    \caption{Charakterystyki Bodego dla członu różniczkującego rzeczywistego}
     \label{fig:YZX1R}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -775,8 +777,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   określony trzema parametrami (np. stałe czasowe $T_1$, $T_2$ i~wzmocnienie
   $k$). W~niniejszym opracowaniu zakłada się jednak $k=1$, co jest cechą
   specyficzną badanego obwodu RLC.}. Do pełnej identyfikacji wystarczy więc
-  oznaczenie dwu parametrów (np. pulsacji granicznej $\omega_0$ i~tłumienia
-  $\zeta$).
+  oznaczenie dwu parametrów.
 
   Człon drugiego rzędu zrealizowany jest w~postaci elektronicznego czwórnika RLC
   (rysunek~\ref{fig:FKPAJ}).
@@ -814,7 +815,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
         \end{aligned}$};
       \end{circuitikz}
     \end{center}
-    \caption{Czwórnik RLC jako człon oscylacyjny/inercyjny drugiego rzędu.}
+    \caption{Czwórnik RLC jako człon oscylacyjny/inercyjny drugiego rzędu}
     \label{fig:FKPAJ}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -835,9 +836,9 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
     \label{eq:QWXWZ}
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  gdzie $R$ jest rezystancją opornika wyrażoną w $\Omega$~(Ohm), $L$
-  indukcyjnością cewki wyrażoną w~$H$~(Henr), $C$ pojemnością kondensatora
-  wyrażoną w~$F$~(Farad).
+  gdzie $R$ jest rezystancją opornika wyrażoną w $\Omega$~(om), $L$
+  indukcyjnością cewki wyrażoną w~$H$~(henr), $C$ pojemnością kondensatora
+  wyrażoną w~$F$~(farad).
 
   Zamiast $T_1$ i $T_2$, jako parametrów modelu członu II-go rzędu można użyć
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -942,7 +943,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/oscil/bode.tex}
-    \caption{Charakterystyki Bodego dla członu II-go rzędu.}
+    \caption{Charakterystyki Bodego dla członu II-go rzędu}
     \label{fig:O26C4}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -953,15 +954,15 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/oscil/aw.tex}
-    \caption{Charakterystyka amplitudowa $A(\omega)$ dla członu II-go rzędu.}
+    \caption{Charakterystyka amplitudowa $A(\omega)$ dla członu II-go rzędu}
     \label{eq:9LBEW}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   Asymptota, do której zbiega wykres $M(\omega)$ przy $\omega >> \omega_0$, ma
-  dla członów II-go rzędu nachylenie $-40 \text{dB/dek}$. Można po tym
+  dla członów II-go rzędu nachylenie $-40 \text{ dB/dek}$. Można po tym
   rozpoznać, że mamy do czynienia z~członem II-go rzędu. Prosta ta przechodzi
-  przez punkt $(\omega_0, 0\text{dB})$. W~tym samym punkcie, przesunięcie
+  przez punkt $(\omega_0, 0\text{ dB})$. W~tym samym punkcie, przesunięcie
   fazowe wynosi $\varphi(\omega_0) = -90\degree$. Z~charakterystyki
   amplitudowo-fazowej, jak również z~wykresu $A(\omega)$, można pośrednio
   odczytać współczynnik tłumienia, mianowicie
@@ -1056,7 +1057,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
     \centering
     \input{lpas9/oscil/zar.tex}
     \caption{Bezwymiarowy współczynnik tłumienia $\zeta$ w~funkcji amplitudy
-             szczytowej $A_r$.}
+             szczytowej $A_r$}
     \label{fig:5O32M}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1079,7 +1080,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   i~pulsacji $\omega$ i~mierzy się w~specjalny sposób parametry sygnału
   wyjściowego $Y$ (rys.~\ref{fig:6TEOB}). Eksperyment powtarza się dla różnych
   pulsacji $\omega$. Do przeprowadzenia eksperymentu używane jest urządzenie
-  (woltomierz fazoczuły) umożliwiające pomiar wartości $P_{mV}(\omega)$ i
+  (analizator transmitancji) umożliwiające pomiar wartości $P_{mV}(\omega)$ i
   $Q_{mV}(\omega)$ proporcjonalnych odpowiednio do~składowej rzeczywistej
   $P(\omega)$ i~urojonej $Q(\omega)$ transmitancji $G(j \omega) = P(\omega) + j
   Q(\omega)$ badanego układu.
@@ -1148,8 +1149,8 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
       \node[process, right of=D2R, xshift=1.0cm, yshift=-1.5cm] (P3RR) {Rezonans [\ref{sec:U6GVM}]};
 
       \draw[arrow] (P1) -- (D1);
-      \draw[arrow] (D1) -| node[above] {$\sim \mp 20\text{dB/dek}$} (P2L);
-      \draw[arrow] (D1) -| node[above] {$\sim -40\text{dB/dek}$} (P2R);
+      \draw[arrow] (D1) -| node[above] {$\sim \mp 20\text{ dB/dek}$} (P2L);
+      \draw[arrow] (D1) -| node[above] {$\sim -40\text{ dB/dek}$} (P2R);
       \draw[arrow] (P2R) -- (D2R);
       \draw[arrow] (D2R) -- node[above,fill=white] {Niewidoczny} (S2);
       \draw[arrow] (D2R) -| node[above] {Widoczny} (P3RR);
@@ -1186,7 +1187,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
       1000 &  1300 &  1700 &  2200 &  2800 &  3600 &  4600 &  6000 &  7700 \\
       10000 &       &       &       &       &       &       &       & \\\hline
     \end{tabular}
-    \caption{Proponowany rozkład punktów pomiarowych dla pomiaru wstępnego.}
+    \caption{Proponowany rozkład punktów pomiarowych dla pomiaru wstępnego}
     \label{tab:D3Y3O}
   \end{table}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1271,7 +1272,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   różniczkującym rzeczywistym.}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{equation}
-    P_{mV}(f_s) \approx \mp Q_{mV}(f_s)
+    P_{mV}(f_s) \approx \mp Q_{mV}(f_s).
     \label{eq:7M2JN}
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1286,7 +1287,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   na podstawie punktów~$L$ i~$R$ oznaczonych rysunku~\ref{fig:UIR99}. $L$ i~$R$
   to najbliższe punkty odpowiednio po lewej i prawej stronie punktu przecięcia
   charakterystyki fazowej $\varphi(f)$ z~rzędną $\varphi(f_s) = \mp 45\degree$.
-  Następnie wyszukać $f_s$ wg algorytmu (bisekcja):
+  Następnie wyszukać $f_s$ wg następującego algorytmu (bisekcja):
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{enumerate}
@@ -1310,7 +1311,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/rc/rough/bode.tex}
-    \caption{Zarys charakterystyk Bodego (wstępny pomiar) dla czwórnika RC.}
+    \caption{Zarys charakterystyk Bodego (wstępny pomiar) dla czwórnika RC}
     \label{fig:UIR99}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1383,7 +1384,7 @@ Sprawozdanie powinno zawierać, dla każdego z~badanych na zajęciach członów:
   \begin{figure}[H]
     \centering
     \input{lpas9/rlc/rough/bode.tex}
-    \caption{Zarys charakterystyk Bodego (wstępny pomiar) dla czwórnika RLC.}
+    \caption{Zarys charakterystyk Bodego (wstępny pomiar) dla czwórnika RLC}
     \label{fig:WC8TU}
   \end{figure}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
