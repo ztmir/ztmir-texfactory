@@ -537,11 +537,12 @@ następujące elementy.
   jest w~dwa typy tych członów -- inercyjny i~różniczkujący rzeczywisty. Ich
   modele opisano w~podrozdziałach \ref{sec:A9C2X} i~\ref{sec:TYRDA}.
   W~niniejszym opracowaniu, model członu liniowego I-go rzędu posiada dokładnie
-  jeden parametr\footnote{W~ogólności, model członu I-go rzędu jest określony
-  dwoma parametrami (np. stała czasowa $T$ i~wzmocnienie $k$). W~niniejszym
-  opracowaniu zakłada się jednak $k=1$, co~jest cechą specyficzną czwórników RC
-  użytych w~ćwiczeniu.}. Identyfikacja modelu sprowadza się więc do~wyznaczenia
-  jednego tylko parametru.
+  jeden parametr\footnote{W~ogólności, model członu inercyjnego $G(s) = k/(Ts +
+  1)$, czy różniczkującego rzeczywistego $G(s) = ks/(Ts + 1)$ posiadają po dwa
+  parametry ($T$ i $k$). W~niniejszym opracowaniu przyjmuje się jednak $k = 1$
+  (człon inercyjny) lub $k=T$ (różniczkujący rzeczywisty), co jest cechą
+  specyficzną użytych czwórników RC.} Identyfikacja modelu sprowadza się więc
+  do~wyznaczenia jednego tylko parametru.
 
   Omawiane tutaj człony liniowe I-go rzędu mają pewne cechy charakterystyczne:
   \begin{enumerate}
@@ -772,12 +773,12 @@ następujące elementy.
   Członem liniowym drugiego rzędu nazywamy układ opisany liniowym równaniem
   różniczkowym drugiego rzędu. Stanowisko laboratoryjne wyposażone jest
   w~układ, który, zachowuje się jak człon oscylacyjny bądź inercyjny II-go
-  rzędu (zależnie od ustawień R, L, C). Model badanego członu II-go rzędu zdefiniowany
-  jest przez dwa parametry\footnote{Model członu II-go rzędu jest w~ogólności
-  określony trzema parametrami (np. stałe czasowe $T_1$, $T_2$ i~wzmocnienie
-  $k$). W~niniejszym opracowaniu zakłada się jednak $k=1$, co jest cechą
-  specyficzną badanego obwodu RLC.}. Do pełnej identyfikacji wystarczy więc
-  oznaczenie dwu parametrów.
+  rzędu (zależnie od ustawień R, L, C). Model badanego członu II-go rzędu
+  posiada dwa parametry\footnote{W~ogólności, model członu II-go rzędu $G(s) =
+  k/(T^2_2 s^2 + T_1 s + 1)$ określony jest trzema parametrami ($T_1$, $T_2$
+  i~$k$). W~niniejszym opracowaniu zakłada się jednak $k=1$, co jest cechą
+  specyficzną badanego obwodu RLC.} (np. $T_1$ i~$T_2$ wg~\eqref{eq:QWXWZ},
+  albo, zamiennie, $\omega_0$ i~$\zeta$ -- patrz~\eqref{eq:TJ2HQ}).
 
   Człon drugiego rzędu zrealizowany jest w~postaci elektronicznego czwórnika RLC
   (rysunek~\ref{fig:FKPAJ}).
@@ -850,6 +851,7 @@ następujące elementy.
       \zeta = \frac{T_1}{2 T_2} = \frac{R\sqrt{LC}}{2L},
       &
     \end{aligned}
+    \label{eq:TJ2HQ}
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   gdzie $\omega_0$ jest pulsacją graniczną, a~$\zeta$ bezwymiarowym
@@ -1284,7 +1286,7 @@ następujące elementy.
   Ze~wstępnych pomiarów obrać przybliżenie początkowe
   $(f_L, P_L, Q_L) = (f_L, P_{mV}(f_L), Q_{mV}(f_L))$
   oraz $(f_R, P_R, Q_R) = (f_R, P_{mV}(f_R), Q_{mV}(f_R))$
-  na podstawie punktów~$L$ i~$R$ oznaczonych rysunku~\ref{fig:UIR99}. $L$ i~$R$
+  na podstawie punktów~$L$ i~$R$ oznaczonych na~rysunku~\ref{fig:UIR99}. $L$ i~$R$
   to najbliższe punkty odpowiednio po lewej i prawej stronie punktu przecięcia
   charakterystyki fazowej $\varphi(f)$ z~rzędną $\varphi(f_s) = \mp 45\degree$.
   Następnie wyszukać $f_s$ wg następującego algorytmu (bisekcja):
@@ -1376,7 +1378,7 @@ następujące elementy.
 
   Ze~wstępnych pomiarów wynotować współrzędne $(f_L, P_L) = (f_L, P_{mV}(f_L))$
   oraz $(f_R, P_R) = (f_R, P_{mV}(f_R))$ punktów~$L$ i~$R$ oznaczonych
-  rysunku~\ref{fig:WC8TU}. $L$ i~$R$ to najbliższe punkty odpowiednio po lewej
+  na~rysunku~\ref{fig:WC8TU}. $L$ i~$R$ to najbliższe punkty odpowiednio po lewej
   i prawej stronie punktu przecięcia charakterystyki fazowej $\varphi(f)$
   z~rzędną $\varphi(f_0) = - 90\degree$.
 
@@ -1471,6 +1473,5 @@ następujące elementy.
 \end{document}
 
 %\label{?:X6E21}
-%\label{?:TJ2HQ}
 
 % vim: set syntax=tex tabstop=2 shiftwidth=2 expandtab spell spelllang=pl:
