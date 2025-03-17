@@ -1,0 +1,74 @@
+name: Build All
+
+on:
+  - pull_request
+  - push
+  - workflow_dispatch
+
+jobs:
+    build_all:
+      runs-on: ${{ matrix.os }}
+      env:
+        PYTHONUTF8: 1
+      strategy:
+        fail-fast: false
+        matrix:
+          os:
+            - ubuntu-latest
+            - windows-latest
+          python-version:
+            - 3.13
+          include:
+            - os: ubuntu-latest
+              sys: ubuntu
+              cache_key_sys: ${{ needs.texlive-cache.outputs.cache_key_ubuntu }}
+            - os: windows-latest
+              sys: windows
+              cache_key_sys: ${{ needs.texlive-cache.outputs.cache_key_windows }}
+      name: ${{ matrix.os }}, python ${{ matrix.python-version }}
+      steps:
+        - name: Checkout repo
+          uses: actions/checkout@v4
+
+        - name: Install TeXLive
+          id: texlive
+          uses: zauguin/install-texlive@v4
+          with:
+            texlive_version: 2025
+            packages: >
+              scheme-small collection-fontsextra collection-fontsrecommended
+              collection-fontutils collection-langpolish collection-latex
+              collection-latexextra collection-latexrecommended
+              collection-mathscience
+
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v5
+          with:
+            python-version: ${{ matrix.python-version }}
+
+        - name: Display python version
+          run: python -c "import sys; print(sys.version)"
+
+        - name: Install required python packages
+          run: pip install -r requirements.txt
+
+        - name: Install other packages (Windows)
+          if: runner.os == 'Windows'
+          run: choco install -y --no-progress gnuplot inkscape
+
+        - name: Install other packages (Linux)
+          if: runner.os == 'Linux'
+          run: sudo apt install -y gnuplot inkscape
+
+        - name: Update PATH (Linux)
+          if: runner.os == 'Linux'
+          run: echo $HOME/texlive/bin/x86_64-linux >> $GITHUB_PATH
+
+        - name: Update PATH (Windows)
+          if: runner.os == 'Windows'
+          run: |
+            echo "${HOME}/texlive/bin/windows" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            echo "${env:SystemDrive}\Program Files\gnuplot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+        - name: Build all
+          run: scons
