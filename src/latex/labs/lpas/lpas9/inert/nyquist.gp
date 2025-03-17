@@ -10,11 +10,12 @@ set xtics ( 0.00, 0.50, 1.00);
 set ytics (-0.50, 0.00);
 set xlabel '$P(\omega)$';
 set ylabel '$Q(\omega)$';
-set style line 1 lc "black" lt 1 lw 2;
+set style line 1 lc "black" lt 1 lw 4;
+set style line 2 lc "black" lt 1 lw 2;
 
-set arrow from -0.50, 0.00 to 1.60, 0.00 filled ls 1;
-set arrow from  0.00,-0.75 to 0.00, 0.60 filled ls 1;
-set arrow from  0.00, 0.00 to 0.50,-0.50 filled ls 1;
+set arrow from -0.50, 0.00 to 1.60, 0.00 filled ls 2;
+set arrow from  0.00,-0.75 to 0.00, 0.60 filled ls 2;
+set arrow from  0.00, 0.00 to 0.50,-0.50 filled ls 2;
 
 set label 1 '$\omega=0$'        at 1.00, 0.00 point pt 7 offset 0.00, 0.50;
 set label 2 '$\omega=\infty$'   at 0.00, 0.00 point pt 7 offset 0.00, 0.50;

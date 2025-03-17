@@ -1,5 +1,5 @@
 # vim: set syntax=gnuplot:
-set term epslatex size 12cm,5cm;
+set term epslatex size 12cm,6cm;
 set output "lpas9/oscil/aw.tex";
 
 w(t) = 10**t;
@@ -17,7 +17,7 @@ set xlabel '$\omega/\omega_0$';
 set xtics (0.01, 0.10, 1.00, 10.00, 100.00);
 set grid;
 set ylabel '$A(\omega)$';
-set ytics (0.0, 0.5, 1.0, 1.5, 2.0);
+set ytics 0.5;
 set format y '%2.1f';
 
 
@@ -30,10 +30,9 @@ set style line 5 lc "brown"      dt 5 lw 2 pt 7 ps 1;
 set logscale x 10;
 
 plot sample [t=-2:2:0.02] '+' using (w(t)):(A(w(t),0.20)) with lines ls 1 title '$\zeta=0.20$', \
-            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),0.30)) with lines ls 2 title '$\zeta=0.30$', \
-            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),0.50)) with lines ls 3 title '$\zeta=0.50$', \
-            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),1.00)) with lines ls 4 title '$\zeta=1.00$', \
-            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),2.00)) with lines ls 5 title '$\zeta=2.00$', \
+            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),0.40)) with lines ls 2 title '$\zeta=0.40$', \
+            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),0.80)) with lines ls 3 title '$\zeta=0.80$', \
+            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),1.60)) with lines ls 4 title '$\zeta=1.60$', \
+            [t=-2:2:0.02] '+' using (w(t)):(A(w(t),3.20)) with lines ls 5 title '$\zeta=3.20$', \
             t=0.20 '+' using (wr(t)):(Ar(t))  with points ls 1 title '$A(\omega_r)$', \
-            t=0.30 '+' using (wr(t)):(Ar(t))  with points ls 2 notitle, \
-            t=0.50 '+' using (wr(t)):(Ar(t))  with points ls 3 notitle;
+            t=0.40 '+' using (wr(t)):(Ar(t))  with points ls 2 notitle;
