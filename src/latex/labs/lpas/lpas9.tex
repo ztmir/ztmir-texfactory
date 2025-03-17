@@ -80,7 +80,7 @@
   obiektu, który może być uwzględniony przy doborze nastaw regulatora bądź
   w~dostrajaniu algorytmu sterowania tym obiektem.
 
-  W~ramach wykładu, studenci poznają tzw. ,,podstawowe człony automatyki'' --
+  W~ramach wykładu, studenci poznają tzw. podstawowe człony automatyki --
   elementy liniowe używane w~syntezie regulatorów czy w~modelowaniu prostych
   obiektów sterowania. Studenci poznają formuły opisujące transmitancje
   operatorowe i~widmowe oraz kształty teoretycznych charakterystyk
@@ -97,17 +97,16 @@
 \section{Wprowadzenie}
 \label{sec:AA9C2}
 
-W~celu przygotowania się do uczestnictwa w~zajęciach laboratoryjnych, student
-powinien zapoznać się w~pierwszej kolejności z~modelowym opisem eksperymentu
-przedstawionym w~dodatku~\ref{sec:OD8DY} oraz planem eksperymentu
-przedstawionym w~dodatku~\ref{sec:0DR40}.
+W~celu przygotowania się do zajęć laboratoryjnych, student powinien zapoznać
+się z~modelowym opisem eksperymentu przedstawionym w~dodatku~\ref{sec:OD8DY}
+oraz planem eksperymentu opisanym w~dodatku~\ref{sec:0DR40}.
 
 \subsection{Cel ćwiczenia}
 \label{sec:7HOCC}
 
 Ćwiczenie ma na celu zapoznanie studentów z~jedną z~metod zdejmowania
-charakterystyk częstotliwościowych wybranych ,,podstawowych członów
-automatyki'' (układów LUS\footnote{LUS - Liniowy Układ Stacjonarny, określenie
+charakterystyk częstotliwościowych wybranych podstawowych członów
+automatyki (układów LUS\footnote{LUS - Liniowy Układ Stacjonarny, określenie
 odnosi się do układów liniowych, których parametry nie zmieniają się w~czasie.
 Często też zwane układami LTI -- Linear Time-Invariant.}) oraz sposobem
 zastosowania uzyskanych charakterystyk do identyfikacji modeli liniowych.
@@ -135,7 +134,7 @@ W~ostatnim przypadku, człon oscylacyjny bądź inercyjny drugiego rzędu uzysku
 się w~zależności od ustawionych przez użytkownika parametrów R, L, C.
 W~praktyce nie wiadomo z~góry który z~członów uzyskano dopóki nie przeprowadzi
 się eksperymentu bądź odpowiednich obliczeń z~użyciem nastawionych wartości R,
-L, C (urządzenie laboratoryjne samo z~siebie nie daje takiej informacji).
+L, C.
 
 \section{Przebieg ćwiczenia}
 \label{sec:0DR40}
@@ -180,23 +179,23 @@ ZERO R} i~\texttt{SET ZERO Q} przy odłączonym sygnale).
 \label{sec:XW8AC}
 
 Skalowanie przeprowadza się dla ustalonej amplitudy sygnału. Po~przeprowadzeniu
-skalowania \textbf{nie należy zmieniać amplitudy sygnału}. Z~powodu
-ograniczonej wydajności prądowej generatora, \textbf{nie ustawiać amplitudy
-powyżej $2.5V$} (proponuje się ustawienie amplitudy $\approx 2V$).
+skalowania \textbf{nie~należy zmieniać amplitudy sygnału}. Z~powodu
+ograniczonej wydajności prądowej generatora, \textbf{nie~należy ustawiać
+amplitudy powyżej $2.5V$} (proponuje się ustawienie amplitudy $\approx 2V$).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{enumerate}
   \item Ustawić amplitudę generowanego sygnału $\approx 2V$ a~częstotliwość
     z~zakresu $50\dots100\text{ Hz}$.
   \item Połączyć bezpośrednio wyjście generatora z~wejściem urządzenia
     pomiarowego.
-  \item Wpisać napięcie $P_{mV}$ wskazywane przez woltomierz do~arkusza
+  \item Wpisać do~arkusza napięcie $P_{mV}$ wskazywane przez woltomierz
     (\texttt{POM} $\rightarrow$ \texttt{Kalibracja} $\rightarrow \alpha$).
 \end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Skalowanie polega na ustaleniu współczynnika skali $\alpha$ umożliwiającego
-przeliczanie napięć $P_{mV}$, $Q_{mV}$, wskazywanych przez woltomierze, na
-wartości bezwymiarowe $P$, $Q$:
+\paragraph{Wyjaśnienie:} Skalowanie polega na ustaleniu współczynnika skali
+$\alpha$ umożliwiającego przeliczanie napięć $P_{mV}$, $Q_{mV}$, wskazywanych
+przez woltomierze, na wartości bezwymiarowe $P$, $Q$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \begin{aligned}
@@ -266,7 +265,9 @@ Metodą bisekcji ustalić częstotliwość graniczną $f_s$:
 \begin{enumerate}
   \item W~zakładce \texttt{POM} odnaleźć punkty pomiarowe $L$ i~$R$
     (rysunek~\ref{fig:UIR99}) sąsiadujące z~poszukiwanym punktem granicznym.
-    Oznaczmy roboczo $L = (f_L, P_L, Q_L)$ i $R = (f_R, P_R, Q_R)$.
+    Niech $(f_L, P_L, Q_L) = (f_L, P_{mV}(f_L), Q_{mV}(f_L))$ i~$(f_R, P_R,
+    Q_R) = (f_R, P_{mV}(f_R), Q_{mV}(f_R)) $ będą wartościami zmierzonymi
+    w~punktach $L$ i~$R$.
   \item Wpisać współrzędne $(f_L, P_L, Q_L)$ i $(f_R, P_R, Q_R)$ z~zakładki
     \texttt{POM} w~odpowiednie komórki w~zakładce \texttt{IRz}:
     \texttt{Bisekcja} $\rightarrow$ \{\texttt{L}$/$\texttt{R}\} $\rightarrow$
@@ -314,7 +315,8 @@ Metodą bisekcji ustalić częstotliwość graniczną $f_0$:
 \begin{enumerate}
   \item W~zakładce \texttt{POM} odnaleźć punkty pomiarowe $L$ i~$R$
     (rysunek~\ref{fig:WC8TU}) sąsiadujące z~poszukiwanym punktem granicznym.
-    Oznaczmy roboczo $L = (f_L, P_L, Q_L)$ i $R = (f_R, P_R, Q_R)$.
+    Niech $(f_L, P_L) = (f_L, P_{mV}(f_L))$ i~$(f_R, P_R) = (f_R, P_{mV}(f_R))$
+    będą wartościami zmierzonymi w~punktach $L$ i~$R$.
   \item Wpisać współrzędne $(f_L, P_L)$ i $(f_R, P_R)$ z~zakładki
     \texttt{POM} w~odpowiednie komórki w~zakładce \texttt{IIRz}:
     \texttt{Bisekcja} $\rightarrow$ \{\texttt{L}$/$\texttt{R}\} $\rightarrow$
@@ -1205,9 +1207,9 @@ następujące elementy.
   $P_{mV}(f_i)$, $Q_{mV}(f_i)$ w~kolejnych punktach pomiarowych $f_i$. Umożliwi
   to wizualną ocenę przebiegu eksperymentu.
 
-  Rysunki~\ref{fig:P2GUQ}, \ref{fig:KSU5J} i~\ref{fig:KRYUF} przedstawiają,
+  Rysunki~\ref{fig:P2GUQ}, \ref{fig:KSU5J} i~\ref{fig:KRYUF} przedstawiają
   przykładowe zarysy charakterystyk uzyskanych w~wyniku wstępnego pomiaru
-  czwórnika RLC.
+  odpowiedzi czwórnika RLC.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{figure}[H]
     \centering
