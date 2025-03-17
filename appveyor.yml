@@ -1,12 +1,11 @@
 environment:
 
   matrix:
-    - PYTHON: "C:\\Python37"
-      PYTHON_VERSION: "3.7"
+    - PYTHON: "C:\\Python313"
+      PYTHON_VERSION: "3.13"
 
 install:
   - pip install -r requirements.txt
-  - python bin\downloads.py
   - SET "PATH=C:\\Program Files\\Inkscape;%PATH%"
   - SET "PATH=%USERPROFILE%\\texlive\\bin\\win32;%PATH%"
   - SET "PATH=C:\\Program Files\\gnuplot\\bin;%PATH%"
