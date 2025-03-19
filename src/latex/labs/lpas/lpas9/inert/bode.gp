@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 14cm,7cm;
 set output "lpas9/inert/bode.tex";
 set key left bottom Left;
