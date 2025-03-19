@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 12cm,8cm;
 set output "lpas9/rlc/rough/ampfreq.tex";
 

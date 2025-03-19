@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 16cm,6cm;
 set output "lab11/srednia.tex";
 set key right bottom Left;

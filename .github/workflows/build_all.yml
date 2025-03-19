@@ -69,6 +69,7 @@ jobs:
           run: |
             echo "${HOME}/texlive/bin/windows" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
             echo "${env:SystemDrive}\Program Files\gnuplot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            echo "${env:SystemDrive}\Program Files\inkscape\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
         - name: Build all
           run: scons

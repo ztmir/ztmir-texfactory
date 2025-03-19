@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 14cm, 8cm;
 set output "lpas9/rc/rough/nyquist.tex";
 set key right bottom;

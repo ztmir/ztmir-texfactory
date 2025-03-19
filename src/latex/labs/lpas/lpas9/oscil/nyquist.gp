@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 9cm, 9cm;
 set output "lpas9/oscil/nyquist.tex";
 set key right bottom opaque;

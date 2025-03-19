@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 14cm,7cm;
 set output "lpas9/deriv/bode.tex";
 set key right top Left;

@@ -1,4 +1,5 @@
 # vim: set syntax=gnuplot:
+set encoding utf8;
 set term epslatex size 16cm,7.3cm;
 set output "lab11/sredsin.tex";
 set grid;

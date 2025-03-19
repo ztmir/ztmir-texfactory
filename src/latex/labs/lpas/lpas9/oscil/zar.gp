@@ -1,5 +1,5 @@
 # vim: set syntax=gnuplot:
-#set term epslatex size 14cm,12cm;
+set encoding utf8;
 set term epslatex size 10.5cm,9cm;
 set output "lpas9/oscil/zar.tex";
 
