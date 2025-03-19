@@ -3,8 +3,11 @@
 \usepackage[polish]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{courier}
-\usepackage{tgtermes,newtxtext,newtxmath}
+\usepackage[scaled=.9,otfmath]{XCharter}
+\usepackage[scaled=.9,varqu,varl,mono,hyphenate]{inconsolata}
+\usepackage[uprightscript,xcharter,vvarbb,scaled=.9]{newtxmath}
+\usepackage[scaled=.9,type1]{sourcesanspro}
+\usepackage{mathrsfs}
 \usepackage[]{hyperref}
 \usepackage{natbib}
 
@@ -16,7 +19,7 @@
 \usepackage{graphicx}
 \usepackage[titletoc,title]{appendix}
 \usepackage{subcaption}
-\usepackage{listings}
+%\usepackage{listings}
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage{tikz}
@@ -37,39 +40,25 @@
 % gensymb provides \degree command, but whole package for just one symbol?
 \newcommand{\degree}{^{\circ}}
 
-\lstset{%
-  basicstyle=\footnotesize\ttfamily\selectfont,
-  language=Matlab,
-  inputencoding=utf8,
-  extendedchars=true,
-  frame=trBL
-}
-
-\newfloat{lstfloat}{htbp}{lop}
-\floatname{lstfloat}{Listing}
-
 \setcitestyle{numbers,square,comma}
 
 \begin{document}
 
 
-\serietitle{\\{\ }\\{\ }\\Laboratorium pomiarów, automatyki i~sterowania~I}
-
-\title{\Large{Ćwiczenie nr 9}}
-
-\subtitle{\huge{Badanie charakterystyk częstotliwościowych podstawowych członów automatyki}}
+\subject{Laboratorium pomiarów, automatyki i~sterowania~I}
+\supertitle{Ćwiczenie 9}
+\title{Badanie charakterystyk częstotliwościowych podstawowych członów automatyki}
 
 \author{\\Paweł Tomulik\\ Zakład Teorii Maszyn i Robotów\\ ITLiMS, MEIL, PW}
+
 \date{}
 \maketitle
-\thispagestyle{empty}
 
 \pagebreak
 \tableofcontents
 \pagebreak
 
 \begin{abstract}
-\section{Streszczenie}
 \noindent Identyfikacja modeli układów dynamicznych ma istotne znaczenie
   w~projektowaniu układów sterowania. Odpowiednia metoda pomiarowa umożliwia
   rozpoznanie badanego obiektu i~określenie parametrów modelu reprezentującego
@@ -84,7 +73,7 @@
   elementy liniowe używane w~syntezie regulatorów czy w~modelowaniu prostych
   obiektów sterowania. Studenci poznają formuły opisujące transmitancje
   operatorowe i~widmowe oraz kształty teoretycznych charakterystyk
-  amplitudowo-fazowych i~częstotliwościowych tychże członów.
+  am\-pli\-tu\-do\-wo-fa\-zo\-wych i~częstotliwościowych tychże członów.
 
   Niniejsze ćwiczenie jest praktycznym uzupełnieniem informacji z~wykładu
   i~umożliwia studentom zetknięcie się z~rzeczywistą realizacją poznanych na
@@ -137,7 +126,7 @@ się eksperymentu bądź odpowiednich obliczeń z~użyciem nastawionych wartośc
 L, C.
 
 \section{Przebieg ćwiczenia}
-\label{sec:0DR40}
+\label{sec:0CM1S}
 
 Procedurę opisaną w~niniejszym rozdziale należy przeprowadzić dwukrotnie -- raz
 dla elementu I-go rzędu i~raz dla elementu II-go rzędu. Wyjątkiem jest
@@ -148,7 +137,7 @@ przeprowadzić raz, na początku zajęć.
 \label{sec:S5JXT}
 
 Studentom udostępniono arkusz kalkulacyjny \texttt{lpas9-template.xlsx},
-spełniający rolę protokołu pomiarowego. Przystosowany jest on
+spełniający rolę protokołu po\-mia\-ro\-we\-go. Przystosowany jest on
 do~przeprowadzenia jednego pełnego eksperymentu. W~przypadku badania następnego
 typu członu w~ramach jednych zajęć, należy rozpocząć pracę na nowej kopii.
 
@@ -158,7 +147,7 @@ Arkusz posiada trzy zakładki
   \item \texttt{POM} -- tu należy wpisywać wyniki kalibracji oraz pomiarów
     wstępnych,
   \item \texttt{IRz} -- używany, gdy badany element jest członem I-go rzędu,
-  \item \texttt{IIRz} -- używany, gdy badany element jest członu II-go rzędu.
+  \item \texttt{IIRz} -- używany, gdy badany element jest członem II-go rzędu.
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -179,7 +168,7 @@ ZERO R} i~\texttt{SET ZERO Q} przy odłączonym sygnale).
 \label{sec:XW8AC}
 
 Skalowanie przeprowadza się dla ustalonej amplitudy sygnału. Po~przeprowadzeniu
-skalowania \textbf{nie~należy zmieniać amplitudy sygnału}. Z~powodu
+skalowania \textbf{nie należy zmieniać amplitudy sygnału}. Z~powodu
 ograniczonej wydajności prądowej generatora, \textbf{nie~należy ustawiać
 amplitudy powyżej $2.5V$} (proponuje się ustawienie amplitudy $\approx 2V$).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -248,7 +237,7 @@ II-go rzędu, to przejść do zakładki \texttt{IIRz}.
 \subsection{Człon I-go rzędu}
 \label{sec:3Q2SV}
 
-Należy przejść do zakładki \texttt{IRz} i~ustawić typ rozpoznanego członu
+Należy przejść do zakładki \texttt{IRz} i~ustawić rozpoznany typ członu
 (\texttt{Identyfikacja} $\rightarrow$ \texttt{Typ[I/R]}):
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
@@ -257,13 +246,13 @@ Należy przejść do zakładki \texttt{IRz} i~ustawić typ rozpoznanego członu
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Poszukiwanie $f_s$ metodą bisekcji}
-\label{sec:WM5KT}
+\subsubsection{Poszukiwanie \texorpdfstring{$f_s$}{fs} metodą bisekcji}
+\label{sec:AIDQO}
 
 Metodą bisekcji ustalić częstotliwość graniczną $f_s$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{enumerate}
-  \item W~zakładce \texttt{POM} odnaleźć punkty pomiarowe $L$ i~$R$
+  \item W~zakładce \texttt{POM} znaleźć punkty pomiarowe $L$ i~$R$
     (rysunek~\ref{fig:UIR99}) sąsiadujące z~poszukiwanym punktem granicznym.
     Niech $(f_L, P_L, Q_L) = (f_L, P_{mV}(f_L), Q_{mV}(f_L))$ i~$(f_R, P_R,
     Q_R) = (f_R, P_{mV}(f_R), Q_{mV}(f_R)) $ będą wartościami zmierzonymi
@@ -289,7 +278,7 @@ odnalezioną powyższym algorytmem należy wpisać w~komórkę $\texttt{f}_\text
 \texttt{Identyfikacja}.
 
 \subsubsection{Dodatkowe pomiary -- uzupełnienie charakterystyk}
-\label{sec:09H54}
+\label{sec:4J0US}
 
 Po uzupełnieniu pola $\texttt{f}_\texttt{s}$ w~sekcji \texttt{Identyfikacja}
 w~zakładce \texttt{IRz} pojawią się częstotliwości $\texttt{f}_\texttt{i}$
@@ -307,7 +296,7 @@ się w~górę i~w~dół tabeli.
 
 Opracowanie danych pomiarowych należy prowadzić w~zakładce \texttt{IIRz}.
 
-\subsubsection{Poszukiwanie $f_0$ metodą bisekcji}
+\subsubsection{Poszukiwanie \texorpdfstring{$f_0$}{f0} metodą bisekcji}
 \label{sec:WM5KT}
 
 Metodą bisekcji ustalić częstotliwość graniczną $f_0$:
@@ -334,10 +323,10 @@ Metodą bisekcji ustalić częstotliwość graniczną $f_0$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Częstotliwość $f_0$ odnalezioną powyższym algorytmem należy wpisać
-w~komórkę $\texttt{f}_\texttt{0}$ w~sekcji \texttt{[o - obliczenia wg
+w~komórkę $\texttt{f}_\texttt{0}$ w~sekcji \texttt{[o - o\-bli\-cze\-nia wg
 ($\omega_0$, A($\omega_0$))]}.
 
-\subsubsection{Wyznaczenie współczynnika tłumienia $\zeta$}
+\subsubsection{Wyznaczenie współczynnika tłumienia \texorpdfstring{$\zeta$}{ζ}}
 \label{eq:A20W9}
 
 W~komórce \texttt{A($\omega_0$)} sekcji \texttt{[o - obliczenia wg ($\omega_0$,
@@ -395,8 +384,8 @@ następujące elementy.
     \texttt{POM}, oś częstotliwości w~Hz).
   \item Informację jaki typ członu rozpoznano na podstawie charakterystyk, z~uzasadnieniem.
   \item Wyniki identyfikacji parametrycznej metodą bisekcji ($f_s$ lub $(f_0, \zeta)$ -- zależnie od przypadku).
-  \item Znormalizowane wykresy charakterystyk Bodego oraz charakterystykę
-    Nyquista, następująco\footnote{Wykresy tego typu są dostępne w~odpowiedniej
+  \item Znormalizowane wykresy Bodego oraz charakterystykę Nyquista,
+    następująco\footnote{Wykresy tego typu są dostępne w~odpowiedniej
     zakładce \texttt{IRz}$/$\texttt{IIRz} opracowanego na zajęciach arkusza.}:
     \begin{itemize}
       \item na każdym wykresie linią ciągłą wyrysowana charakterystyka
@@ -407,8 +396,7 @@ następujące elementy.
       \item w~przypadku członu II-go rzędu, również charakterystyka
         nielogarytmiczna $A(\omega)$.
     \end{itemize}
-    Oś częstotliwości bezwymiarowa, skala logarytmiczna (jak na wykresach
-    z~zakładek \texttt{IRz}$/$\texttt{IIRz}).
+    Oś częstotliwości bezwymiarowa, skala logarytmiczna (patrz arkusze \texttt{IRz}$/$\texttt{IIRz}).
   \item W~przypadku członu oscylacyjnego z~rezonansem, wyniki obliczeń
     $\omega_0$ i~$\zeta$ z~podrozdziału~\ref{sec:0NZQS}, łącznie z~wartością
     wskaźnika uwarunkowania $\text{cond}_{\zeta}$.
@@ -440,7 +428,7 @@ następujące elementy.
   \label{sec:AIMJR}
 
   Badany układ traktujemy jako ,,czarną skrzynkę'' posiadającą wejście i~wyjście.
-  Jeśli na wejście podamy zmienny w~czasie sygnał $u(t)$, to na wyjściu
+  Jeśli na wejście podamy zmien\-ny w~czasie sygnał $u(t)$, to na wyjściu
   zaobserwujemy sygnał $y(t)$.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{figure}[htbp]
@@ -557,10 +545,9 @@ następujące elementy.
         \label{eq:3UCS1}
       \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \item Charakterystyka $M(\omega)$ zbiega się z~asymptotą o~nachyleniu
-      $-20\text{ dB/dek}$ (człon inercyjny) lub $+20\text{ dB/dek}$ (człon
-      różniczkujący rzeczywisty) przechodzącą przez punkt
-      $(\omega_s,0\text{ dB})$.
+    \item Charakterystyka $M(\omega)$ zbiega do asymptoty o~nachyleniu
+      $-20\text{ dB/dek}$ (inercyjny) lub $+20\text{ dB/dek}$ (różniczkujący
+      rzeczywisty) przechodzącą przez punkt $(\omega_s,0\text{ dB})$.
     \item Przy pulsacji granicznej $\omega_s$ występuje tzw. 3-decybelowy spadek
       modułu\footnote{Dokładna wartość to $M(\omega_s) = 20 \log{(\sqrt{2}/2)}
       \approx -3.0103\text{ dB}$.}: $M(\omega_s) \approx -3\text{ dB}$,
@@ -615,7 +602,7 @@ następujące elementy.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Sygnałem wejściowym $u(t)$ jest napięcie mierzone na zaciskach wejściowych (po
   lewej) a~za sygnał wyjściowy $y(t)$ obrano napięcie na zaciskach wyjściowych
-  (po prawej). Równanie różniczkowe \eqref{eq:U35FU}
+  (po prawej). Równanie~\eqref{eq:U35FU}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{equation}
     R C \od{y(t)}{t} + y(t) = u(t)
@@ -650,8 +637,8 @@ następujące elementy.
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  Charakterystykę amplitudowo-fazową (Nyquista) członu inercyjnego przedstawiono
-  na rysunku~\ref{fig:5Y0UB}.
+  Charakterystykę amplitudowo-fazową członu inercyjnego przedstawiono na
+  rysunku~\ref{fig:5Y0UB}.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{figure}[H]
     \centering
@@ -1010,8 +997,8 @@ następujące elementy.
 
   Jeśli na wyznaczonej w~ramach eksperymentu charakterystyce $A(\omega)$ szczyt
   rezonansowy jest widoczny wystarczająco wyraźnie, to można próbować odczytać
-  z~wykresu współrzędne $(\omega_r, A_r)$ punktu szczytowego, a~następnie
-  wyliczyć współczynnik tłumienia~$\zeta(A_r)$
+  współrzędne $(\omega_r, A_r)$ punk\-tu szczytowego, a~następnie wyliczyć
+  współczynnik tłumienia~$\zeta(A_r)$
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{equation}
     \zeta(A_r) = \sqrt{\frac{1}{2}\left(1 - \sqrt{1 - \frac{1}{A_r^2}}\right)}.
@@ -1067,7 +1054,7 @@ następujące elementy.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   Mając wyznaczony współczynnik tłumienia $\zeta$ oraz odczytaną z~wykresu
-  pulsację rezonansową $\omega_r$ można wyliczyć pulsację drgań własnych
+  pulsację rezonansową $\omega_r$ moż\-na wyliczyć pulsację drgań własnych
   $\omega_0$
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \begin{equation}
@@ -1170,7 +1157,7 @@ następujące elementy.
   Później należy udostępnić studentom ustawienia obu eksperymentów w~celu
   weryfikacji wyników.
 
-  \subsection{Wstępne pomiary $(P_i,Q_i)$}
+  \subsection{Wstępne pomiary \texorpdfstring{$(P_i,Q_i)$}{(Pi,Qi)}}
   \label{sec:HE6KE}
 
   Wstępne pomiary umożliwiają utworzenie zarysu charakterystyk
@@ -1204,8 +1191,8 @@ następujące elementy.
   \end{equation}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Charakterystyki należy wyrysowywać na bieżąco, w~trakcie wykonywania pomiarów
-  $P_{mV}(f_i)$, $Q_{mV}(f_i)$ w~kolejnych punktach pomiarowych $f_i$. Umożliwi
-  to wizualną ocenę przebiegu eksperymentu.
+  $P_{mV}$, $Q_{mV}$ w~kolejnych punktach pomiarowych $f_i$. Umożliwi to
+  wizualną ocenę przebiegu eksperymentu.
 
   Rysunki~\ref{fig:P2GUQ}, \ref{fig:KSU5J} i~\ref{fig:KRYUF} przedstawiają
   przykładowe zarysy charakterystyk uzyskanych w~wyniku wstępnego pomiaru
@@ -1261,8 +1248,8 @@ następujące elementy.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Nachylenie charakterystyki ocenia się wizualnie. Można też kierować się
   innymi cechami szczególnymi widocznymi na charakterystykach (np. występowanie
-  szczytu rezonansowego, przecinanie $\mp 45\degree$ lub $-90\degree$ na
-  charakterystyce fazowej w~miejscu gdzie $M(\omega)$ zagina się, itd.).
+  szczytu rezonansowego, przecinanie poziomu $\varphi = \mp 45\degree$ lub
+  $-90\degree$ na charakterystyce fazowej w~miejscu gdzie $M(\omega)$ zagina się, itd.).
 
   \subsection{Człon I-go rzędu}
   \label{sec:4C7KI}
@@ -1282,14 +1269,13 @@ następujące elementy.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Można tego dokonać metodą bisekcji.
 
-  \subsubsection{Poszukiwanie $f_s$ metodą bisekcji}
+  \subsubsection{Poszukiwanie \texorpdfstring{$f_s$}{fs} metodą bisekcji}
   \label{sec:L0JNW}
 
-  Ze~wstępnych pomiarów obrać przybliżenie początkowe
-  $(f_L, P_L, Q_L) = (f_L, P_{mV}(f_L), Q_{mV}(f_L))$
-  oraz $(f_R, P_R, Q_R) = (f_R, P_{mV}(f_R), Q_{mV}(f_R))$
-  na podstawie punktów~$L$ i~$R$ oznaczonych na~rysunku~\ref{fig:UIR99}. $L$ i~$R$
-  to najbliższe punkty odpowiednio po lewej i prawej stronie punktu przecięcia
+  Ze~wstępnych pomiarów wynotować współrzędne punktór $L$ i~$R$ oznaczonych na
+  rysunku~\ref{fig:UIR99}: $(f_L, P_L, Q_L) = (f_L, P_{mV}(f_L), Q_{mV}(f_L))$
+  oraz $(f_R, P_R, Q_R) = (f_R, P_{mV}(f_R), Q_{mV}(f_R))$. $L$ i~$R$ to
+  najbliższe punkty odpowiednio po lewej i prawej stronie punktu przecięcia
   charakterystyki fazowej $\varphi(f)$ z~rzędną $\varphi(f_s) = \mp 45\degree$.
   Następnie wyszukać $f_s$ wg następującego algorytmu (bisekcja):
 
@@ -1375,13 +1361,13 @@ następujące elementy.
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Można tego dokonać metodą bisekcji.
 
-  \subsubsection{Poszukiwanie $f_0$ metodą bisekcji}
+  \subsubsection{Poszukiwanie \texorpdfstring{$f_0$}{f0} metodą bisekcji}
   \label{sec:HVY4X}
 
-  Ze~wstępnych pomiarów wynotować współrzędne $(f_L, P_L) = (f_L, P_{mV}(f_L))$
-  oraz $(f_R, P_R) = (f_R, P_{mV}(f_R))$ punktów~$L$ i~$R$ oznaczonych
-  na~rysunku~\ref{fig:WC8TU}. $L$ i~$R$ to najbliższe punkty odpowiednio po lewej
-  i prawej stronie punktu przecięcia charakterystyki fazowej $\varphi(f)$
+  Ze~wstępnych pomiarów wynotować współrzędne punktów~$L$ i~$R$ oznaczonych
+  na~rysunku~\ref{fig:WC8TU}: $(f_L, P_L) = (f_L, P_{mV}(f_L))$ oraz $(f_R,
+  P_R) = (f_R, P_{mV}(f_R))$. $L$ i~$R$ to najbliższe punkty odpowiednio po
+  lewej i~prawej stronie punktu przecięcia charakterystyki fazowej $\varphi(f)$
   z~rzędną $\varphi(f_0) = - 90\degree$.
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1412,7 +1398,7 @@ następujące elementy.
   Powyższy algorytm został zaimplementowany w~arkuszu obliczeniowym używanym
   w~eksperymencie.
 
-  \subsubsection{Określenie współczynnika tłumienia $\zeta$}
+  \subsubsection{Określenie współczynnika tłumienia \texorpdfstring{$\zeta$}{ζ}}
   \label{sec:L7DED}
 
   Współczynnik tłumienia $\zeta$ proponuje się określić na podstawie
@@ -1475,5 +1461,22 @@ następujące elementy.
 \end{document}
 
 %\label{?:X6E21}
+%\label{?:C92G9}
+%\label{?:3CJ87}
+%\label{?:YP8NW}
+%\label{?:6T5VY}
+%\label{?:G862F}
+%\label{?:DS7OT}
+%\label{?:QY0AP}
+%\label{?:QX40K}
+%\label{?:V8MZW}
+%\label{?:OAGHG}
+%\label{?:J949U}
+%\label{?:32DGI}
+%\label{?:CT4ZO}
+%\label{?:BDRBE}
+%\label{?:OV9JA}
+%\label{?:0JZYH}
+%\label{?:4H7AS}
 
 % vim: set syntax=tex tabstop=2 shiftwidth=2 expandtab spell spelllang=pl:
