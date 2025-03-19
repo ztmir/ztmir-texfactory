@@ -1,19 +1,15 @@
 ZTMiR-TeXFactory
 ================
 
-.. |travis| image:: https://travis-ci.org/ztmir/ztmir-texfactory.svg?branch=master
-   :target: https://travis-ci.org/ztmir/ztmir-texfactory
-   :alt: Travis CI
+.. |build status| image:: https://github.com/ztmir/ztmir-texfactory/actions/workflows/build_all.yml/badge.svg
+   :target: https://github.com/ztmir/ztmir-texfactory/actions/workflows/build_all.yml
+   :alt: Build Status
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/0is3qa6oua0px8p2/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/ptomulik/ztmir-texfactory-8g067/branch/master
-   :alt: Appveyor CI
-
-+---------------+--------------+
-|   Travis-CI   |   Appveyor   |
-+===============+==============+
-|  |travis|     |  |appveyor|  |
-+---------------+--------------+
++------------------+
+|   Build Status   |
++==================+
+|  |build status|  |
++------------------+
 
 Repository of TeX documents developed in ztmir_
 
@@ -57,8 +53,8 @@ or::
 
 if your "python" command is actually python 3.x interpreter.
 
-ACTIVATING PYHON VIRTUALENV
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ACTIVATING PYTHON VIRTUALENV
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The virtualenv should be activated, by executing::
 
