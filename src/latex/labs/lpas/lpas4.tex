@@ -3,8 +3,11 @@
 \usepackage[polish]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{courier}
-\usepackage{tgtermes,newtxtext,newtxmath}
+\usepackage[scaled=.9,otfmath]{XCharter}
+\usepackage[scaled=.9,varqu,varl,mono,hyphenate]{inconsolata}
+\usepackage[uprightscript,xcharter,vvarbb,scaled=.9]{newtxmath}
+\usepackage[scaled=.9,type1]{sourcesanspro}
+\usepackage{mathrsfs}
 \usepackage[]{hyperref}
 \usepackage{natbib}
 
@@ -52,23 +55,21 @@
 \begin{document}
 
 
-\serietitle{\\{\ }\\{\ }\\Laboratorium pomiarów, automatyki i~sterowania~I}
+\subject{Laboratorium pomiarów, automatyki i~sterowania~I}
 
-\title{\Large{Ćwiczenie nr 4}}
+\supertitle{Ćwiczenie 4}
 
-\subtitle{\huge{Analiza kinematyczna układu o dwóch stopniach swobody}}
+\title{Analiza kinematyczna układu o dwóch stopniach swobody}
 
 \author{\\Paweł Tomulik\\ Zakład Teorii Maszyn i Robotów\\ ITLiMS, MEIL, PW}
 \date{}
 \maketitle
-\thispagestyle{empty}
 
 \pagebreak
 \tableofcontents
 \pagebreak
 
 \begin{abstract}
-\section{Streszczenie}
 \noindent Wyznaczanie współrzędnych układu mechanicznego z~użyciem czujników znajduje
   wiele zastosowań. Jednym z~nich są systemy odometrii używane m.in. w~robotach
   mobilnych. Typowe zadanie odometrii polega na estymacji położenia
@@ -152,7 +153,7 @@ Cardana. Schemat kinematyczny układu pokazano na rysunku~\ref{fig:7YP7N}.
       \end{scope}
     \end{scope}
   \end{tikzpicture}
-  \caption{Schemat kinematyczny wahadła.}
+  \caption{Schemat kinematyczny wahadła}
   \label{fig:7YP7N}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -220,7 +221,7 @@ $\varphi_x$ oraz $y$ dla $\varphi_y$). Odczytane wartości należy zebrać
 w~tabeli, np. takiej jak tablica~\ref{tab:KM4WU}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[htbp]
-  \caption{Skalowanie czujników położenia (potencjometrów).}
+  \caption{Skalowanie czujników położenia (potencjometrów)}
   \label{tab:KM4WU}
   \centering
   \begin{tabular}{|l|c|c|c|}
@@ -273,7 +274,7 @@ przeprowadzić przed właściwym eksperymentem, jak również można wykonać
 ,,post-factum'' na podstawie pomiarów z~eksperymentu, przy spełnieniu
 odpowiednich warunków.
 
-\subsubsection{Skalowanie metodą $\mp 1g$}
+\subsubsection{Skalowanie metodą \texorpdfstring{$\mp 1g$}{∓1g}}
 \label{sec:CT4YN}
 
 W~celu wyskalowania akcelerometru należy go zdemontować z~końcówki wahadła.
@@ -304,7 +305,7 @@ na rysunku~\ref{fig:ZDELS}.
       \draw[axis] (0,0,0) -- +(0,0,1) node [right] {$z^{\prime}$};
     \end{scope}
 
-    \begin{scope}[shift={(5,0)}]
+    \begin{scope}[shift={(4.5,0)}]
       \node[draw=none] at (0,1.75) {$V_x^{-1g}, V_y^{0g}, V_z^{0g}$};
       \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
         \begin{scope}[rotate around y=90]
@@ -316,7 +317,7 @@ na rysunku~\ref{fig:ZDELS}.
       \end{scope}
     \end{scope}
 
-    \begin{scope}[shift={(10,0)}]
+    \begin{scope}[shift={(9,0)}]
       \node[draw=none] at (1.25,1.75) {$V_x^{+1g}, V_y^{0g}, V_z^{0g}$};
       \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
         \begin{scope}[rotate around y=-90]
@@ -340,7 +341,7 @@ na rysunku~\ref{fig:ZDELS}.
       \end{scope}
     \end{scope}
 
-    \begin{scope}[shift={(5,-5)}]
+    \begin{scope}[shift={(4.5,-5)}]
       \node[draw=none] at (-1.25,1.5) {$V_x^{0g}, V_y^{+1g}, V_z^{0g}$};
       \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
         \begin{scope}[rotate around x=90]
@@ -352,7 +353,7 @@ na rysunku~\ref{fig:ZDELS}.
       \end{scope}
     \end{scope}
 
-    \begin{scope}[shift={(10,-5)}]
+    \begin{scope}[shift={(9,-5)}]
       \node[draw=none] at (-0.5,1.5) {$V_x^{0g}, V_y^{0g}, V_z^{-1g}$};
       \begin{scope}[x={(-135:1cm)}, y={( 0:1cm)}, z={(90:1cm)}]
         \begin{scope}[rotate around y=180]
@@ -365,7 +366,7 @@ na rysunku~\ref{fig:ZDELS}.
     \end{scope}
 
   \end{tikzpicture}
-  \caption{Pozycjonowanie akcelerometru przy skalowaniu.}
+  \caption{Pozycjonowanie akcelerometru przy skalowaniu}
   \label{fig:ZDELS}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -390,7 +391,7 @@ tablica~\ref{tab:Q31HW}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Nachylenia charakterystyk akcelerometru w~poszczególnych kanałach (oś $x^{\prime}$,
-$y^{\prime}$ i~$z^{\prime}$) wyrazimy poprzez współczynniki
+$y^{\prime}$ i~$z^{\prime}$) wyrazimy poprzez współczynniki:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{align}
   & D_x = \frac{2 g}{V_x^{+1g} - V_x^{-1g}}, &
@@ -400,7 +401,7 @@ $y^{\prime}$ i~$z^{\prime}$) wyrazimy poprzez współczynniki
 \end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Wartości zmierzonych przyspieszeń wyrażone w~$\tfrac{m}{s^2}$ będziemy zatem
-liczyli jako
+liczyli jako:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{align}
   &{\hat{a}_x}^{\prime}= D_x \left(V_x - V_x^{0g}\right),&
@@ -458,7 +459,7 @@ wyskalowane.
 Nieznane współczynniki skali $D_{\bullet}$, $V_{\bullet}^{0g}$ wyznacza się
 poprzez zapisanie równań \eqref{eq:EUIQU} dla~$\brm{a}^{\prime} = \brm{0}$
 w~punktach $A$ i~$B$ i~rozwiązanie tak powstałego układu równań. W~efekcie
-otrzymujemy
+otrzymujemy:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{subequations}
   \label{eq:GN30K}
@@ -481,7 +482,7 @@ otrzymujemy
 \end{subequations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Tak wyznaczone współczynniki mogą być użyte do przeliczania wartości
-napięciowych z~akcelerometru na~przyspieszenia $\hat{\brm{a}}^{\prime}$ 
+napięciowych z~akcelerometru na~przyspieszenia $\hat{\brm{a}}^{\prime}$
 wg wzoru \eqref{eq:HM7PF}.
 
 \section{Pomiar}
@@ -498,7 +499,7 @@ druga przy wahadle.
   \item Po upływie $36$-tej sekundy zakończyć rejestrację pomiarów.
 \end{itemize}
 Wynik zapisany przez program pomiarowy w~postaci arkusza Excel będzie zawierał
-5 kolumn
+5 kolumn:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
   \item \textbf{Untitled}, \textbf{Untitled 1}, \textbf{Untitled 2}: $V_x$, $V_y$, $V_z$,
@@ -544,7 +545,7 @@ postawionego zagadnienia początkowego dla równań różniczkowych~\eqref{eq:RO
 
 \paragraph{Implementacja procedury całkującej.}
 Aby móc stosować procedury numerycznego całkowania, równania \eqref{eq:ROGUO}
-należy przekształcić do postaci równoważnego układu równań pierwszego rzędu
+należy przekształcić do postaci równoważnego układu równań pierwszego rzędu:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \dot{\brm{y}}\left(t\right) = \brm{f}\left(t,\brm{y}\left(t\right)\right),
@@ -553,7 +554,7 @@ należy przekształcić do postaci równoważnego układu równań pierwszego rz
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 jak to zaproponowano w~dodatku~\ref{sec:WKKBB}. Prawą stronę $\brm{f}$
 takiego równoważnego układu równań (zob.~\eqref{eq:S8LTL}) zapiszemy w~wersji
-dyskretnej następująco
+dyskretnej następująco:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{f}_k \coloneqq \brm{f}\left(t_k, \brm{y}_k\right) = \begin{bmatrix}
@@ -565,7 +566,7 @@ dyskretnej następująco
   \label{eq:ETMGP}
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gdzie
+gdzie:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \begin{bmatrix}
@@ -587,7 +588,7 @@ dodatek~\ref{sec:VNLHT}). W~ten sposób można dość łatwo zaimplementować me
 całkującą, np. w~arkuszu kalkulacyjnym Excel.
 
 \paragraph{Warunki początkowe.}
-Jako warunków początkowych w~procesie całkowania można użyć
+Jako warunków początkowych w~procesie całkowania można użyć:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_0 = \begin{bmatrix}
@@ -632,7 +633,7 @@ wymagają wpisania bądź wklejenia wartości (liczbowych). Komórki w~kolorze
 żółtym wymagają wpisania odpowiednich formuł.
 
 \paragraph{Zakładka \texttt{PAR}.} Zakładkę z~parametrami eksperymentu
-uzupełnia się następująco
+uzupełnia się następująco.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
   \item W~tabeli \texttt{PAR-POT} należy wpisać napięcia zebrane podczas
@@ -655,7 +656,7 @@ uzupełnia się następująco
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \paragraph{Zakładka \texttt{POM}.} Zakładkę z~pomiarami uzupełnia się
-następująco
+następująco:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
   \item z~pliku źródłowego przygotować zakres danych obejmujący $3500$ próbek,
@@ -680,7 +681,7 @@ $\brm{f}$ (patrz rozdział~\ref{sec:OKCY5}).
 \section{Przygotowanie sprawozdania}
 \label{sec:GO0AP}
 
-Przygotowane sprawozdanie powinno zawierać
+Przygotowane sprawozdanie powinno zawierać:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
   \item krótkie wprowadzenie do prezentowanego eksperymentu (nie dłuższe niż
@@ -764,7 +765,7 @@ pozwalając mu swobodnie spadać, wskazanie wzdłuż tej osi będzie zerowe, tzn
 $\hat{a}_z =0$. Wiemy jednak, że względem nieruchomego układu współrzędnych
 akcelerometr porusza się z~przyspieszeniem $a_z = -g$. A~więc faktyczne
 przyspieszenie kinematyczne jest $a_z = \hat{a}_z - g$. W~ogólności
-zapisalibyśmy to w~nieruchomym układzie współrzędnych jako
+zapisalibyśmy to w~nieruchomym układzie współrzędnych jako:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{a} = \hat{\brm{a}} + \brm{g},
@@ -774,11 +775,11 @@ zapisalibyśmy to w~nieruchomym układzie współrzędnych jako
 gdzie
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
-  \brm{g} = \begin{bmatrix} 0 & 0 & -g \end{bmatrix}^T, \;\; g \approx 9.81 \frac{m}{s^2}
+  \brm{g} = \begin{bmatrix} 0 & 0 & -g \end{bmatrix}^T, \;\; g \approx 9,81 \frac{m}{s^2}
   \label{eq:PWKKB}
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-jest wektorem przyspieszenia ziemskiego, oraz
+jest wektorem przyspieszenia ziemskiego, natomiast:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{align}
   & \brm{a} = \begin{bmatrix}
@@ -925,7 +926,7 @@ Zakładając, że osie akcelerometru są zgodne z~osiami układu ruchomego
 $x^{\prime},y^{\prime},z^{\prime}$ wnioskujemy na podstawie rysunku oraz
 wcześniejszych rozważań, że przyspieszenie kinematyczne $\brm{a}^{\prime}$
 (,,netto'') będzie związane ze~wskazywanym przez akcelerometr przyspieszeniem
-(,,brutto'')~$\hat{\brm{a}}^{\prime}$ w~następujący sposób
+(,,brutto'')~$\hat{\brm{a}}^{\prime}$ w~następujący sposób:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   {\brm{a}^{\prime}} = \hat{\brm{a}}^{\prime}
@@ -939,7 +940,7 @@ wcześniejszych rozważań, że przyspieszenie kinematyczne $\brm{a}^{\prime}$
   \label{eq:EUIQU}
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-przy czym
+przy czym:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{align}
   & \brm{a}^{\prime} = \begin{bmatrix}
@@ -962,7 +963,7 @@ przyspieszenie kinematyczne końcówki wahadła wyrażone w~układzie ruchomym.
 Jeśliby przyjąć, że wynikające z~pomiarów przyspieszenia $\brm{a}^{\prime}$
 odpowiadają dokładnie faktycznym przyspieszeniom kinematycznym końcówki
 (perfekcyjny eksperyment) to przyspieszenia kątowe $\ddot{\varphi_x}$
-i~$\ddot{\varphi_y}$ będą wynikały wprost z~przyspieszeń $\brm{a}^{\prime}$
+i~$\ddot{\varphi_y}$ będą wynikały wprost z~przyspieszeń $\brm{a}^{\prime}$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{subequations}
   \label{eq:9HDQE}
@@ -976,9 +977,10 @@ i~$\ddot{\varphi_y}$ będą wynikały wprost z~przyspieszeń $\brm{a}^{\prime}$
 \end{subequations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ($r$ jest długością wahadła). Równania \eqref{eq:9HDQE} stanowią
-układ równań różniczkowych zwyczajnych drugiego rzędu z~niewiadomymi funkcjami
+układ równań różniczkowych zwyczajnych II-go rzędu z~niewiadomymi funkcjami
 $\varphi_x(t)$, $\varphi_y(t)$ oraz dobrze zdefiniowanymi prawymi stronami
-$r^{-1}a_x^{\prime}(t,\varphi_x,\varphi_y)$, $r^{-1}a_y^{\prime}(t,\varphi_x)$
+$r^{-1}a_x^{\prime}(t,\varphi_x,\varphi_y)$, $r^{-1}a_y^{\prime}(t,\varphi_x)$.
+Można je zapisać jako:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{subequations}
   \label{eq:ROGUO}
@@ -1008,7 +1010,7 @@ Aby zastosować procedurę całkowania numerycznego, problem powinien być
 sformułowany jako zagadnienie początkowe z~układem równań różniczkowych
 pierwszego rzędu, czyli w~postaci~\eqref{eq:L8KAD}. W~przypadku
 równań~\eqref{eq:ROGUO} można to osiągnąć poprzez zastosowanie następującego
-zestawu zmiennych
+zestawu zmiennych:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y} = \begin{bmatrix}
@@ -1020,7 +1022,7 @@ zestawu zmiennych
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Teraz, w~celu wyrażenia równań~\eqref{eq:ROGUO} w~postaci~\eqref{eq:R7M37}
-wystarczy zdefiniować funkcję $\brm{f}$ jako
+wystarczy zdefiniować funkcję $\brm{f}$ jako:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{f}\left(t,\brm{y}\right) \coloneqq \begin{bmatrix}
@@ -1033,7 +1035,7 @@ wystarczy zdefiniować funkcję $\brm{f}$ jako
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Jako $\brm{y}_0$ w~warunkach początkowych \eqref{eq:5DFP4} należy oczywiście
-użyć
+użyć:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_0 = \begin{bmatrix}
@@ -1052,7 +1054,7 @@ takimi właściwościami, jak rząd dokładności, obszar stabilności, tłumien
 numeryczne~\cite{asher&petzold:1998:computer-methods}.
 
 Tradycyjne metody numerycznego całkowania równań różniczkowych zwyczajnych
-umożliwiają rozwiązanie zagadnienia początkowego sformułowanego jako
+umożliwiają rozwiązanie zagadnienia początkowego sformułowanego jako:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{subequations}
 \label{eq:L8KAD}
@@ -1090,7 +1092,7 @@ stabilności.
 
 \paragraph{Jawna metoda Eulera.}
 W~metodzie jawnej Eulera używa się następującego schematu różnicowego do
-przybliżenia pochodnej $\dot{\brm{y}}$ (schemat różnicowy ,,w~przód'')
+przybliżenia pochodnej $\dot{\brm{y}}$ (schemat różnicowy ,,w~przód''):
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \dot{\brm{y}}_{k-1} = \frac{\brm{y}_{k} - \brm{y}_{k-1}}{h},
@@ -1100,7 +1102,7 @@ przybliżenia pochodnej $\dot{\brm{y}}$ (schemat różnicowy ,,w~przód'')
 gdzie $\brm{y}_{l} \approx \brm{y}\left(t_l\right)$ jest przybliżeniem wartości
 poszukiwanej funkcji w~punkcie $t_l$ a~$\dot{\brm{y}}_{l} \approx
 \dot{\brm{y}}(t_l)$ przybliżeniem pochodnej. W~wyniku prostego przekształcenia,
-otrzymuje się jawną metodę Eulera
+otrzymuje się jawną metodę Eulera:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \brm{y}_{k-1} + h \cdot \brm{f}_{k-1},\;\;k = 1,\dots,K,
@@ -1110,11 +1112,11 @@ otrzymuje się jawną metodę Eulera
 w~której $\brm{f}_l = \brm{f}\left(t_l, \brm{y}_l\right)$. Zauważmy, że dla
 $k=1$ mamy po prawej stronie $\brm{y}_0$ znane z~warunków początkowych, więc
 możemy od razu wyliczyć $\brm{y}_1$ i~dalej, krok po kroku, $\brm{y}_2$,
-$\brm{y}_3$, itd..
+$\brm{y}_3$, itd.
 
 \paragraph{Niejawna metoda Eulera.}
 W~niejawnej metodzie Eulera, pochodną aproksymuje się następującym schematem
-różnicowym (wsteczna różnica skończona)
+różnicowym (wsteczna różnica skończona):
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \dot{\brm{y}}_k = \frac{\brm{y}_{k} - \brm{y}_{k-1}}{h}.
@@ -1137,7 +1139,7 @@ nieliniowych (np.~metodę punktu stałego, bądź metodę Newtona).
 \subsection{Metody wielokrokowe}
 \label{sec:QS6QT}
 
-Ogólny przepis na (liniową) metodę wielokrokową jest następujący
+Ogólny przepis na (liniową) metodę wielokrokową jest następujący:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \sum_{j=0}^J \alpha_j \brm{y}_{k-j} = h \sum_{j=0}^J \beta_j \brm{f}_{k-j}.
@@ -1149,11 +1151,11 @@ Konkretne metody całkowania konstruuje się poprzez zastosowanie pewnych
 że $\alpha_0 \neq 0$ (w~wyśmienitej większości metod $\alpha_0 = 1$).
 Liczba~$J$ definiuje liczbę kroków metody. Mówi ona ile kroków wstecz dana
 metoda spogląda aby wyznaczyć bieżącą wartość $\brm{y}_k$. W~grupie metod
-wielo-krokowych będą występować {\em metody jawne} ($\beta_0 = 0$) i~{\em
+wielokrokowych będą występować {\em metody jawne} ($\beta_0 = 0$) i~{\em
 metody niejawne} ($\beta_0 \neq 0$).
 
 Przyjmując, zgodnie z~wcześniejszą uwagą, $\alpha_0 = 1$, wzór \eqref{eq:2AOXP}
-można przekształcić do postaci
+można przekształcić do postaci:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \sum_{j=1}^J \alpha_j \brm{y}_{k-j} + h \sum_{j=0}^J \beta_j \brm{f}_{k-j}
@@ -1170,7 +1172,7 @@ wartości początkowych $\brm{y}_1, \dots \brm{y}_{J-1}$ na~początku procesu
 całkowania.
 
 Dla metod jawnych ($\beta_0 = 0$) wzór \eqref{eq:NN23A} przybiera szczególną
-postać
+postać:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \sum_{j=1}^J \alpha_j \brm{y}_{k-j} + h \sum_{j=1}^J \beta_j \brm{f}_{k-j}
@@ -1186,7 +1188,7 @@ W~metodach tych $\alpha_0=1$, $\alpha_1=-1$ i~$\alpha_j = 0$ dla $j > 1$.
 \subsubsection{Jawne metody Adamsa (metody Adamsa-Bashfortha)}
 \label{sec:JVLO6}
 
-Wszystkie metody Adamsa-Bashfortha działają wg poniższej formuły liniowej
+Wszystkie metody Adamsa-Bashfortha działają wg poniższej formuły liniowej:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \brm{y}_{k-1} + h \sum_{j=1}^J \beta_j \brm{f}_{k-j}.
@@ -1214,7 +1216,7 @@ współczynniki $\beta_j$ przedstawiono w~tablicy~\ref{tab:OWS53}.
 \end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Przykładowo, zastosowanie współczynników dla $p=3$ generuje metodę 3-krokową
-($J=3$) jak poniżej
+($J=3$) jak poniżej:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_{k} =  \brm{y}_{k-1} + \frac{h}{12} \left(23\,\brm{f}_{k-1} - 16\,\brm{f}_{k-2} + 5\,\brm{f}_{k-3} \right).
@@ -1228,7 +1230,7 @@ metodą jednokrokową i~jest tożsama z~jawną metodą Eulera.
 \subsubsection{Niejawne metody Adamsa (metody Adamsa-Moultona)}
 \label{sec:FYDDW}
 
-Niejawne metody Adamsa-Moultona mają postać ogólną
+Niejawne metody Adamsa-Moultona mają postać ogólną:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \brm{y}_{k-1} + h \sum_{j=0}^J \beta_j \brm{f}_{k-j}.
@@ -1256,7 +1258,7 @@ Adamsa-Moultona rzędu $p$. Współczynniki te zebrano w~tablicy~\ref{tab:06769}
 \end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Przykładowo, metodę Adamsa-Moultona rzędu $p=3$ zapiszemy, zgodnie z~tablicą,
-jako
+jako:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
   \brm{y}_k = \brm{y}_{k-1} + \frac{h}{12}\left(
@@ -1266,13 +1268,13 @@ jako
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Należy zauważyć, że istnieją dwie różne jedno-krokowe metody Adamsa-Moultona,
-jedna rzędu $1$, druga rzędu $2$. Ponadto dostrzeżemy, że
+jedna rzędu $1$, druga rzędu $2$. Ponadto dostrzeżemy, że:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
   \item wariant $J=1$ z~$\beta_1 = 0$ (metoda $p=1$) jest w~istocie niejawną
         metodą Eulera,
   \item wariant $J=1$ z~$\beta_1 \neq 0$ (metoda $p=2$) jest znana skądinąd jako
-        niejawna metoda trapezów
+        niejawna metoda trapezów:
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         \begin{equation}
           \brm{y}_k = \brm{y}_{k-1} + \frac{h}{2} \left(\brm{f}_{k} + \brm{f}_{k-1}\right).

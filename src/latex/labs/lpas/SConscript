@@ -56,14 +56,14 @@ except KeyError:
 
 labs = {
     'lpas4' : {
-        'version' : '1.0.0',
+        'version' : '1.0.1',
         'svgs'    : [],
         'gplots'  : [],
         #    'deps'    : [],
     },
 
     'lpas9' : {
-        'version' : '1.0.1',
+        'version' : '1.0.2',
         'svgs'    : [],
         'gplots'  : [[ 'lpas9/inert/nyquist.gp',     {'gp_extoutputs': 'lpas9/inert/nyquist.eps'}],
                      [ 'lpas9/inert/bode.gp',        {'gp_extoutputs': 'lpas9/inert/bode.eps'}],
@@ -83,7 +83,7 @@ labs = {
     },
 
     'transfun' : {
-        'version' : '1.0.0',
+        'version' : '1.0.1',
         'svgs'    : [],
         'gplots'  : [],
         #    'deps'    : [],

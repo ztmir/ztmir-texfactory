@@ -4,6 +4,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{lpas}[2016/11/25 Laboratory on Theory of Machnies and Mechanisms]
 \LoadClassWithOptions{scrartcl}
+\RequirePackage{scrlayer-scrpage}
+\RequirePackage{etoolbox}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19,40 +21,33 @@
 %               (PLEASE KEEP THIS LIST SORTED ALPHABETICALLY)                %
 %                                                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\let\tmm@saved@maketitle\maketitle
-\let\tmm@saved@@maketitle\@maketitle
+\let\lpas@saved@maketitle\maketitle
+\let\lpas@saved@@maketitle\@maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                            %
 %                      DEFINITION OF CUSTOM COMMANDS                         %
 %                                                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\serietitle}[1]{\gdef\@serietitle{#1}}
-\def\@serietitle{Serie Title}
+\newcommand{\supertitle}[1]{\gdef\@supertitle{#1}}
+\def\@supertitle{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                            \@maketitle                                     %
-% The \@maketitle is used internally by \maketitle                           %
+%                            \titlepagestyle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\@maketitle{%
-  \begin{center}
-    \Large
-    \textbf{\@serietitle}
-  \end{center}
-  \tmm@saved@@maketitle
-  %\newpage
-  %\vspace{1cm}
-  %\hrule
-  %\vspace{1cm}
-} % end \@maketitle
+\renewcommand\titlepagestyle{empty}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                            \maketitle                                      %
-% The standard article uses "empty" page style for the tile page.
-% This is hardcoded in the definition of \maketitle. For that reason, we
-% redefine \maketitle command to just add \thispagestyle{plain}.
+% Patch \@maketitle to include \supertitle above the \title
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\renewcommand\maketitle{\tmm@saved@maketitle\thispagestyle{plain}}
+\patchcmd{\@maketitle}{{\usekomafont{title}{\huge \@title \par}}}{%
+  \ifx\@supertitle\@empty \else%
+  \vskip 1.5em%
+  {\usekomafont{supertitle}{\LARGE \@supertitle \par}}%
+  \vskip 1.5em%
+  \fi%
+  {\usekomafont{title}{\huge \@title \par}}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                            %
@@ -64,9 +59,9 @@
 %                          abstract                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \if@titlepage
-  \renewenironment{abstract}{%
-    \titlepage
-    \null\vfil
+  \renewenvironment{abstract}{%
+    \titlepage%
+    \null\vfil%
     \@beginparpenalty\@lowpenalty
   }{\par\vfil\null\endtitlepage}
 \else
@@ -74,8 +69,8 @@
     \if@twocolumn%
       \section*{\abstractname}%
     \else%
+      \section*{\abstractname}%
       \small%
-      %\quotation%
     \fi%
   }{\if@twocolumn\else\fi}
 \fi
@@ -85,7 +80,11 @@
 %                             SETTINGS                                       %
 %                                                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagestyle{headings}
+\pagestyle{scrheadings}
+\chead{\ifx\@supertitle\@empty{}\else{\@supertitle: }\fi\@title\headmark}
 
+\setkomafont{disposition}{\bfseries}
+\addtokomafont{subject}{\normalfont}
+\newkomafont{supertitle}{\usekomafont{disposition}\normalfont}
 
 % vim: set expandtab spell tabstop=2 shiftwidth=2 syntax=tex ff=unix spelllang=en:
