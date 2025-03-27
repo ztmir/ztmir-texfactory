@@ -63,7 +63,7 @@ labs = {
     },
 
     'lpas9' : {
-        'version' : '1.0.2',
+        'version' : '1.0.3',
         'svgs'    : [],
         'gplots'  : [[ 'lpas9/inert/nyquist.gp',     {'gp_extoutputs': 'lpas9/inert/nyquist.eps'}],
                      [ 'lpas9/inert/bode.gp',        {'gp_extoutputs': 'lpas9/inert/bode.eps'}],
